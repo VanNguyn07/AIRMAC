@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #0284c7;
+  --color-primary-hover: #45BFEF;
+  --color-primary-light: #e0f2fe;
+  --color-primary-foreground: #ffffff;
+
+  --color-secondary: #64748b;
+  --color-secondary-hover: #475569;
+  --color-secondary-light: #f1f5f9;
+
+  /* Danger: Cảnh báo nguy kịch */
+  --color-danger: #dc2626;
+  --color-danger-bg: #fef2f2;
+
+  /* Warning: Cần chú ý  */
+  --color-warning: #d97706;
+  --color-warning-bg: #fffbeb;
+
+  /* Success: Bình thường/Ổn định */
+  --color-success: #16a34a;
+  --color-success-bg: #f0fdf4;
+
+  /* -- BACKGROUND & SURFACE -- */
+  --color-background: #f8fafc;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f9fafb;
+
+  /* -- TYPOGRAPHY -- */
+  --color-text-main: #0f172a;
+  --color-text-body: #334155;
+  --color-text-muted: #64748b;
+
+  --color-border: #e2e8f0;
+
+  --radius-card: 0.75rem;
+  --radius-btn: 0.5rem;
+
+  /* Cú pháp: --background-image-[tên] */
+
+  /* Gradient nền chính (dùng cho body) */
+  --background-image-main-gradient: linear-gradient(
+    180deg,
+    #f8fafc 0%,
+    #e2e8f0 100%
+  );
+  /* Gradient cho các nút hoặc header */
+  --background-image-primary-gradient: linear-gradient(
+    135deg,
+    #0284c7 0%,
+    #38bdf8 100%
+  );
+  --background-image-success-gradient: linear-gradient(
+    135deg,
+    #22c55e 0%,
+    #86efac 100%
+  );
+}
+
+/* body {
+  background-image: var(--background-image-main-gradient);
+  background-attachment: fixed; 
+  background-size: cover;
+
+  color: var(--color-text-body);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+} */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: transparent;
+
+  background-image: var(--background-image-primary-gradient);
+
+  background-clip: text;
+  -webkit-background-clip: text;
+
+  font-weight: 700;
+  display: inline-block;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
