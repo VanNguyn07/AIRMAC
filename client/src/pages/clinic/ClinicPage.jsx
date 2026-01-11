@@ -20,7 +20,7 @@ export const ClinicPage = () => {
       {/* 1. MAIN */}
       {/* a. patient form */}
       <div className="flex gap-4">
-        <section className="flex flex-col gap-2 w-[70%] h-128.5 bg-white rounded-xl shadow-lg overflow-x-auto overflow-y-auto p-4">
+        <section className="flex flex-col gap-2 w-[70%] h-128 bg-white shadow-lg p-4 overflow-auto scrollbar-custom rounded-lg">
           <p className="text-2xl font-bold font-serif">
             Patient Admission Form
           </p>
@@ -59,7 +59,7 @@ export const ClinicPage = () => {
           </div>
 
           <p className="text-2xl font-bold font-serif mt-2">
-            Vital Signs (NEWS2)
+            Vital Signs (NEWS<span className="font-sans">2</span>)
           </p>
           <div className="flex flex-col gap-3">
             <div className="flex gap-3">
@@ -116,7 +116,7 @@ export const ClinicPage = () => {
               <Label>Select Room *</Label>
               <select
                 defaultValue=""
-                className="cursor-pointer p-2 border border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-hover focus:border-primary-hover"
+                className="cursor-pointer p-2 border border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-hover focus:border-primary-hover font-sans"
               >
                 <option value="" disabled hidden>
                   Select available room
@@ -126,14 +126,94 @@ export const ClinicPage = () => {
                 <option value="room-103">Room 103 - AIRMAC 03</option>
               </select>
             </div>
-            <Button className="mt-4 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-95">
+            <Button className="mt-4 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98">
               Add to Waiting List
             </Button>
           </div>
         </section>
 
         {/* b. patient queue */}
-        <section className="w-[30%] h-128.5 bg-white -gradient rounded-xl shadow-xl overflow-y-aut p-4"></section>
+        <section className="w-[30%] h-128 bg-white -gradient shadow-xl p-4 overflow-auto scrollbar-custom rounded-lg">
+          <div className="flex justify-between items-center">
+            <p className="text-2xl font-bold font-serif mb-4">Patient Waiting List</p>
+            <div className="rounded-full w-9 h-9 text-lg flex justify-center items-center bg-primary-gradient font-bold">4</div>
+          </div>
+          <div className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4">
+            <Label>Shiron</Label>
+            <Label>
+              <span className="font-sans"> 19</span> Years • Male
+            </Label>
+            <Label>
+              <span className="font-sans"> K56.1</span>
+            </Label>
+            <div className="flex gap-4 justify-self-start items-center">
+              <Label>Status:</Label>
+              <div className="py-1 px-2 border-l-4 border-green-500 rounded-lg bg-green-300 text-green-700 font-bold font-serif">
+                Stable
+              </div>
+              <div className="py-1 px-2 border-green-500 rounded-lg bg-green-300 text-green-700 font-bold font-serif">
+                Level <span className="font-sans">1</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4">
+            <Label>Kelvin</Label>
+            <Label>
+              <span className="font-sans"> 19</span> Years • Male
+            </Label>
+            <Label>
+              <span className="font-sans"> K56.1</span>
+            </Label>
+            <div className="flex gap-4 justify-self-start items-center">
+              <Label>Status:</Label>
+              <div className="py-1 px-2 border-l-4 border-yellow-500 rounded-lg bg-yellow-300 text-yellow-500 font-bold font-serif">
+                Moderate
+              </div>
+              <div className="py-1 px-2 border-yellow-500 rounded-lg bg-yellow-300 text-yellow-500 font-bold font-serif">
+                Level <span className="font-sans">2</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4">
+            <Label>Sofia</Label>
+            <Label>
+              <span className="font-sans">20</span> Years • Female
+            </Label>
+            <Label>
+              <span className="font-sans"> K56.2 - K56.3</span>
+            </Label>
+            <div className="flex gap-4 justify-self-start items-center">
+              <Label>Status:</Label>
+              <div className="py-1 px-2 border-l-4 border-orange-500 rounded-lg bg-orange-300 text-orange-500 font-bold font-serif">
+                Serious
+              </div>
+              <div className="py-1 px-2 border-orange-500 rounded-lg bg-orange-300 text-orange-500 font-bold font-serif">
+                Level <span className="font-sans">3</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4">
+            <Label>Mon</Label>
+            <Label>
+              <span className="font-sans">10</span> Years • Female
+            </Label>
+            <Label>
+              <span className="font-sans"> K55.2 - K55.3</span>
+            </Label>
+            <div className="flex gap-4 justify-self-start items-center">
+              <Label>Status:</Label>
+              <div className="py-1 px-2 border-l-4 border-red-500 rounded-lg bg-red-300 text-red-700 font-bold font-serif">
+                Ctitical
+              </div>
+              <div className="py-1 px-2 border-red-500 rounded-lg bg-red-300 text-red-700 font-bold font-serif">
+                Level <span className="font-sans">4</span>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </main>
   );

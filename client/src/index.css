@@ -85,6 +85,25 @@ h6 {
   display: inline-block;
 }
 
+/* file styles.css */
+.scrollbar-custom::-webkit-scrollbar {
+  width: 10px;
+}
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: #f1ebeb;
+  border-top-right-radius: 9px;
+  border-bottom-right-radius: 9px;
+}
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background: #888;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 9px;
+}
+.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+
 .tabular-nums {
   font-variant-numeric: tabular-nums;
 }
