@@ -26,9 +26,7 @@ export const OperatingRoomPage = () => {
         {/* a. patient queue */}
         <section className="w-[25%] h-128 bg-white -gradient shadow-xl p-4 overflow-auto scrollbar-custom rounded-lg">
           <div className="flex justify-between items-center">
-            <p className="text-2xl font-bold font-serif mb-4">
-              Patient List
-            </p>
+            <p className="text-2xl font-bold font-serif mb-4">Patient List</p>
             <div className="rounded-full w-9 h-9 text-lg flex justify-center items-center bg-primary-gradient font-bold">
               4
             </div>
@@ -231,11 +229,14 @@ export const OperatingRoomPage = () => {
             <div className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4">
               <Label>Suggested Level</Label>
               <Label className="text-4xl font-sans">1</Label>
+              <Button className="mt-2 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98">
+                Changes
+              </Button>
             </div>
 
             <div className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4">
-              <Label>Device Limit (LPM)</Label>
-              <Label className="text-4xl font-sans">10</Label>
+              <Label>Alarm Threshold (LPM)</Label>
+              <Label className="text-4xl font-sans">0.2</Label>
             </div>
             <Button className="mt-2 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98">
               CONFIRM AND SETUP

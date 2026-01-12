@@ -135,11 +135,18 @@ export const ClinicPage = () => {
         {/* b. patient queue */}
         <section className="w-[30%] h-128 bg-white -gradient shadow-xl p-4 overflow-auto scrollbar-custom rounded-lg">
           <div className="flex justify-between items-center">
-            <p className="text-2xl font-bold font-serif mb-4">Patient Waiting List</p>
-            <div className="rounded-full w-9 h-9 text-lg flex justify-center items-center bg-primary-gradient font-bold">4</div>
+            <p className="text-2xl font-bold font-serif mb-4">
+              Patient Waiting List
+            </p>
+            <div className="rounded-full w-9 h-9 text-lg flex justify-center items-center bg-primary-gradient font-bold">
+              4
+            </div>
           </div>
           <div className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4">
-            <Label>Shiron</Label>
+            <div className="flex justify-between">
+              <Label>Shiron</Label>
+              <div className="text-xl py-1 px-2 border-l-4 border-green-500 rounded-lg bg-green-300 text-green-700 font-bold font-serif">Done</div>
+            </div>
             <Label>
               <span className="font-sans"> 19</span> Years • Male
             </Label>
