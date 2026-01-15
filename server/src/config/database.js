@@ -1,4 +1,7 @@
-const {Pool} = require('pg');
+const {Pool} = require('pg'); // import công cụ để kết nối 
+//pg = thư viện PostgreSQL cho Node.js
+// Pool = lớp quản lý kết nối DB
+
 require('dotenv').config({path: "../../.env"}); // get file .env
 
 const pool = new Pool({
