@@ -1,50 +1,51 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 export const useCalculateAge = () => {
   const [dob, setDob] = useState("");
-  const [ageDisplay, setAgeDisplay] = useState("");
-  const [ageMonth, setAgeMonth] = useState(0);
 
-  const handleCalculateAge = (dateString) => {
+  // 1. Hàm tính toán (Giữ nguyên logic của bạn)
+  const calculateAgeLogic = (dateString) => {
+    if (!dateString) return { text: "", totalMonth: 0 };
+    
     const today = new Date();
-    const dob = new Date(dateString);
+    const birthDate = new Date(dateString);
 
-    let totalMonth = (today.getFullYear() - dob.getFullYear()) * 12; // 2026 - 2000 = 312 month
-    totalMonth -= dob.getMonth(); // 312 - 5 = 307
-    totalMonth += today.getMonth(); // 307 8 1 = 308
+    if (isNaN(birthDate.getTime())) return { text: "", totalMonth: 0 };
 
-    if (today.getDate() < dob.getDate()) {
+    let totalMonth = (today.getFullYear() - birthDate.getFullYear()) * 12;
+    totalMonth -= birthDate.getMonth();
+    totalMonth += today.getMonth();
+
+    if (today.getDate() < birthDate.getDate()) {
       totalMonth--;
     }
 
     if (totalMonth < 0) totalMonth = 0;
 
-    //  Tạo chuỗi hiển thị "X tuổi Y tháng"
     const years = Math.floor(totalMonth / 12);
     const months = totalMonth % 12;
     let text = "";
-    if (years > 0) {
-      text = text + `${years} years`;
-    }
-    if (months > 0 || years === 0) {
-      text = text + ` ${months} months`;
-    }
-    console.log("Total Months ", totalMonth);
+    if (years > 0) text += `${years} years`;
+    if (months > 0 || years === 0) text += ` ${months} months`;
+    
     return { text, totalMonth };
   };
-  
+
+  // 2. TÍNH TOÁN TRỰC TIẾP (Derived State)
+  // Bất cứ khi nào component render (do dob đổi), dòng này sẽ chạy lại
+  // Không cần useEffect, không cần useState dư thừa
+  const { text: ageDisplay, totalMonth: ageMonth } = calculateAgeLogic(dob);
+
+  // 3. Handle change chỉ cần setDob
   const handleDobChange = (e) => {
-    const newDob = e.target.value;
-    setDob(newDob);
-    //call function handleCalculateAge to reuse
-    const { text, totalMonth } = handleCalculateAge(newDob);
-    setAgeDisplay(text);
-    setAgeMonth(totalMonth);
+    setDob(e.target.value);
   };
+
   return {
     dob,
-    ageDisplay,
-    ageMonth,
+    setDob,
+    ageDisplay, // Biến này tự động cập nhật theo dob
+    ageMonth,   // Biến này cũng vậy
     handleDobChange,
   };
 };

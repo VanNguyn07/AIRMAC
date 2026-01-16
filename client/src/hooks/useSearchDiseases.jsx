@@ -26,6 +26,7 @@ export const useSearchDiseases = () => {
 
   return {
     selectedDisease,
+    setSelectedDisease,
     handleSelectionChange,
     handleSearchDiseases,
   };

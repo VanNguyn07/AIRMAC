@@ -8,6 +8,7 @@ const app = express();
 const icdSearchRoutes = require("./src/routes/icdSearchRoutes");
 const airmacRoutes = require("./src/routes/airmacRoutes");
 const managerFormRoutes = require("./src/routes/managerFormRoutes")
+const fetchDataRoutes = require("./src/routes/fetchDataRoutes");
 
 //Middleware
 app.use(cors());
@@ -17,6 +18,7 @@ app.use(express.json());// <--- Dòng này giúp Node.js "mở hộp" để lấ
 app.use('/api/icd', icdSearchRoutes);
 app.use('/api/airmac', airmacRoutes)
 app.use('/api/addForm', managerFormRoutes)
+app.use('/api/fetchAllData', fetchDataRoutes)
 
 // Route test
 app.get("/", (req, res) => {

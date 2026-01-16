@@ -23,6 +23,7 @@ export const useFetchAirmac = () => {
   return {
     readyDevices,
     selectedDeviceId,
+    setSelectedDeviceId,
     allDevices: selectedDeviceDetail,
     handleSelectedChange,
   };

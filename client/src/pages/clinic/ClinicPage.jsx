@@ -2,13 +2,15 @@ import { Button } from "../../components/common/Button";
 import { Input } from "../../components/common/Input";
 import { Label } from "../../components/common/Label";
 import { DiseaseSelect } from "../../components/select/DiseaseSelect";
+import { useFetchAllData } from "../../hooks/useFetchAllData";
 import { useManagerForm } from "../../hooks/useManagerForm";
 import { formatAgeString } from "../../utils/formatAgeString";
 import { formatGender } from "../../utils/formatGender";
 export const ClinicPage = () => {
+  const { dataList, refetch } = useFetchAllData();
   const {
     formData,
-    patientQueue,
+    selectedDisease,
     handleInputChange,
     handleSubmitForm,
     handleDobChange,
@@ -20,7 +22,7 @@ export const ClinicPage = () => {
     selectedDeviceId,
     handleSearchDiseases,
     handleSelectionChange,
-  } = useManagerForm();
+  } = useManagerForm(refetch);
 
   return (
     <main>
@@ -182,7 +184,7 @@ export const ClinicPage = () => {
                 </Label>
                 <DiseaseSelect
                   onChange={handleSelectionChange}
-                  value={formData.icdMapping}
+                  value={selectedDisease}
                   loadOptions={handleSearchDiseases}
                   name="icdMapping"
                 />
@@ -221,37 +223,40 @@ export const ClinicPage = () => {
                 Patient Waiting List
               </p>
               <div className="rounded-full w-9 h-9 text-lg flex justify-center items-center bg-primary-gradient font-bold">
-                {patientQueue.length}
+                {dataList.length}
               </div>
             </div>
 
-            {patientQueue.length === 0 ? (
+            {dataList.length === 0 ? (
               <p className="text-gray-500 text-center italic">
                 No patients in queue
               </p>
             ) : (
-              patientQueue.map((patient) => {
-                const color = patient.setup_level.color_code;
+              dataList.map((item) => {
+                const color = item.color_code;
                 return (
                   <div
                     className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4"
-                    key={patient.patient_info.id}
+                    key={item.patient_id}
                   >
                     <div className="flex justify-between">
-                      <Label className="text-2xl">{patient.patient_info.full_name}</Label>
+                      <Label className="text-xl">{item.full_name}</Label>
                       <div className="text-xl py-1 px-2 border-l-4 border-green-500 rounded-lg bg-green-300 text-green-700 font-bold font-serif">
                         Done
                       </div>
                     </div>
                     <Label>
-                      Age: {" "}
+                      Age:{" "}
                       <span className="font-sans font-medium text-sky-600">
-                        {formatAgeString(patient.patient_info.age)}
+                        {formatAgeString(item.age)}
                       </span>{" "}
-                      • {formatGender(patient.patient_info.gender)}
+                      • {formatGender(item.gender)}
                     </Label>
                     <Label>
-                      <span className="font-sans"> K56.1</span>
+                      At room:{" "}
+                      <span className="font-sans font-medium text-sky-600">
+                        {item.room_id}
+                      </span>
                     </Label>
                     <div className="flex gap-4 justify-self-start items-center">
                       <Label>Status:</Label>
@@ -263,7 +268,7 @@ export const ClinicPage = () => {
                           color: color,
                         }}
                       >
-                        {patient.setup_level.status}
+                        {item.final_status}
                       </div>
                       <div
                         className="py-1 px-2 font-bold font-serif rounded-lg"
@@ -274,9 +279,7 @@ export const ClinicPage = () => {
                         }}
                       >
                         Level{" "}
-                        <span className="font-sans">
-                          {patient.setup_level.risk_level}
-                        </span>
+                        <span className="font-sans">{item.risk_level}</span>
                       </div>
                     </div>
                   </div>

@@ -7,7 +7,7 @@ const airmacController = {
       return response.json(data);
     } catch (err) {
       console.error("Lỗi Controller Search:", err);
-      return res.status(500).json({ message: "Lỗi Server" });
+      return response.status(500).json({ message: "Lỗi Server" });
     }
   },
 };

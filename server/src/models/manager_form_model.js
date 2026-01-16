@@ -61,12 +61,18 @@ const getValuesToSetUpLv = async (client, totalScore) => {
   return result.rows[0];
 };
 
+const assignAndGetDevice = async (client, patientId, selectedDevice) => {
+  const query = `UPDATE airmacs SET patient_id = $1 WHERE id = $2 RETURNING device_code, room_id`;
+  const result = await client.query(query, [patientId, selectedDevice]);
+  return result.rows[0];
+}
+
 const insertResultsTable = async (client, value) => {
   const query = `INSERT INTO results (
         patient_id, vital_score, pathology_score, age_score, total_score, 
         final_status, selected_icd_codes, risk_level, threshold_value
     )
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+    VALUES ($1, $2, $3, $4, $5, $6, $7::jsonb, $8, $9)
     RETURNING id`;
   const result = await client.query(query, [
     value.patientId,
@@ -75,7 +81,7 @@ const insertResultsTable = async (client, value) => {
     value.ageScore,
     value.totalScore,
     value.finalStatus,
-    value.selectedIcdCodes,
+    JSON.stringify(value.selectedIcdCodes),
     value.riskLevel,
     value.thresholdValue,
   ]);
@@ -88,6 +94,9 @@ const managerFormModel = {
     try {
       await client.query("BEGIN");
 
+      // tách lấy mã bệnh vì icdMapping đang là một mảng đối tượng 
+      const icdCodesOnly = data.icdMapping.map(item => item.icd_code);
+
       const result = await Promise.all([
         getPointsForVitals(client, "hr", data.hr),
         getPointsForVitals(client, "spo2", data.spo2),
@@ -95,7 +104,7 @@ const managerFormModel = {
         getPointsForVitals(client, "rr", data.rr),
         getPointsForVitals(client, "tem", data.tem),
 
-        getPointsForDisease(client, data.icdMapping),
+        getPointsForDisease(client, icdCodesOnly),
 
         getPointsForAge(client, data.age),
       ]);
@@ -115,6 +124,10 @@ const managerFormModel = {
         age: data.age,
         gender: data.gender,
       });
+
+      //get value device_code and room_id
+      const getInfoAirmac = await assignAndGetDevice(client,newPatientId, data.selectedDevice)
+
       // insert into table vitals
       await insertVitalsInfo(
         client,
@@ -153,6 +166,12 @@ const managerFormModel = {
           age: data.age,
           gender: data.gender,
         },
+
+        airmac_info: {
+          device_code: getInfoAirmac?.device_code || null,
+          room_id: getInfoAirmac?.room_id || null
+        },
+
         vitals_info: {
           hr: data.hr,
           spo2: data.spo2,
@@ -160,6 +179,7 @@ const managerFormModel = {
           rr: data.rr,
           tem: data.tem,
         },
+
         setup_level: {
           risk_level: getValues.risk_level,
           status: getValues.status,

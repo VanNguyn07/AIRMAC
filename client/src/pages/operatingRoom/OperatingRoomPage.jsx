@@ -1,249 +1,336 @@
 import { Button } from "../../components/common/Button";
 import { Input } from "../../components/common/Input";
 import { Label } from "../../components/common/Label";
+import { useManagerForm } from "../../hooks/useManagerForm";
+import { useFetchAllData } from "../../hooks/useFetchAllData";
+import { formatAgeString } from "../../utils/formatAgeString";
+import { formatGender } from "../../utils/formatGender";
+import { DiseaseSelect } from "../../components/select/DiseaseSelect";
 
 export const OperatingRoomPage = () => {
+  const { dataList, refetch } = useFetchAllData();
+  const {
+    formData,
+    selectedDisease,
+    handleInputChange,
+    handleSubmitForm,
+    handleDobChange,
+    ageDisplay,
+    dob,
+    allDevices,
+    selectedDeviceId,
+    handleSearchDiseases,
+    handleSelectionChange,
+    handleFillFormData,
+  } = useManagerForm(refetch);
+
+  const currentDeviceData = allDevices.find(
+    (device) => device.id == selectedDeviceId
+  );
   return (
-    <main className="bg-main-gradient w-full box-border p-4 space-y-4">
-      {/* 1. STATUS BAR */}
-      <section className="bg-white p-6 rounded-xl border-l-5 border-sky-600 shadow-lg">
-        <div className="flex gap-10">
-          <div className="text-lg font-serif">
-            At Room: <span className="font-bold font-sans">101</span>
-          </div>
-          <div className="text-lg font-serif">
-            AIRMAC in use:{" "}
-            <span className="font-bold font-sans">AIRMAC 01</span>
-          </div>
-          <div className="text-lg font-serif">
-            Device Status:{" "}
-            <span className="font-bold text-green-500">Ready</span>
-          </div>
-        </div>
-      </section>
-      {/* 1. MAIN */}
-      <div className="flex gap-4">
-        {/* a. patient queue */}
-        <section className="w-[25%] h-128 bg-white -gradient shadow-xl p-4 overflow-auto scrollbar-custom rounded-lg">
-          <div className="flex justify-between items-center">
-            <p className="text-2xl font-bold font-serif mb-4">Patient List</p>
-            <div className="rounded-full w-9 h-9 text-lg flex justify-center items-center bg-primary-gradient font-bold">
-              4
+    <main>
+      <form
+        action=""
+        className="bg-main-gradient w-full box-border p-4 space-y-4"
+        onSubmit={handleSubmitForm}
+      >
+        {/* 1. STATUS BAR */}
+        <section className="bg-white p-6 rounded-xl border-l-5 border-sky-600 shadow-lg">
+          <div className="flex gap-10">
+            <div className="text-lg font-serif">
+              At Room:{" "}
+              <span className="font-bold font-sans">
+                {currentDeviceData ? currentDeviceData.room_id : "---"}
+              </span>
             </div>
-          </div>
-          <div className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4 cursor-pointer active:scale-98">
-            <Label>Shiron</Label>
-            <Label>
-              <span className="font-sans"> 19</span> Years • Male
-            </Label>
-            <Label>
-              <span className="font-sans"> K56.1</span>
-            </Label>
-            <div className="flex gap-3 justify-self-start items-center">
-              <Label>Status:</Label>
-              <div className="py-1 px-2 border-l-4 border-green-500 rounded-lg bg-green-300 text-green-700 font-bold font-serif">
-                Stable
-              </div>
-              <div className="py-1 px-2 border-green-500 rounded-lg bg-green-300 text-green-700 font-bold font-serif">
-                Level <span className="font-sans">1</span>
-              </div>
+            <div className="text-lg font-serif">
+              AIRMAC in use:{" "}
+              <span className="font-bold font-sans">
+                {currentDeviceData ? currentDeviceData.device_code : "---"}
+              </span>
             </div>
-          </div>
-
-          <div className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4  cursor-pointer active:scale-98">
-            <Label>Kelvin</Label>
-            <Label>
-              <span className="font-sans"> 19</span> Years • Male
-            </Label>
-            <Label>
-              <span className="font-sans"> K56.1</span>
-            </Label>
-            <div className="flex gap-1 justify-self-start items-center">
-              <Label>Status:</Label>
-              <div className="py-1 px-2 border-l-4 border-yellow-500 rounded-lg bg-yellow-300 text-yellow-500 font-bold font-serif">
-                Moderate
-              </div>
-              <div className="py-1 px-2 border-yellow-500 rounded-lg bg-yellow-300 text-yellow-500 font-bold font-serif">
-                Level <span className="font-sans">2</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4  cursor-pointer active:scale-98">
-            <Label>Sofia</Label>
-            <Label>
-              <span className="font-sans">20</span> Years • Female
-            </Label>
-            <Label>
-              <span className="font-sans"> K56.2 - K56.3</span>
-            </Label>
-            <div className="flex gap-3 justify-self-start items-center">
-              <Label>Status:</Label>
-              <div className="py-1 px-2 border-l-4 border-orange-500 rounded-lg bg-orange-300 text-orange-500 font-bold font-serif">
-                Serious
-              </div>
-              <div className="py-1 px-2 border-orange-500 rounded-lg bg-orange-300 text-orange-500 font-bold font-serif">
-                Level <span className="font-sans">3</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4  cursor-pointer active:scale-98">
-            <Label>Mon</Label>
-            <Label>
-              <span className="font-sans">10</span> Years • Female
-            </Label>
-            <Label>
-              <span className="font-sans"> K55.2 - K55.3</span>
-            </Label>
-            <div className="flex gap-3 justify-self-start items-center">
-              <Label>Status:</Label>
-              <div className="py-1 px-2 border-l-4 border-red-500 rounded-lg bg-red-300 text-red-700 font-bold font-serif">
-                Ctitical
-              </div>
-              <div className="py-1 px-2 border-red-500 rounded-lg bg-red-300 text-red-700 font-bold font-serif">
-                Level <span className="font-sans">4</span>
-              </div>
+            <div className="text-lg font-serif">
+              Device Status:{" "}
+              <span className="font-bold text-green-500">READY</span>
             </div>
           </div>
         </section>
-
-        {/* b. patient form */}
-        <section className="flex flex-col gap-2 w-[75%] h-128 bg-white shadow-lg p-4 overflow-auto scrollbar-custom rounded-lg">
-          <div className="border-b-2 border-gray-500 bg-gray-300 p-2 rounded-xl">
-            <div className=" flex justify-between">
-              <p className="text-3xl font-bold font-serif">Shiron</p>
-              <div className="flex gap-4 justify-self-start items-center">
-                <Label className="text-xl">Status:</Label>
-                <div className="py-1 px-2 border-l-4 border-green-500 rounded-lg bg-green-300 text-green-700 font-bold font-serif">
-                  Stable
-                </div>
-                <div className="py-1 px-2 border-green-500 rounded-lg bg-green-300 text-green-700 font-bold font-serif">
-                  Level <span className="font-sans">1</span>
-                </div>
+        {/* 1. MAIN */}
+        <div className="flex gap-4">
+          {/* a. patient queue */}
+          <section className="w-[30%] h-128 bg-white -gradient shadow-xl p-4 overflow-auto scrollbar-custom rounded-lg">
+            <div className="flex justify-between items-center">
+              <p className="text-2xl font-bold font-serif mb-4">Patient List</p>
+              <div className="rounded-full w-9 h-9 text-lg flex justify-center items-center bg-primary-gradient font-bold">
+                {dataList.length}
               </div>
             </div>
-            <Label className="ml-4">
-              <span className="font-sans"> 19</span> Years • Male
-            </Label>
-          </div>
 
-          <Label>Full Name *</Label>
-          <Input
-            type="text"
-            placeholder="Enter Patient Name"
-            name="fullName"
-            required
-          />
+            {dataList.length === 0 ? (
+              <p className="text-gray-500 text-center italic">
+                No patients in queue
+              </p>
+            ) : (
+              dataList.map((item) => {
+                const color = item.color_code;
+                return (
+                  <div
+                    className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4 cursor-pointer active:scale-98"
+                    key={item.patient_id}
+                    onClick={() => handleFillFormData(item)}
+                  >
+                    <div className="flex justify-between">
+                      <Label className="text-xl">{item.full_name}</Label>
+                      <div className="text-xl py-1 px-2 border-l-4 border-green-500 rounded-lg bg-green-300 text-green-700 font-bold font-serif">
+                        Done
+                      </div>
+                    </div>
+                    <Label>
+                      Age:{" "}
+                      <span className="font-sans font-medium text-sky-600">
+                        {formatAgeString(item.age)}
+                      </span>{" "}
+                      • {formatGender(item.gender)}
+                    </Label>
+                    <Label>
+                      At room:{" "}
+                      <span className="font-sans font-medium text-sky-600">
+                        {item.room_id}
+                      </span>
+                    </Label>
+                    <div className="flex gap-4 justify-self-start items-center">
+                      <Label>Status:</Label>
+                      <div
+                        className="py-1 px-2 border-l-4 font-bold font-serif rounded-lg"
+                        style={{
+                          backgroundColor: `${color}70`,
+                          borderColor: color,
+                          color: color,
+                        }}
+                      >
+                        {item.final_status}
+                      </div>
+                      <div
+                        className="py-1 px-2 font-bold font-serif rounded-lg"
+                        style={{
+                          backgroundColor: `${color}70`,
+                          borderColor: color,
+                          color: color,
+                        }}
+                      >
+                        Level{" "}
+                        <span className="font-sans">{item.risk_level}</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </section>
 
-          <div className="flex gap-3">
-            <div className="flex flex-col gap-2 w-full ">
-              <Label>Date of Birth *</Label>
-              <Input type="date" className="cursor-pointer" required />
+          {/* b. patient form */}
+          <section className="flex flex-col gap-2 w-[75%] h-128 bg-white shadow-lg p-4 overflow-auto scrollbar-custom rounded-lg">
+            <div className="border-b-2 border-gray-500 bg-gray-300 p-2 rounded-xl">
+              <div className=" flex justify-between">
+                <Label className="text-2xl">{formData.fullName}</Label>
+                <div className="flex gap-4 justify-self-start items-center">
+                  <Label className="text-xl">Status:</Label>
+                  <div
+                    className="py-1 px-2 border-l-4 font-bold font-serif rounded-lg"
+                    style={{
+                      backgroundColor: `${formData.color}70`,
+                      borderColor: formData.color,
+                      color: formData.color,
+                    }}
+                  >
+                    {formData.status ? formData.status : "Unknown"}
+                  </div>
+                  <div
+                    className="py-1 px-2 border-l-4 font-bold font-serif rounded-lg"
+                    style={{
+                      backgroundColor: `${formData.color}70`,
+                      borderColor: formData.color,
+                      color: formData.color,
+                    }}
+                  >
+                    Level <span className="font-sans">{formData.level}</span>
+                  </div>
+                </div>
+              </div>
+              <Label className="ml-4">
+                <span className="font-sans font-medium text-sky-600">
+                  {formatAgeString(formData.age)}
+                </span>{" "}
+                • {formatGender(formData.gender)}
+              </Label>
             </div>
 
-            <div className=" flex flex-col gap-2 ">
-              <Label>Age</Label>
-              <Input
-                type="text"
-                placeholder="Auto-calculated"
-                className="cursor-not-allowed bg-gray-200"
-                readOnly
-              />
-            </div>
+            <Label>Full Name *</Label>
+            <Input
+              type="text"
+              value={formData.fullName}
+              onChange={handleInputChange}
+              placeholder="Enter Patient Name"
+              name="fullName"
+              required
+            />
 
-            <div className=" flex flex-col gap-2">
-              <Label>Gender</Label>
-              <select className="cursor-pointer p-2 border border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-hover focus:border-primary-hover">
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-          </div>
-
-          <p className="text-2xl font-bold font-serif mt-2">
-            Vital Signs (NEWS<span className="font-sans">2</span>)
-          </p>
-          <div className="flex flex-col gap-3">
             <div className="flex gap-3">
-              {/* Row one */}
               <div className="flex flex-col gap-2 w-full ">
-                <Label>Heart (bpm)</Label>
+                <Label>Date of Birth *</Label>
                 <Input
-                  type="number"
-                  placeholder="59-90 beats / minutes"
+                  type="date"
+                  className="cursor-pointer"
+                  value={dob}
+                  onChange={handleDobChange}
                   required
                 />
               </div>
 
-              <div className="flex flex-col gap-2 w-full ">
-                <Label>Respiration Rate</Label>
+              <div className=" flex flex-col gap-2 ">
+                <Label>Age</Label>
                 <Input
-                  type="number"
-                  placeholder="12-20 breaths / minutes"
-                  required
+                  type="text"
+                  value={ageDisplay}
+                  placeholder="Auto-calculated"
+                  className="cursor-not-allowed bg-gray-200"
+                  readOnly
                 />
               </div>
-            </div>
-            {/* Row 2 */}
-            <div className="flex gap-3">
-              <div className="flex flex-col gap-2 w-full ">
-                <Label>SpO2 (%)</Label>
-                <Input type="number" placeholder="≥ 96%" required />
-              </div>
 
-              <div className="flex flex-col gap-2 w-full ">
-                <Label>Temperature (°C)</Label>
-                <Input type="number" placeholder="36 - 38°C" required />
+              <div className=" flex flex-col gap-2">
+                <Label>Gender</Label>
+                <select
+                  className="cursor-pointer p-2 border border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-hover focus:border-primary-hover"
+                  value={formData.gender}
+                  onChange={handleInputChange}
+                  name="gender"
+                >
+                  <option value="" disabled hidden>
+                    Gender
+                  </option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
               </div>
             </div>
-            {/* Rouw three */}
-            <div className="flex gap-3">
-              <div className="flex flex-col gap-2 w-full ">
-                <Label>Blood Pressure (Systolic)</Label>
-                <Input type="number" placeholder="111 - 219 mmHg" required />
-              </div>
-            </div>
-            {/* Rouw four */}
-            <div className="flex flex-col gap-2 w-full ">
-              <Label>Diagnosis (ICD-10) - Multi-select</Label>
-              <Input
-                type="text"
-                autoComplete="off"
-                placeholder="Type diagnosis code or name (e.g., K56, Intussusception)"
-                required
-              />
-            </div>
-            <Button className="mt-4 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98">
-              Save Patient Changes
-            </Button>
-          </div>
-        </section>
-        {/* Operation Level */}
-        <section className="w-[20%] h-128 bg-white -gradient shadow-xl p-4 overflow-auto scrollbar-custom rounded-lg">
-          <div className="flex flex-col">
-            <p className="text-2xl font-bold font-serif mb-4">
-              Operation Level
+
+            <p className="text-2xl font-bold font-serif mt-2">
+              Vital Signs (NEWS<span className="font-sans">2</span>)
             </p>
-            <div className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4">
-              <Label>Suggested Level</Label>
-              <Label className="text-4xl font-sans">1</Label>
-              <Button className="mt-2 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98">
-                Changes
+            <div className="flex flex-col gap-3">
+              <div className="flex gap-3">
+                {/* Row one */}
+                <div className="flex flex-col gap-2 w-full ">
+                  <Label>Heart (bpm)</Label>
+                  <Input
+                    type="number"
+                    value={formData.hr}
+                    name="hr"
+                    onChange={handleInputChange}
+                    placeholder="59-90 beats / minutes"
+                    required
+                  />
+                </div>
+
+                <div className="flex flex-col gap-2 w-full ">
+                  <Label>Respiration Rate</Label>
+                  <Input
+                    type="number"
+                    name="rr"
+                    value={formData.rr}
+                    onChange={handleInputChange}
+                    placeholder="12-20 breaths / minutes"
+                    required
+                  />
+                </div>
+              </div>
+              {/* Row 2 */}
+              <div className="flex gap-3">
+                <div className="flex flex-col gap-2 w-full ">
+                  <Label>SpO2 (%)</Label>
+                  <Input
+                    type="number"
+                    placeholder="≥ 96%"
+                    value={formData.spo2}
+                    onChange={handleInputChange}
+                    name="spo2"
+                    required
+                  />
+                </div>
+
+                <div className="flex flex-col gap-2 w-full ">
+                  <Label>Temperature (°C)</Label>
+                  <Input
+                    type="number"
+                    placeholder="36 - 38°C"
+                    value={formData.tem}
+                    onChange={handleInputChange}
+                    name="tem"
+                    required
+                  />
+                </div>
+              </div>
+              {/* Rouw three */}
+              <div className="flex gap-3">
+                <div className="flex flex-col gap-2 w-full ">
+                  <Label>Blood Pressure (Systolic)</Label>
+                  <Input
+                    type="number"
+                    placeholder="111 - 219 mmHg"
+                    value={formData.bp_sys}
+                    onChange={handleInputChange}
+                    name="bp_sys"
+                    required
+                  />
+                </div>
+              </div>
+              {/* Rouw four */}
+              <div className="flex flex-col gap-2 w-full ">
+                <Label>
+                  Diagnosis (ICD- <span className="font-sans">10</span>) -
+                  Multi-select
+                </Label>
+                <DiseaseSelect
+                  onChange={handleSelectionChange}
+                  value={selectedDisease}
+                  loadOptions={handleSearchDiseases}
+                  name="icdMapping"
+                />
+              </div>
+              <Button
+                className="mt-4 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98"
+                type="submit"
+              >
+                Save Patient Changes
               </Button>
             </div>
+          </section>
+          {/* Operation Level */}
+          <section className="w-[20%] h-128 bg-white -gradient shadow-xl p-4 overflow-auto scrollbar-custom rounded-lg">
+            <div className="flex flex-col">
+              <p className="text-2xl font-bold font-serif mb-4">
+                Operation Level
+              </p>
+              <div className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4">
+                <Label>Suggested Level</Label>
+                <Label className="text-4xl font-sans">{formData.level}</Label>
+                <Button className="mt-2 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98">
+                  Changes
+                </Button>
+              </div>
 
-            <div className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4">
-              <Label>Alarm Threshold (LPM)</Label>
-              <Label className="text-4xl font-sans">0.2</Label>
+              <div className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4">
+                <Label>Alarm Threshold (LPM)</Label>
+                <Label className="text-4xl font-sans">{formData.threshold}</Label>
+              </div>
+              <Button className="mt-2 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98">
+                CONFIRM AND SETUP
+              </Button>
             </div>
-            <Button className="mt-2 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98">
-              CONFIRM AND SETUP
-            </Button>
-          </div>
-        </section>
-      </div>
+          </section>
+        </div>
+      </form>
     </main>
   );
 };
