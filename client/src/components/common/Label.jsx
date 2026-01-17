@@ -3,6 +3,6 @@
  */
 export const Label = ({children ,className = "", ...props}) => {
     return(
-        <label className={`font-serif font-bold text-sky-700 ${className}`} {...props}>{children}</label>
+        <label className={`font-sans font-bold text-sky-700 ${className}`} {...props}>{children}</label>
     )
 }

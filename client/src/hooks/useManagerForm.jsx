@@ -51,7 +51,7 @@ export const useManagerForm = (onSuccess) => {
       tem: dataItem.tem || "",
       status: dataItem.final_status || "",
       level: dataItem.risk_level || 0,
-      color: dataItem.color || "",
+      color: dataItem.color_code || "",
       threshold: dataItem.threshold_value || 0,
     });
 
@@ -140,6 +140,7 @@ export const useManagerForm = (onSuccess) => {
       [name]: value,
     }));
   };
+  
   return {
     formData,
     dob,

@@ -56,7 +56,7 @@ const insertVitalsInfo = async (client, vitalsInfo, patientId) => {
 const getValuesToSetUpLv = async (client, totalScore) => {
   if (totalScore === undefined || totalScore === null || totalScore === "")
     return 0;
-  const query = `SELECT risk_level, status, threshold_value, color_code FROM setup_level_rules WHERE $1 >= min_value AND $1 <= max_value LIMIT 1`;
+  const query = `SELECT risk_level, status, threshold_value, color_code FROM setup_level_rules WHERE $1 >= min_value AND $1 < max_value LIMIT 1`;
   const result = await client.query(query, [totalScore]);
   return result.rows[0];
 };

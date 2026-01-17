@@ -195,8 +195,8 @@ const diseases = [
 ];
 
 const age = [
-  { min_age: 3, max_age: 36, points: 0 }, //-- 3 tháng đến 3 tuổi: An toàn nhất (Target)
   { min_age: 0, max_age: 3, points: 3 }, // -- Dưới 3 tháng: Nguy cơ cao (Ruột mỏng)
+  { min_age: 3, max_age: 36, points: 0 }, //-- 3 tháng đến 3 tuổi: An toàn nhất (Target)
   { min_age: 36, max_age: 60, points: 1 }, //-- -- 3 tuổi - 5 tuổi: Cảnh báo nhẹ
   { min_age: 60, max_age: 200, points: 2 }, //; -- Trên 5 tuổi: Nguy cơ nguyên nhân thực thể (U/Polyp)
 ];
@@ -282,7 +282,7 @@ const setupLevelRules = [
     threshold_value: 0.3,
   },
   {
-    min_value: 5,
+    min_value: 6,
     max_value: 15,
     risk_level: 2,
     status: "Moderate",
@@ -290,7 +290,7 @@ const setupLevelRules = [
     threshold_value: 0.5,
   },
   {
-    min_value: 15,
+    min_value: 16,
     max_value: 25,
     risk_level: 3,
     status: "Serious",
@@ -298,7 +298,7 @@ const setupLevelRules = [
     threshold_value: 0.7,
   },
   {
-    min_value: 25,
+    min_value: 26,
     max_value: 100,
     risk_level: 4,
     status: "Critical",
@@ -383,7 +383,14 @@ const seedDatabase = async () => {
     for (let item of setupLevelRules) {
       await database.query(
         "INSERT INTO setup_level_rules (min_value, max_value, risk_level, status, color_code, threshold_value) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (min_value, max_value) DO NOTHING",
-        [item.min_value, item.max_value, item.risk_level, item.status, item.color_code, item.threshold_value]
+        [
+          item.min_value,
+          item.max_value,
+          item.risk_level,
+          item.status,
+          item.color_code,
+          item.threshold_value,
+        ]
       );
     }
     const resultSetupLv = await database.query(
@@ -391,7 +398,7 @@ const seedDatabase = async () => {
     );
     const countSetupLv = parseInt(resultSetupLv.rows[0].count);
     console.log(
-      `✅ Dữ liệu đã có (${countSetupLv} bản ghi) Scoring. Bỏ qua bước nạp.`
+      `✅ Dữ liệu đã có (${countSetupLv} bản ghi) setup_level. Bỏ qua bước nạp.`
     );
   } catch (err) {
     console.error("❌ Lỗi khi nạp dữ liệu mẫu:", err);

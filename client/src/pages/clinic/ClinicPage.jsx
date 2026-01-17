@@ -234,6 +234,13 @@ export const ClinicPage = () => {
             ) : (
               dataList.map((item) => {
                 const color = item.color_code;
+                let processColor;
+                const statusColor = {
+                  PENDING: "#FFC107",
+                  IN_PROGRESS: "#2196F3",
+                  DONE: "#4CAF50",
+                };
+                processColor = statusColor[item.process_status];
                 return (
                   <div
                     className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4"
@@ -241,8 +248,13 @@ export const ClinicPage = () => {
                   >
                     <div className="flex justify-between">
                       <Label className="text-xl">{item.full_name}</Label>
-                      <div className="text-xl py-1 px-2 border-l-4 border-green-500 rounded-lg bg-green-300 text-green-700 font-bold font-serif">
-                        Done
+                      <div className="text-lg py-1 px-2 border-l-4 font-bold font-serif rounded-xl"
+                      style={{
+                        backgroundColor: `${processColor}70`,
+                        borderColor: processColor,
+                        color: processColor
+                      }}>
+                        {item.process_status}
                       </div>
                     </div>
                     <Label>

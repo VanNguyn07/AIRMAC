@@ -6,7 +6,7 @@ import { useFetchAllData } from "../../hooks/useFetchAllData";
 import { formatAgeString } from "../../utils/formatAgeString";
 import { formatGender } from "../../utils/formatGender";
 import { DiseaseSelect } from "../../components/select/DiseaseSelect";
-
+import { useSuggestedLevel } from "../../hooks/useSuggestedLevel";
 export const OperatingRoomPage = () => {
   const { dataList, refetch } = useFetchAllData();
   const {
@@ -24,6 +24,7 @@ export const OperatingRoomPage = () => {
     handleFillFormData,
   } = useManagerForm(refetch);
 
+  const { handleOpenSuggestOpen, isOpen } = useSuggestedLevel();
   const currentDeviceData = allDevices.find(
     (device) => device.id == selectedDeviceId
   );
@@ -73,6 +74,13 @@ export const OperatingRoomPage = () => {
             ) : (
               dataList.map((item) => {
                 const color = item.color_code;
+                let processColor;
+                const statusColor = {
+                  PENDING: "#FFC107",
+                  IN_PROGRESS: "#2196F3",
+                  DONE: "#4CAF50",
+                };
+                processColor = statusColor[item.process_status];
                 return (
                   <div
                     className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4 cursor-pointer active:scale-98"
@@ -81,8 +89,15 @@ export const OperatingRoomPage = () => {
                   >
                     <div className="flex justify-between">
                       <Label className="text-xl">{item.full_name}</Label>
-                      <div className="text-xl py-1 px-2 border-l-4 border-green-500 rounded-lg bg-green-300 text-green-700 font-bold font-serif">
-                        Done
+                      <div
+                        className="text-lg py-1 px-2 border-l-4 font-bold font-serif rounded-xl"
+                        style={{
+                          backgroundColor: `${processColor}70`,
+                          borderColor: processColor,
+                          color: processColor,
+                        }}
+                      >
+                        {item.process_status}
                       </div>
                     </div>
                     <Label>
@@ -130,15 +145,15 @@ export const OperatingRoomPage = () => {
 
           {/* b. patient form */}
           <section className="flex flex-col gap-2 w-[75%] h-128 bg-white shadow-lg p-4 overflow-auto scrollbar-custom rounded-lg">
-            <div className="border-b-2 border-gray-500 bg-gray-300 p-2 rounded-xl">
+            <div className="border-b-2 border-gray-500 bg-gray-200 p-3 rounded-xl">
               <div className=" flex justify-between">
-                <Label className="text-2xl">{formData.fullName}</Label>
+                <Label className="text-2xl mb-2">{formData.fullName}</Label>
                 <div className="flex gap-4 justify-self-start items-center">
                   <Label className="text-xl">Status:</Label>
                   <div
                     className="py-1 px-2 border-l-4 font-bold font-serif rounded-lg"
                     style={{
-                      backgroundColor: `${formData.color}70`,
+                      backgroundColor: `${formData.color}50`,
                       borderColor: formData.color,
                       color: formData.color,
                     }}
@@ -315,14 +330,29 @@ export const OperatingRoomPage = () => {
               <div className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4">
                 <Label>Suggested Level</Label>
                 <Label className="text-4xl font-sans">{formData.level}</Label>
-                <Button className="mt-2 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98">
+                {!isOpen ? (
+                  <Input
+                    type="number"
+                    placeholder="Enter your Level"
+                    name="suggestedLevel"
+                    onChange={handleInputChange}
+                  />
+                ) : (
+                  null
+                )}
+                <Button
+                  className="mt-2 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98" type="button"
+                  onClick={handleOpenSuggestOpen}
+                >
                   Changes
                 </Button>
               </div>
 
               <div className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4">
                 <Label>Alarm Threshold (LPM)</Label>
-                <Label className="text-4xl font-sans">{formData.threshold}</Label>
+                <Label className="text-4xl font-sans">
+                  {formData.threshold}
+                </Label>
               </div>
               <Button className="mt-2 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98">
                 CONFIRM AND SETUP
