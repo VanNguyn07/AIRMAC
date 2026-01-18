@@ -2,12 +2,12 @@ import { Button } from "../../components/common/Button";
 import { Input } from "../../components/common/Input";
 import { Label } from "../../components/common/Label";
 import { DiseaseSelect } from "../../components/select/DiseaseSelect";
-import { useFetchAllData } from "../../hooks/useFetchAllData";
 import { useManagerForm } from "../../hooks/useManagerForm";
 import { formatAgeString } from "../../utils/formatAgeString";
 import { formatGender } from "../../utils/formatGender";
+import { usePatientContext } from "../../contexts/PatientContext";
 export const ClinicPage = () => {
-  const { dataList, refetch } = useFetchAllData();
+  const { dataList, refetch } = usePatientContext();
   const {
     formData,
     selectedDisease,
@@ -119,6 +119,7 @@ export const ClinicPage = () => {
                     name="hr"
                     onChange={handleInputChange}
                     placeholder="59-90 beats / minutes"
+                    min="0"
                     required
                   />
                 </div>
@@ -131,6 +132,7 @@ export const ClinicPage = () => {
                     value={formData.rr}
                     onChange={handleInputChange}
                     placeholder="12-20 breaths / minutes"
+                    min="0"
                     required
                   />
                 </div>
@@ -145,6 +147,7 @@ export const ClinicPage = () => {
                     onChange={handleInputChange}
                     placeholder="≥ 96%"
                     name="spo2"
+                    min="0"
                     required
                   />
                 </div>
@@ -157,6 +160,7 @@ export const ClinicPage = () => {
                     onChange={handleInputChange}
                     placeholder="36 - 38°C"
                     name="tem"
+                    min="0"
                     required
                   />
                 </div>
@@ -171,6 +175,7 @@ export const ClinicPage = () => {
                     onChange={handleInputChange}
                     placeholder="111 - 219 mmHg"
                     name="bp_sys"
+                    min="0"
                     required
                   />
                 </div>
@@ -248,12 +253,14 @@ export const ClinicPage = () => {
                   >
                     <div className="flex justify-between">
                       <Label className="text-xl">{item.full_name}</Label>
-                      <div className="text-lg py-1 px-2 border-l-4 font-bold font-serif rounded-xl"
-                      style={{
-                        backgroundColor: `${processColor}70`,
-                        borderColor: processColor,
-                        color: processColor
-                      }}>
+                      <div
+                        className="text-lg py-1 px-2 border-l-4 font-bold font-serif rounded-xl"
+                        style={{
+                          backgroundColor: `${processColor}70`,
+                          borderColor: processColor,
+                          color: processColor,
+                        }}
+                      >
                         {item.process_status}
                       </div>
                     </div>

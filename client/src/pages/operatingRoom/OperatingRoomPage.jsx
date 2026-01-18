@@ -2,15 +2,17 @@ import { Button } from "../../components/common/Button";
 import { Input } from "../../components/common/Input";
 import { Label } from "../../components/common/Label";
 import { useManagerForm } from "../../hooks/useManagerForm";
-import { useFetchAllData } from "../../hooks/useFetchAllData";
 import { formatAgeString } from "../../utils/formatAgeString";
 import { formatGender } from "../../utils/formatGender";
 import { DiseaseSelect } from "../../components/select/DiseaseSelect";
 import { useSuggestedLevel } from "../../hooks/useSuggestedLevel";
+import { useUpdateLevel } from "../../hooks/useUpdateLevel";
+import { usePatientContext } from "../../contexts/PatientContext";
 export const OperatingRoomPage = () => {
-  const { dataList, refetch } = useFetchAllData();
+  const {dataList, refetch, setDataList, handleUpdateListGlobal } = usePatientContext();
   const {
     formData,
+    setFormData,
     selectedDisease,
     handleInputChange,
     handleSubmitForm,
@@ -24,10 +26,47 @@ export const OperatingRoomPage = () => {
     handleFillFormData,
   } = useManagerForm(refetch);
 
-  const { handleOpenSuggestOpen, isOpen } = useSuggestedLevel();
+  const { handleOpenSuggestOpen, isOpen, setIsOpen } = useSuggestedLevel();
+
+  const {
+    handleInputThresholdChange,
+    onSaveClick,
+    levelInput,
+    warning,
+    setWarning,
+  } = useUpdateLevel();
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      onSaveClick({
+        patientId: formData.patientId,
+        setFormData: setFormData,
+        setIsOpen: setIsOpen,
+        setDataList: setDataList,
+        handleUpdateList: handleUpdateListGlobal
+      });
+    }
+  };
+
+  const handleSaveButton = () => {
+    onSaveClick({
+      patientId: formData.patientId,
+      setFormData: setFormData,
+      setIsOpen: setIsOpen,
+      handleUpdateList: handleUpdateListGlobal
+    });
+  };
+
+  const handleCancel = () => {
+    setWarning(""); 
+    setIsOpen(false);
+  };
+
   const currentDeviceData = allDevices.find(
-    (device) => device.id == selectedDeviceId
+    (device) => device.id == selectedDeviceId,
   );
+
   return (
     <main>
       <form
@@ -63,7 +102,7 @@ export const OperatingRoomPage = () => {
             <div className="flex justify-between items-center">
               <p className="text-2xl font-bold font-serif mb-4">Patient List</p>
               <div className="rounded-full w-9 h-9 text-lg flex justify-center items-center bg-primary-gradient font-bold">
-                {dataList.length}
+                {dataList.length}   
               </div>
             </div>
 
@@ -147,11 +186,11 @@ export const OperatingRoomPage = () => {
           <section className="flex flex-col gap-2 w-[75%] h-128 bg-white shadow-lg p-4 overflow-auto scrollbar-custom rounded-lg">
             <div className="border-b-2 border-gray-500 bg-gray-200 p-3 rounded-xl">
               <div className=" flex justify-between">
-                <Label className="text-2xl mb-2">{formData.fullName}</Label>
+                <Label className="text-2xl mb-2">{formData.fullName ? formData.fullName : "Patient Name"}</Label>
                 <div className="flex gap-4 justify-self-start items-center">
                   <Label className="text-xl">Status:</Label>
                   <div
-                    className="py-1 px-2 border-l-4 font-bold font-serif rounded-lg"
+                    className="py-1 px-2 border-l-4 font-bold font-serif rounded-lg text-sky-700"
                     style={{
                       backgroundColor: `${formData.color}50`,
                       borderColor: formData.color,
@@ -161,7 +200,7 @@ export const OperatingRoomPage = () => {
                     {formData.status ? formData.status : "Unknown"}
                   </div>
                   <div
-                    className="py-1 px-2 border-l-4 font-bold font-serif rounded-lg"
+                    className="py-1 px-2 border-l-4 font-bold font-serif rounded-lg text-sky-700"
                     style={{
                       backgroundColor: `${formData.color}70`,
                       borderColor: formData.color,
@@ -244,6 +283,7 @@ export const OperatingRoomPage = () => {
                     name="hr"
                     onChange={handleInputChange}
                     placeholder="59-90 beats / minutes"
+                    min="0"
                     required
                   />
                 </div>
@@ -256,6 +296,7 @@ export const OperatingRoomPage = () => {
                     value={formData.rr}
                     onChange={handleInputChange}
                     placeholder="12-20 breaths / minutes"
+                    min="0"
                     required
                   />
                 </div>
@@ -270,6 +311,7 @@ export const OperatingRoomPage = () => {
                     value={formData.spo2}
                     onChange={handleInputChange}
                     name="spo2"
+                    min="0"
                     required
                   />
                 </div>
@@ -282,6 +324,7 @@ export const OperatingRoomPage = () => {
                     value={formData.tem}
                     onChange={handleInputChange}
                     name="tem"
+                    min="0"
                     required
                   />
                 </div>
@@ -296,6 +339,7 @@ export const OperatingRoomPage = () => {
                     value={formData.bp_sys}
                     onChange={handleInputChange}
                     name="bp_sys"
+                    min="0"
                     required
                   />
                 </div>
@@ -330,22 +374,54 @@ export const OperatingRoomPage = () => {
               <div className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4">
                 <Label>Suggested Level</Label>
                 <Label className="text-4xl font-sans">{formData.level}</Label>
-                {!isOpen ? (
-                  <Input
-                    type="number"
-                    placeholder="Enter your Level"
-                    name="suggestedLevel"
-                    onChange={handleInputChange}
-                  />
+                {isOpen ? (
+                  <>
+                    <Input
+                      type="number"
+                      placeholder="Enter your Level"
+                      name="suggestedLevel"
+                      value={levelInput.suggestedLevel}
+                      onChange={(e) => {
+                        handleInputThresholdChange(e);
+                        setWarning("");
+                      }}
+                      min="0"
+                      onKeyDown={handleKeyDown}
+                      className={`max-w-40 ${warning ? "border-red-500 ring-1 ring-red-500" : ""}`}
+                      required
+                    />
+                    {warning && (
+                      <span className="text-red-500 text-sm mt-1 animate-pulse">
+                        {warning}
+                      </span>
+                    )}
+                    <div className="flex gap-4">
+                      <Button
+                        className="mt-2 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98"
+                        type="button"
+                        onClick={handleSaveButton}
+                      >
+                        Save
+                      </Button>
+
+                      <Button
+                        onClick={handleCancel}
+                        type="button"
+                        className="mt-2 hover:-translate-y-1 transition-all duration-300 bg-transparent active:scale-98 text-gray-500 hover:text-red-500 hover:bg-gray-300"
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </>
                 ) : (
-                  null
+                  <Button
+                    className="mt-2 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98"
+                    type="button"
+                    onClick={handleOpenSuggestOpen}
+                  >
+                    Changes
+                  </Button>
                 )}
-                <Button
-                  className="mt-2 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98" type="button"
-                  onClick={handleOpenSuggestOpen}
-                >
-                  Changes
-                </Button>
               </div>
 
               <div className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4">

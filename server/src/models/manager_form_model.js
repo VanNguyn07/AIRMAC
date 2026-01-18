@@ -70,9 +70,9 @@ const assignAndGetDevice = async (client, patientId, selectedDevice) => {
 const insertResultsTable = async (client, value) => {
   const query = `INSERT INTO results (
         patient_id, vital_score, pathology_score, age_score, total_score, 
-        final_status, selected_icd_codes, risk_level, threshold_value
+        final_status, selected_icd_codes, risk_level, threshold_value, color_code
     )
-    VALUES ($1, $2, $3, $4, $5, $6, $7::jsonb, $8, $9)
+    VALUES ($1, $2, $3, $4, $5, $6, $7::jsonb, $8, $9, $10)
     RETURNING id`;
   const result = await client.query(query, [
     value.patientId,
@@ -84,6 +84,7 @@ const insertResultsTable = async (client, value) => {
     JSON.stringify(value.selectedIcdCodes),
     value.riskLevel,
     value.thresholdValue,
+    value.color_code
   ]);
   return result.rows[0].id;
 };
@@ -152,6 +153,7 @@ const managerFormModel = {
         selectedIcdCodes: data.icdMapping,
         riskLevel: getValues.risk_level,
         thresholdValue: getValues.threshold_value,
+        color_code: getValues.color_code
       });
 
       await client.query("COMMIT");

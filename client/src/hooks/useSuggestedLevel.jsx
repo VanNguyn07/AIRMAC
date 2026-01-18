@@ -4,5 +4,5 @@ export const useSuggestedLevel = () => {
     const handleOpenSuggestOpen = () => {
         setIsOpen(prev => !prev)
     }
-    return {isOpen, handleOpenSuggestOpen}
+    return {isOpen, handleOpenSuggestOpen, setIsOpen}
 }

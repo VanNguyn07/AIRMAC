@@ -3,6 +3,7 @@ import { managerFormApi } from "../services/manager_form_api";
 import { useCalculateAge } from "./useCalculateAge";
 import { useFetchAirmac } from "./useFetchAirmac";
 import { useSearchDiseases } from "./useSearchDiseases";
+import { usePatientContext } from "../contexts/PatientContext";
 export const useManagerForm = (onSuccess) => {
   //Gọi hook tính tuổi
   const { dob, ageDisplay, ageMonth, handleDobChange, setDob } =
@@ -23,7 +24,10 @@ export const useManagerForm = (onSuccess) => {
     setSelectedDisease,
   } = useSearchDiseases();
 
+  const {handleAddListGlobal} = usePatientContext();
+
   const [formData, setFormData] = useState({
+    patientId:"",
     fullName: "",
     age: "",
     gender: "",
@@ -41,6 +45,7 @@ export const useManagerForm = (onSuccess) => {
   const handleFillFormData = (dataItem) => {
     if (!dataItem) return;
     setFormData({
+      patientId: dataItem.patient_id || "",
       fullName: dataItem.full_name || "",
       age: dataItem.age || "",
       gender: dataItem.gender || "",
@@ -106,13 +111,14 @@ export const useManagerForm = (onSuccess) => {
       selectedDevice: selectedDeviceId,
     };
 
-    console.log("Dữ liệu gửi đi:", payload);
+    console.log("Dữ liệu form data gửi đi:", payload);
 
     try {
       const result = await managerFormApi.addForm(payload);
       console.log("Server trả về:", result);
       if (result.success) {
         const serverData = result.data;
+        handleAddListGlobal(serverData)
         console.log("data add form is: ", serverData);
         if (onSuccess) onSuccess(); // gọi callback
         setFormData({
@@ -148,6 +154,7 @@ export const useManagerForm = (onSuccess) => {
     allDevices,
     selectedDeviceId,
     selectedDisease,
+    setFormData,
     handleSelectedChange,
     readyDevices,
     handleDobChange,

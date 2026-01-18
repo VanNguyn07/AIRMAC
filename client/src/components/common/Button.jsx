@@ -31,7 +31,7 @@ const variants = {
     "border border-primary text-primary hover:bg-primary-light bg-transparent",
 
   ghost:
-    "text-text-muted hover:bg-secondary-light hover:text-text-main bg-transparent", 
+    "text-text-muted hover:bg-secondary-light hover:text-red-500 bg-transparent", 
 };
 export const Button = ({
   children,
