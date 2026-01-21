@@ -17,6 +17,8 @@ export const Header = () => {
       <nav className="flex gap-10">
         <NavLink to="/clinic" className={getLinkClass}>Clinic</NavLink>
         <NavLink to="/operatingRoom" className={getLinkClass}>Operating Room</NavLink>
+        <NavLink to="/chartMonitor" className={getLinkClass}>Chart Monitor</NavLink>
+        <NavLink to="/report" className={getLinkClass}>Report</NavLink>
       </nav>
       <div className="flex">
         <div className="flex justify-center items-cente">

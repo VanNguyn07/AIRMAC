@@ -2,6 +2,8 @@ import { Navigate, Routes, Route } from "react-router-dom";
 import { Header } from "./components/layout/Header";
 import { ClinicPage } from "./pages/clinic/ClinicPage";
 import { OperatingRoomPage } from "./pages/operatingRoom/OperatingRoomPage";
+import { ChartMonitorPage } from "./pages/chartMonitor/ChartMonitorPage";
+import { ReportPage } from "./pages/report/ReportPage";
 import { PatientProvider } from "./contexts/PatientContext";
 
 export const App = () => {
@@ -18,6 +20,8 @@ export const App = () => {
             {/* Định nghĩa các trang */}
             <Route path="/clinic" element={<ClinicPage />} />
             <Route path="/operatingRoom" element={<OperatingRoomPage />} />
+            <Route path="/chartMonitor" element={<ChartMonitorPage />} />
+            <Route path="/report" element={<ReportPage />} />
           </Routes>
         </PatientProvider>
       </div>
