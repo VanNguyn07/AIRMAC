@@ -25,10 +25,10 @@ export const ClinicPage = () => {
   } = useManagerForm(refetch);
 
   return (
-    <main>
+    <main className="h-full w-full">
       <form
         action=""
-        className="bg-main-gradient w-full box-border p-4 space-y-4"
+        className="box-border flex flex-col p-4 gap-4 h-full w-full bg-main-gradient"
         onSubmit={handleSubmitForm}
       >
         {/* 1. STATUS BAR */}
@@ -50,10 +50,11 @@ export const ClinicPage = () => {
         </section>
         {/* 1. MAIN */}
         {/* a. patient form */}
-        <div className="flex gap-4">
-          <section className="flex flex-col gap-2 w-[70%] h-128 bg-white shadow-lg p-4 overflow-auto scrollbar-custom rounded-lg">
+        <div className="flex flex-col lg:flex-row gap-4 flex-1 min-h-0">
+
+          <section className="flex flex-col gap-2 lg:flex-7 h-full bg-white shadow-lg p-4 overflow-auto scrollbar-custom rounded-lg">
             <p className="text-2xl font-bold font-serif">
-              Patient Admission Form
+              Patient Admission Form  
             </p>
             <Label>Full Name *</Label>
             <Input
@@ -222,7 +223,7 @@ export const ClinicPage = () => {
           </section>
 
           {/* b. patient queue */}
-          <section className="w-[30%] h-128 bg-white -gradient shadow-xl p-4 overflow-auto scrollbar-custom rounded-lg">
+          <section className="bg-white -gradient h-full lg:flex-3 shadow-xl p-4 overflow-auto scrollbar-custom rounded-lg">
             <div className="flex justify-between items-center">
               <p className="text-2xl font-bold font-serif mb-4">
                 Patient Waiting List

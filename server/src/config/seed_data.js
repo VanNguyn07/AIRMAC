@@ -190,15 +190,15 @@ const diseases = [
   { icd_code: "N39.0", disease_name: "Nhiễm trùng đường tiết niệu", points: 3 },
   { icd_code: "K02.9", disease_name: "Sâu răng", points: 1 },
   { icd_code: "R05", disease_name: "Ho", points: 1 },
-  { icd_code: "R51", disease_name: "Đau đầu", points: 1 },
+  { icd_code: "R51", disease_name: "Đau đầu", points: 1 },  
   { icd_code: "R63.0", disease_name: "Chán ăn", points: 1 },
 ];
 
 const age = [
   { min_age: 0, max_age: 3, points: 3 }, // -- Dưới 3 tháng: Nguy cơ cao (Ruột mỏng)
-  { min_age: 3, max_age: 36, points: 0 }, //-- 3 tháng đến 3 tuổi: An toàn nhất (Target)
-  { min_age: 36, max_age: 60, points: 1 }, //-- -- 3 tuổi - 5 tuổi: Cảnh báo nhẹ
-  { min_age: 60, max_age: 200, points: 2 }, //; -- Trên 5 tuổi: Nguy cơ nguyên nhân thực thể (U/Polyp)
+  { min_age: 3, max_age: 12, points: 1 }, //-- 3 tháng đến 3 tuổi: An toàn nhất (Target)
+  { min_age: 12, max_age: 780, points: 0 }, //-- -- 3 tuổi - 5 tuổi: Cảnh báo nhẹ
+  { min_age: 780, max_age: 1200, points: 2 }, //; -- Trên 5 tuổi: Nguy cơ nguyên nhân thực thể (U/Polyp)
 ];
 
 const vitalRules = [
@@ -279,7 +279,7 @@ const setupLevelRules = [
     risk_level: 1,
     status: "Stable",
     color_code: "#28a745",
-    threshold_value: 0.3,
+    threshold_value: 0.2,
   },
   {
     min_value: 6,
@@ -287,7 +287,7 @@ const setupLevelRules = [
     risk_level: 2,
     status: "Moderate",
     color_code: "#ffc107",
-    threshold_value: 0.5,
+    threshold_value: 0.3,
   },
   {
     min_value: 16,
@@ -295,7 +295,7 @@ const setupLevelRules = [
     risk_level: 3,
     status: "Serious",
     color_code: "#fd7e14",
-    threshold_value: 0.7,
+    threshold_value: 0.4,
   },
   {
     min_value: 26,
@@ -303,7 +303,7 @@ const setupLevelRules = [
     risk_level: 4,
     status: "Critical",
     color_code: "#dc3545",
-    threshold_value: 0.9,
+    threshold_value: 0.5,
   },
 ];
 

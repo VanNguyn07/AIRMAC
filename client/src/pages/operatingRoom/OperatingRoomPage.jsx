@@ -68,10 +68,10 @@ export const OperatingRoomPage = () => {
   );
 
   return (
-    <main>
+    <main className="w-full h-full">
       <form
         action=""
-        className="bg-main-gradient w-full box-border p-4 space-y-4"
+        className="box-border flex flex-col p-4 gap-4 h-full w-full bg-main-gradient"
         onSubmit={handleSubmitForm}
       >
         {/* 1. STATUS BAR */}
@@ -96,9 +96,9 @@ export const OperatingRoomPage = () => {
           </div>
         </section>
         {/* 1. MAIN */}
-        <div className="flex gap-4">
+        <div className="flex flex-col lg:flex-row gap-4 flex-1 min-h-0">
           {/* a. patient queue */}
-          <section className="w-[30%] h-128 bg-white -gradient shadow-xl p-4 overflow-auto scrollbar-custom rounded-lg">
+          <section className="h-full flex flex-col lg:flex-3 bg-white shadow-xl p-4 overflow-auto scrollbar-custom rounded-lg">
             <div className="flex justify-between items-center">
               <p className="text-2xl font-bold font-serif mb-4">Patient List</p>
               <div className="rounded-full w-9 h-9 text-lg flex justify-center items-center bg-primary-gradient font-bold">
@@ -183,7 +183,7 @@ export const OperatingRoomPage = () => {
           </section>
 
           {/* b. patient form */}
-          <section className="flex flex-col gap-2 w-[75%] h-128 bg-white shadow-lg p-4 overflow-auto scrollbar-custom rounded-lg">
+          <section className="flex flex-col gap-2 lg:flex-7 h-full bg-white shadow-lg p-4 overflow-auto scrollbar-custom rounded-lg">
             <div className="border-b-2 border-gray-500 bg-gray-200 p-3 rounded-xl">
               <div className=" flex justify-between">
                 <Label className="text-2xl mb-2">{formData.fullName ? formData.fullName : "Patient Name"}</Label>
@@ -366,7 +366,7 @@ export const OperatingRoomPage = () => {
             </div>
           </section>
           {/* Operation Level */}
-          <section className="w-[20%] h-128 bg-white -gradient shadow-xl p-4 overflow-auto scrollbar-custom rounded-lg">
+          <section className="h-full bg-white shadow-xl p-4 overflow-auto scrollbar-custom rounded-lg">
             <div className="flex flex-col">
               <p className="text-2xl font-bold font-serif mb-4">
                 Operation Level
