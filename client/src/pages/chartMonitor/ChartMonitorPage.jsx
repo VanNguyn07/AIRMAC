@@ -1,6 +1,7 @@
 import { Button } from "../../components/common/Button";
 import { Label } from "../../components/common/Label";
 import { LineChartComponent } from "../../components/charts/LineChart";
+import { AreaChartComponent } from "../../components/charts/AreaChart";
 export const ChartMonitorPage = () => {
   return (
     <main className="h-full w-full">
@@ -44,7 +45,7 @@ export const ChartMonitorPage = () => {
           </section>
           
           <section className="flex-1 lg:flex-5 min-h-0 bg-white rounded-xl shadow-md p-4 h-full">
-            <LineChartComponent />
+            <AreaChartComponent />
           </section>
           
           <section className="flex-1 lg:flex-5 min-h-0 bg-white rounded-xl shadow-md p-4 h-full">

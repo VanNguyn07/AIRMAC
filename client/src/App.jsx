@@ -8,10 +8,10 @@ import { PatientProvider } from "./contexts/PatientContext";
 
 export const App = () => {
   return (
-    <div className="h-dvh w-screen flex flex-col overflow-hidden">
+    <div className="h-dvh w-screen flex flex-col">
       {/* Header nằm ngoài Routes để luôn hiển thị ở mọi trang */}
       <Header />
-      <div className="flex-1 min-h-0 overflow-hidden">
+      <div className="flex-1 min-h-0">
         <PatientProvider>
           <Routes>
             {/* Mặc định vào trang chủ sẽ chuyển hướng ngay sang Clinic */}
