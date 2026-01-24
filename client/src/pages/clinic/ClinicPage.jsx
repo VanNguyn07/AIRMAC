@@ -25,10 +25,10 @@ export const ClinicPage = () => {
   } = useManagerForm(refetch);
 
   return (
-    <main className="h-full w-full">
+    <main className="w-full min-h-screen p-4 bg-main-gradient">
       <form
         action=""
-        className="box-border flex flex-col p-4 gap-4 h-full w-full bg-main-gradient"
+        className="box-border flex flex-col gap-4 w-full h-full"
         onSubmit={handleSubmitForm}
       >
         {/* 1. STATUS BAR */}
@@ -50,11 +50,10 @@ export const ClinicPage = () => {
         </section>
         {/* 1. MAIN */}
         {/* a. patient form */}
-        <div className="flex flex-col lg:flex-row gap-4 flex-1 min-h-0">
-
-          <section className="flex flex-col gap-2 lg:flex-7 h-full bg-white shadow-lg p-4 overflow-auto scrollbar-custom rounded-lg">
+        <div className="relative flex flex-col lg:flex-row gap-4 w-full">
+          <section className="flex flex-col  gap-2 w-full lg:w-[69%] h-[70dvh] lg:h-fit bg-white shadow-lg p-4 rounded-lg overflow-auto">
             <p className="text-2xl font-bold font-serif">
-              Patient Admission Form  
+              Patient Admission Form
             </p>
             <Label>Full Name *</Label>
             <Input
@@ -66,7 +65,7 @@ export const ClinicPage = () => {
               required
             />
 
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <div className="flex flex-col gap-2 w-full ">
                 <Label>Date of Birth *</Label>
                 <Input
@@ -110,7 +109,7 @@ export const ClinicPage = () => {
               Vital Signs (NEWS<span className="font-sans">2</span>)
             </p>
             <div className="flex flex-col gap-3">
-              <div className="flex gap-3">
+              <div className="flex flex-col sm:flex-row gap-3">
                 {/* Row one */}
                 <div className="flex flex-col gap-2 w-full ">
                   <Label>Heart (bpm)</Label>
@@ -139,7 +138,7 @@ export const ClinicPage = () => {
                 </div>
               </div>
               {/* Row 2 */}
-              <div className="flex gap-3">
+              <div className="flex flex-col sm:flex-row gap-3">
                 <div className="flex flex-col gap-2 w-full ">
                   <Label>SpO2 (%)</Label>
                   <Input
@@ -223,7 +222,7 @@ export const ClinicPage = () => {
           </section>
 
           {/* b. patient queue */}
-          <section className="bg-white -gradient h-full lg:flex-3 shadow-xl p-4 overflow-auto scrollbar-custom rounded-lg">
+          <section className="bg-white w-full lg:absolute lg:right-0 lg:top-0 lg:bottom-0 lg:w-[30%] lg:h-auto h-[50dvh] shadow-xl p-4 rounded-lg flex flex-col">
             <div className="flex justify-between items-center">
               <p className="text-2xl font-bold font-serif mb-4">
                 Patient Waiting List
@@ -233,79 +232,81 @@ export const ClinicPage = () => {
               </div>
             </div>
 
-            {dataList.length === 0 ? (
-              <p className="text-gray-500 text-center italic">
-                No patients in queue
-              </p>
-            ) : (
-              dataList.map((item) => {
-                const color = item.color_code;
-                let processColor;
-                const statusColor = {
-                  PENDING: "#FFC107",
-                  IN_PROGRESS: "#2196F3",
-                  DONE: "#4CAF50",
-                };
-                processColor = statusColor[item.process_status];
-                return (
-                  <div
-                    className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4"
-                    key={item.patient_id}
-                  >
-                    <div className="flex justify-between">
-                      <Label className="text-xl">{item.full_name}</Label>
-                      <div
-                        className="text-lg py-1 px-2 border-l-4 font-bold font-serif rounded-xl"
-                        style={{
-                          backgroundColor: `${processColor}70`,
-                          borderColor: processColor,
-                          color: processColor,
-                        }}
-                      >
-                        {item.process_status}
+            <div className="flex-1 overflow-y-auto pr-1 scrollbar-thin">
+              {dataList.length === 0 ? (
+                <p className="text-gray-500 text-center italic">
+                  No patients in queue
+                </p>
+              ) : (
+                dataList.map((item) => {
+                  const color = item.color_code;
+                  let processColor;
+                  const statusColor = {
+                    PENDING: "#FFC107",
+                    IN_PROGRESS: "#2196F3",
+                    DONE: "#4CAF50",
+                  };
+                  processColor = statusColor[item.process_status];
+                  return (
+                    <div
+                      className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4"
+                      key={item.patient_id}
+                    >
+                      <div className="flex justify-between">
+                        <Label className="text-xl">{item.full_name}</Label>
+                        <div
+                          className="text-lg py-1 px-2 border-l-4 font-bold font-serif rounded-xl"
+                          style={{
+                            backgroundColor: `${processColor}70`,
+                            borderColor: processColor,
+                            color: processColor,
+                          }}
+                        >
+                          {item.process_status}
+                        </div>
+                      </div>
+                      <Label>
+                        Age:{" "}
+                        <span className="font-sans font-medium text-sky-600">
+                          {formatAgeString(item.age)}
+                        </span>{" "}
+                        • {formatGender(item.gender)}
+                      </Label>
+                      <Label>
+                        At room:{" "}
+                        <span className="font-sans font-medium text-sky-600">
+                          {item.room_id}
+                        </span>
+                      </Label>
+                      <div className="flex gap-4 justify-self-start items-center">
+                        <Label>Status:</Label>
+                        <div
+                          className="py-1 px-2 border-l-4 font-bold font-serif rounded-lg"
+                          style={{
+                            backgroundColor: `${color}70`,
+                            borderColor: color,
+                            color: color,
+                          }}
+                        >
+                          {item.final_status}
+                        </div>
+                        <div
+                          className="py-1 px-2 font-bold font-serif rounded-lg"
+                          style={{
+                            backgroundColor: `${color}70`,
+                            borderColor: color,
+                            color: color,
+                          }}
+                        >
+                          Level{" "}
+                          <span className="font-sans">{item.risk_level}</span>
+                        </div>
                       </div>
                     </div>
-                    <Label>
-                      Age:{" "}
-                      <span className="font-sans font-medium text-sky-600">
-                        {formatAgeString(item.age)}
-                      </span>{" "}
-                      • {formatGender(item.gender)}
-                    </Label>
-                    <Label>
-                      At room:{" "}
-                      <span className="font-sans font-medium text-sky-600">
-                        {item.room_id}
-                      </span>
-                    </Label>
-                    <div className="flex gap-4 justify-self-start items-center">
-                      <Label>Status:</Label>
-                      <div
-                        className="py-1 px-2 border-l-4 font-bold font-serif rounded-lg"
-                        style={{
-                          backgroundColor: `${color}70`,
-                          borderColor: color,
-                          color: color,
-                        }}
-                      >
-                        {item.final_status}
-                      </div>
-                      <div
-                        className="py-1 px-2 font-bold font-serif rounded-lg"
-                        style={{
-                          backgroundColor: `${color}70`,
-                          borderColor: color,
-                          color: color,
-                        }}
-                      >
-                        Level{" "}
-                        <span className="font-sans">{item.risk_level}</span>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })
-            )}
+                  );
+                })
+              )}
+            </div>
           </section>
         </div>
       </form>

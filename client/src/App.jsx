@@ -6,12 +6,12 @@ import { ChartMonitorPage } from "./pages/chartMonitor/ChartMonitorPage";
 import { ReportPage } from "./pages/report/ReportPage";
 import { PatientProvider } from "./contexts/PatientContext";
 
-export const App = () => {
+export const App = () => {  
   return (
-    <div className="h-dvh w-screen flex flex-col">
+    <div className="flex flex-col bg-main-gradient h-dvh ">
       {/* Header nằm ngoài Routes để luôn hiển thị ở mọi trang */}
       <Header />
-      <div className="flex-1 min-h-0">
+      <div className="flex-1">
         <PatientProvider>
           <Routes>
             {/* Mặc định vào trang chủ sẽ chuyển hướng ngay sang Clinic */}

@@ -2,7 +2,7 @@
 
 @theme {
   --color-primary: #0284c7;
-  --color-primary-hover: #45BFEF;
+  --color-primary-hover: #45bfef;
   --color-primary-light: #e0f2fe;
   --color-primary-foreground: #ffffff;
 
@@ -58,16 +58,6 @@
   );
 }
 
-/* body {
-  background-image: var(--background-image-main-gradient);
-  background-attachment: fixed; 
-  background-size: cover;
-
-  color: var(--color-text-body);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-} */
-
 h1,
 h2,
 h3,
@@ -75,12 +65,9 @@ h4,
 h5,
 h6 {
   color: transparent;
-
   background-image: var(--background-image-primary-gradient);
-
-  background-clip: text;
   -webkit-background-clip: text;
-
+  background-clip: text;
   font-weight: 700;
   display: inline-block;
 }
@@ -102,7 +89,6 @@ h6 {
 .scrollbar-custom::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
-
 
 .tabular-nums {
   font-variant-numeric: tabular-nums;

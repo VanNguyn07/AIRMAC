@@ -4,14 +4,11 @@ import { LineChartComponent } from "../../components/charts/LineChart";
 import { AreaChartComponent } from "../../components/charts/AreaChart";
 export const ChartMonitorPage = () => {
   return (
-    <main className="h-full w-full">
-      <form
-        action=""
-        className="h-full w-full box-border flex flex-col p-4 gap-4 bg-main-gradient"
-      >
+    <main className="w-full h-dvh p-4 bg-main-gradient">
+      <form action="" className="box-border flex flex-col gap-4 w-full h-full">
         {/* STATUS BAR */}
         <section className="flex justify-between items-center bg-white p-6 rounded-xl border-l-5 border-sky-600 shadow-lg">
-          <div className="flex gap-10">
+          <div className="flex flex-col sm:flex-row gap-10">
             <div className="text-lg font-serif">
               At Room: <span className="font-bold font-sans">---</span>
             </div>
@@ -24,7 +21,7 @@ export const ChartMonitorPage = () => {
             </div>
           </div>
 
-          <div className="flex gap-10">
+          <div className="flex flex-col sm:flex-row gap-10">
             <Label className="text-xl uppercase">Patient Name</Label>
             <div className="text-lg font-serif">
               Level: <span className="font-bold font-sans">---</span>
@@ -39,16 +36,17 @@ export const ChartMonitorPage = () => {
             </div>
           </div>
         </section>
-        <div className="flex justify-around flex-col lg:flex-row gap-4 flex-1 min-h-0">
-          <section className="flex-1 lg:flex-5 min-h-0 bg-white rounded-xl shadow-md p-4 h-full">
+
+        <div className="flex justify-around flex-col lg:flex-row gap-4 flex-1 min-w-max">
+          <section className="flex-1 bg-white rounded-xl shadow-md p-4 min-h-120 h-full">
             <LineChartComponent />
           </section>
-          
-          <section className="flex-1 lg:flex-5 min-h-0 bg-white rounded-xl shadow-md p-4 h-full">
+
+          <section className="flex-1 bg-white rounded-xl shadow-md p-4 min-h-120 h-full">
             <AreaChartComponent />
           </section>
-          
-          <section className="flex-1 lg:flex-5 min-h-0 bg-white rounded-xl shadow-md p-4 h-full">
+
+          <section className="flex-1 bg-white rounded-xl shadow-md p-4 min-h-120 h-full">
             <LineChartComponent />
           </section>
         </div>
