@@ -30,7 +30,7 @@ export const LineChartComponent = () => {
           tick={{ fontSize: 11 }}
           interval="preserveStartEnd"
         />
-        <YAxis domain={[0.0, 0.6]} unit=" LPM" tick={{fontSize:14}} tickCount={8}/>
+        <YAxis domain={[0.0, 0.6]} unit=" LPM" tick={{fontSize:14}} tickCount={6}/>
 
         <Tooltip // show information when hover
           contentStyle={{

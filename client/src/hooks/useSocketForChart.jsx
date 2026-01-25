@@ -10,7 +10,7 @@ export const useSocketForChart = () => {
     socket.on("server:sendData", (newData) => {
       const formatData = {
         ...newData,
-        timestamp: new Date(newData.timestamp)
+        time: new Date(newData.timestamp)
           .getSeconds()
           .toString()
           .padStart(2, "0"),

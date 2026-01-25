@@ -20,7 +20,7 @@ const generateSesorData = () => {
   console.log("Random value is: ", randomValue);
   return {
     value: randomValue,
-    timestamp: new Date().toISOString(),
+    time: new Date().toISOString(),
   };
 };
 
