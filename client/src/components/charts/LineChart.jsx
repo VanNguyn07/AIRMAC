@@ -1,6 +1,7 @@
 import React from "react";
 // import { useManagerDataChart } from "../../hooks/useManagerDataChart";
 import { useSocketForChart } from "../../hooks/useSocketForChart";
+import { CustomTooltip } from "../common/CustomTooltip";
 import {
   LineChart,
   Line,
@@ -14,7 +15,7 @@ import {
 } from "recharts";
 export const LineChartComponent = () => {
   // const { data } = useManagerDataChart();
-  const {dataList} = useSocketForChart();
+  const { dataList } = useSocketForChart();
   return (
     <ResponsiveContainer width="100%" height="100%">
       <LineChart data={dataList}>
@@ -30,14 +31,15 @@ export const LineChartComponent = () => {
           tick={{ fontSize: 11 }}
           interval="preserveStartEnd"
         />
-        <YAxis domain={[0.0, 0.6]} unit=" LPM" tick={{fontSize:14}} tickCount={6}/>
+        <YAxis
+          domain={[0.0, 0.6]}
+          unit=" LPM"
+          tick={{ fontSize: 14 }}
+          tickCount={6}
+        />
 
         <Tooltip // show information when hover
-          contentStyle={{
-            borderRadius: "8px",
-            border: "none",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-          }}
+          content={<CustomTooltip />}
         />
         <Legend />
         <ReferenceLine
