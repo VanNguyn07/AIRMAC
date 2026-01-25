@@ -10,7 +10,7 @@ const server = http.createServer(app); // tạo http server
 const io = new Server(server, {
   // thiết lập socket server
   cors: {
-    origin: "http://localhost:5173",
+    origin: "https://airmac.vercel.app",
     methods: ["GET", "POST"],
   },
 });
