@@ -40,8 +40,8 @@ export const AreaChartComponent = () => {
         <YAxis
           domain={[0, 1]}
           unit=" LPM"
-          tick={{ fontSize: 12 }} 
-          tickCount={6}
+          tick={{ fontSize: 14 }} 
+          tickCount={8}
         />
 
         <Tooltip

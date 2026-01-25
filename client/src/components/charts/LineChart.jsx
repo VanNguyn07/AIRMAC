@@ -1,5 +1,6 @@
 import React from "react";
-import { useManagerDataChart } from "../../hooks/useManagerDataChart";
+// import { useManagerDataChart } from "../../hooks/useManagerDataChart";
+import { useSocketForChart } from "../../hooks/useSocketForChart";
 import {
   LineChart,
   Line,
@@ -12,10 +13,11 @@ import {
   ReferenceLine,
 } from "recharts";
 export const LineChartComponent = () => {
-  const { data } = useManagerDataChart();
+  // const { data } = useManagerDataChart();
+  const {dataList} = useSocketForChart();
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <LineChart data={data}>
+      <LineChart data={dataList}>
         <defs>
           <linearGradient id="colorSpo2" x1="0" y1="0" x2="0" y2="1">
             <stop offset="5%" stopColor="#0284c7" stopOpacity={0.8} />
@@ -28,7 +30,7 @@ export const LineChartComponent = () => {
           tick={{ fontSize: 11 }}
           interval="preserveStartEnd"
         />
-        <YAxis domain={[0, 1]} unit=" LPM" tick={{fontSize:15}} tickCount={6}/>
+        <YAxis domain={[0, 1]} unit=" LPM" tick={{fontSize:14}} tickCount={8}/>
 
         <Tooltip // show information when hover
           contentStyle={{

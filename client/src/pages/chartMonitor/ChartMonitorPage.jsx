@@ -37,16 +37,16 @@ export const ChartMonitorPage = () => {
           </div>
         </section>
 
-        <div className="flex justify-around flex-col lg:flex-row gap-4 flex-1 min-w-max">
-          <section className="flex-1 bg-white rounded-xl shadow-md p-4 min-h-120 h-full">
+        <div className="flex justify-around flex-col gap-4 flex-1 min-w-max">
+          <section className="flex-1 bg-white rounded-xl shadow-md p-4 min-h-140 h-full">
             <LineChartComponent />
           </section>
 
-          <section className="flex-1 bg-white rounded-xl shadow-md p-4 min-h-120 h-full">
+          <section className="flex-1 bg-white rounded-xl shadow-md p-4 min-h-140 h-full">
             <AreaChartComponent />
           </section>
 
-          <section className="flex-1 bg-white rounded-xl shadow-md p-4 min-h-120 h-full">
+          <section className="flex-1 bg-white rounded-xl shadow-md p-4 min-h-140 h-full">
             <LineChartComponent />
           </section>
         </div>

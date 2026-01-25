@@ -2,7 +2,7 @@
 require("dotenv").config(); // Load biến môi trường
 const database = require("./src/config/database");
 const seed_data = require("./src/config/seed_data");
-const app = require("./app");
+const server = require("../server/src/sockets/socketServer");
 
 console.log("Kiểm tra biến app:", app);
 const PORT = process.env.PORT || 3001;
@@ -16,7 +16,7 @@ const startServer = async () => {
     //chạy nạp dữ liệu (Seeding)
     await seed_data();
     //mở cổng lắng nghe
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
       console.log(`Backend running on http://localhost:${PORT}`);
     });
   } catch (error) {
