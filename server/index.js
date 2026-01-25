@@ -4,7 +4,6 @@ const database = require("./src/config/database");
 const seed_data = require("./src/config/seed_data");
 const server = require("../server/src/sockets/socketServer");
 
-console.log("Kiểm tra biến app:", app);
 const PORT = process.env.PORT || 3001;
 console.log(PORT);
 

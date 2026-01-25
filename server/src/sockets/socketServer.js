@@ -1,5 +1,3 @@
-const express = require("express");
-const cors = require("cors");
 //import module http cho sockets
 const http = require("http");
 //import sockets.io
@@ -18,10 +16,10 @@ const io = new Server(server, {
 });
 
 const generateSesorData = () => {
-  const randomValue = Math.floor((Math.random() * 7) / 10);
+  const randomValue = ((Math.random() * 7) / 10).toFixed();
   console.log("Random value is: ", randomValue);
   return {
-    randomValue,
+    value: randomValue,
     timestamp: new Date().toISOString(),
   };
 };
