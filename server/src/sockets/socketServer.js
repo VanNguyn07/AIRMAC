@@ -16,7 +16,7 @@ const io = new Server(server, {
 });
 
 const generateSesorData = () => {
-  const randomValue = ((Math.random() * 7) / 10).toFixed();
+  const randomValue = ((Math.random() * 4) / 10).toFixed(2);
   console.log("Random value is: ", randomValue);
   return {
     value: randomValue,
