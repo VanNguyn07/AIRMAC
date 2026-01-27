@@ -14,6 +14,7 @@ export const PatientProvider = ({ children }) => {
     try {
       const result = await fetchAllDataApi.getAllData();
       const finalData = Array.isArray(result) ? result : result.data || [];
+      console.log("🔥 Dữ liệu từ API nhận về Context:", finalData);
       setDataList(finalData);
     } catch (error) {
       console.log("Lỗi fetch data:", error);
