@@ -39,6 +39,7 @@ export const managerFormApi = {
         console.error("Server error", errorText);
         throw new Error("Error when call API update form");
       }
+      return response.json()
     } catch (err) {
       console.error("Error API Update", err);
     }

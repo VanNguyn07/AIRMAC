@@ -178,7 +178,7 @@ export const useManagerForm = (onSuccess) => {
       if (result.success) {
         const serverData = result.data;
         handleAddListGlobal(serverData);
-        console.log("data add form is: ", serverData);
+        console.log("data after update form is: ", serverData);
         if (onSuccess) onSuccess();
       }
     } catch (err) {

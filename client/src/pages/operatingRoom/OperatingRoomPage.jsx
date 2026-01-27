@@ -118,7 +118,7 @@ export const OperatingRoomPage = () => {
                   No patients in queue
                 </p>
               ) : (
-                dataList.map((item) => {
+                dataList.map((item, index) => {
                   const color = item.color_code;
                   let processColor;
                   const statusColor = {
@@ -127,6 +127,7 @@ export const OperatingRoomPage = () => {
                     DONE: "#4CAF50",
                   };
                   processColor = statusColor[item.process_status];
+                  console.log(`Item ${index}:`, item.patient_id);
                   return (
                     <div
                       className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4 cursor-pointer active:scale-98"
