@@ -24,10 +24,10 @@ export const useManagerForm = (onSuccess) => {
     setSelectedDisease,
   } = useSearchDiseases();
 
-  const {handleAddListGlobal} = usePatientContext();
+  const { handleAddListGlobal } = usePatientContext();
 
   const [formData, setFormData] = useState({
-    patientId:"",
+    patientId: "",
     fullName: "",
     age: "",
     gender: "",
@@ -80,7 +80,7 @@ export const useManagerForm = (onSuccess) => {
     } else if (dataItem.room_id && allDevices) {
       // Nếu chỉ có room_id, tìm ID tương ứng
       const foundDevice = allDevices.find(
-        (d) => d.room_id === dataItem.room_id
+        (d) => d.room_id === dataItem.room_id,
       );
       if (foundDevice) setSelectedDeviceId(foundDevice.id);
     }
@@ -97,6 +97,7 @@ export const useManagerForm = (onSuccess) => {
       icd_code: item.icd_code,
       disease_name: item.disease_name,
     }));
+
     const payload = {
       fullName: formData.fullName,
       dob: dob,
@@ -107,6 +108,7 @@ export const useManagerForm = (onSuccess) => {
       bp_sys: parseInt(formData.bp_sys),
       rr: parseInt(formData.rr),
       tem: parseFloat(formData.tem),
+
       icdMapping: icdCodeArray,
       selectedDevice: selectedDeviceId,
     };
@@ -115,10 +117,11 @@ export const useManagerForm = (onSuccess) => {
 
     try {
       const result = await managerFormApi.addForm(payload);
+
       console.log("Server trả về:", result);
       if (result.success) {
         const serverData = result.data;
-        handleAddListGlobal(serverData)
+        handleAddListGlobal(serverData);
         console.log("data add form is: ", serverData);
         if (onSuccess) onSuccess(); // gọi callback
         setFormData({
@@ -139,6 +142,50 @@ export const useManagerForm = (onSuccess) => {
     }
   };
 
+  const handleUpdateForm = async (e) => {
+    e.preventDefault();
+
+    if (!formData.patientId) {
+      console.error("Lỗi: Không tìm thấy ID bệnh nhân để cập nhật!");
+      return;
+    }
+    const icdCodeArray = selectedDisease.map((item) => ({
+      icd_code: item.icd_code,
+      disease_name: item.disease_name,
+    }));
+
+    const payload = {
+      fullName: formData.fullName,
+      dob: dob,
+      age: ageMonth,
+      gender: formData.gender,
+      hr: parseInt(formData.hr),
+      spo2: parseInt(formData.spo2),
+      bp_sys: parseInt(formData.bp_sys),
+      rr: parseInt(formData.rr),
+      tem: parseFloat(formData.tem),
+
+      icdMapping: icdCodeArray,
+      selectedDevice: selectedDeviceId,
+    };
+    console.log("Dữ liệu form data after update gửi đi:", payload);
+    try {
+      const result = await managerFormApi.updateForm(
+        formData.patientId,
+        payload,
+      );
+      console.log("Server return: ", result);
+      if (result.success) {
+        const serverData = result.data;
+        handleAddListGlobal(serverData);
+        console.log("data add form is: ", serverData);
+        if (onSuccess) onSuccess();
+      }
+    } catch (err) {
+      console.log("Error update", err);
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -146,7 +193,7 @@ export const useManagerForm = (onSuccess) => {
       [name]: value,
     }));
   };
-  
+
   return {
     formData,
     dob,
@@ -163,5 +210,6 @@ export const useManagerForm = (onSuccess) => {
     handleSelectionChange,
     handleSearchDiseases,
     handleFillFormData,
+    handleUpdateForm,
   };
 };

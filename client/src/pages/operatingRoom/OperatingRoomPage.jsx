@@ -18,7 +18,6 @@ export const OperatingRoomPage = () => {
     setFormData,
     selectedDisease,
     handleInputChange,
-    handleSubmitForm,
     handleDobChange,
     ageDisplay,
     dob,
@@ -27,6 +26,7 @@ export const OperatingRoomPage = () => {
     handleSearchDiseases,
     handleSelectionChange,
     handleFillFormData,
+    handleUpdateForm,
   } = useManagerForm(refetch);
 
   const { handleOpenSuggestOpen, isOpen, setIsOpen } = useSuggestedLevel();
@@ -78,7 +78,7 @@ export const OperatingRoomPage = () => {
       <form
         action=""
         className="box-border flex flex-col gap-4 w-full h-full"
-        onSubmit={handleSubmitForm}
+        onSubmit={handleUpdateForm}
       >
         {/* 1. STATUS BAR */}
         <section className="bg-white p-6 rounded-xl border-l-5 border-sky-600 shadow-lg">

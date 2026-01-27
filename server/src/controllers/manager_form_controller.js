@@ -19,5 +19,26 @@ const managerFormController = {
       return response.status(500).json({ message: "Lỗi Server" });
     }
   },
+
+  handleUpdateForm: async (request, response) => {
+    try {
+      const { patientId } = request.params;
+      const data = request.body;
+      console.log("Đang update cho ID:", patientId);
+      console.log("Dữ liệu nhận được:", data);
+      const result = await manager_form_model.updateForm(data, patientId);
+      if (result.success) {
+        console.log("Update form into database success");
+      }
+      return response.status(200).json({
+        success: true,
+        message: "Update patient success!",
+        data: result,
+      });
+    } catch (err) {
+      console.error("Error controller updateForm", err);
+      return response.status(500).json({ message: "Error Server" });
+    }
+  },
 };
-module.exports = managerFormController;
+module.exports = managerFormController
