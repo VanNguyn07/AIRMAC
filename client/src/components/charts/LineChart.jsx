@@ -33,7 +33,7 @@ export const LineChartComponent = () => {
         />
         <YAxis
           domain={[0.0, 0.6]}
-          unit=" LPM"
+          unit="-LPM"
           tick={{ fontSize: 14 }}
           tickCount={6}
         />
