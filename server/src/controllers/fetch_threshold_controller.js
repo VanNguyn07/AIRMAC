@@ -2,7 +2,7 @@ const fetchThresholdModel = require("../models/fetch_threshold_model");
 const fetchThresholdController = {
     handleGetValueThreshold: async(request, response) => {
         try {
-            const {threshold} = request.query;
+            const {threshold} = request.query; // mở gói hàng 
             if(!threshold || threshold === null) {
                 return response.json([]);
             }

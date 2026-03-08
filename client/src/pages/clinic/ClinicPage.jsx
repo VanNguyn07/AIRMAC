@@ -106,7 +106,7 @@ export const ClinicPage = () => {
             </div>
 
             <p className="text-2xl font-bold font-serif mt-2">
-              Vital Signs (NEWS<span className="font-sans">2</span>)
+              Vital Signs NEWS2
             </p>
             <div className="flex flex-col gap-3">
               <div className="flex flex-col sm:flex-row gap-3">
@@ -224,7 +224,7 @@ export const ClinicPage = () => {
           {/* b. patient queue */}
           <section className="bg-white w-full lg:absolute lg:right-0 lg:top-0 lg:bottom-0 lg:w-[30%] lg:h-auto h-[50dvh] shadow-xl p-4 rounded-lg flex flex-col">
             <div className="flex justify-between items-center">
-              <p className="text-2xl font-bold font-serif mb-4">
+              <p className="text-3xl font-bold font-serif mb-4">
                 Patient Waiting List
               </p>
               <div className="rounded-full w-9 h-9 text-lg flex justify-center items-center bg-primary-gradient font-bold">
@@ -254,7 +254,7 @@ export const ClinicPage = () => {
                       key={item.patient_id}
                     >
                       <div className="flex justify-between">
-                        <Label className="text-xl">{item.full_name}</Label>
+                        <Label className="text-2xl font-serif">{item.full_name}</Label>
                         <div
                           className="text-lg py-1 px-2 border-l-4 font-bold font-serif rounded-xl"
                           style={{

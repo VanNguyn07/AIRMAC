@@ -1,10 +1,12 @@
 import { NavLink } from "react-router-dom";
 import { Button } from "../common/Button";
-import { Bold, User, Wind, Menu, X } from "lucide-react";
+import { Bold, User, Wind, Menu, X, Languages } from "lucide-react";
 import { useCustomHeader } from "../../hooks/useCustomHeader";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 export const Header = () => {
   const { handleCustomHeader, isOpen } = useCustomHeader();
+  const { language, setLanguage, t } = useLanguage();
   const getLinkClass = ({ isActive }) => {
     return isActive
       ? "text-xl text-white font-serif px-5 py-2 rounded-xl font-bold transition-all focus:outline-none focus:ring-1 focus:bg-primary-hover bg-primary-gradient shadow-lg border-2"
@@ -18,23 +20,39 @@ export const Header = () => {
       </div>
       <nav className="hidden lg:flex gap-10">
         <NavLink to="/clinic" className={getLinkClass}>
-          Clinic
+          {t("clinic")}
         </NavLink>
         <NavLink to="/operatingRoom" className={getLinkClass}>
-          Operating Room
+          {t("operatingRoom")}
         </NavLink>
         <NavLink to="/chartMonitor" className={getLinkClass}>
-          Chart Monitor
+          {t("chartMonitor")}
         </NavLink>
         <NavLink to="/report" className={getLinkClass}>
-          Report
+          {t("report")}
+        </NavLink>
+        <NavLink to="/history" className={getLinkClass}>
+          {t("history")}
         </NavLink>
       </nav>
-      <div className="hidden lg:flex">
-        <div className="flex justify-center items-cente">
+      <div className="hidden lg:flex gap-2">
+        <div className="flex justify-center items-center">
           <Button className="bg-primary-gradient text-xl gap-2 rounded-2xl font-serif">
-            <User size={24} fontWeight={Bold} /> Dr. Admin
+            <User size={24} fontWeight={Bold} /> {t("drAdmin")}
           </Button>
+        </div>
+        <div className="hidden lg:flex items-center border border-gray-300 px-1 rounded-2xl bg-white shadow-sm hover:shadow-md transition">
+          <Languages size={20} className="text-gray-600" />
+
+          <select
+            name="language"
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+            className="bg-transparent outline-none cursor-pointer font-semibold text-gray-700"
+          >
+            <option value="en">EN</option>
+            <option value="vi">VI</option>
+          </select>
         </div>
       </div>
       <Button
@@ -48,22 +66,22 @@ export const Header = () => {
           <div className="absolute -top-2.5 right-11 border-l-10 border-r-10 border-b-10 border-transparent border-b-sky-700"></div>
           <nav className="flex flex-col gap-3">
             <NavLink to="/clinic" className={getLinkClass}>
-              Clinic
+              {t("clinic")}
             </NavLink>
             <NavLink to="/operatingRoom" className={getLinkClass}>
-              Operating Room
+              {t("operatingRoom")}
             </NavLink>
             <NavLink to="/chartMonitor" className={getLinkClass}>
-              Chart Monitor
+              {t("chartMonitor")}
             </NavLink>
             <NavLink to="/report" className={getLinkClass}>
-              Report
+              {t("report")}
             </NavLink>
           </nav>
           <div className="flex">
             <div className="flex justify-center items-center">
               <Button className="bg-primary-gradient text-xl gap-2 rounded-2xl font-serif">
-                <User size={24} fontWeight={Bold} /> Dr. Admin
+                <User size={24} fontWeight={Bold} /> {t("drAdmin")}
               </Button>
             </div>
           </div>

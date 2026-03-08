@@ -2,15 +2,19 @@ import { useMemo } from "react";
 import { Label } from "./Label";
 // Đưa component này ra ngoài hoặc để vào file riêng (PressureGauge.jsx)
 export const PressureGauge = ({ value = 0, max = 100 }) => {
-  // Xử lý NaN: Nếu value không phải số, gán bằng 0
-  const safeValue = Number.isFinite(value) ? value : 0;
+  const numericValue = Number(value);
+  console.log("Numeric Value:", numericValue);
 
+  console.log("Pressure Gauge Value is: ", numericValue);
+
+  const safeValue = Math.round(numericValue * 100);
   //chiều cao (giới hạn 0 - 100%)
-  const percentage = Math.min(Math.max((safeValue / max) * 100, 0), 100);
+  const percentage = Math.min(Math.max(safeValue, 0), 100);
+  console.log("Percentage value is: ", percentage);
 
   const getColor = (percent) => {
     if (percent > 80) return "#ef4444"; // Đỏ
-    if (percent > 60) return "#f59e0b"; // Cam
+    if (percent > 60) return "#f59e0b"; // Cam 
     return "#22c55e"; // Xanh
   };
 
@@ -36,11 +40,11 @@ export const PressureGauge = ({ value = 0, max = 100 }) => {
 
       <div className="flex-1 w-full relative flex justify-center">
         {/* --- CỘT CHỨA --- */}
-        <div className="h-full w-10 bg-gray-200 rounded-2xl relative overflow-hidden border border-gray-300">
+        <div className="h-full w-10 bg-gray-200 rounded-xl relative overflow-hidden border border-gray-300">
           {/* --- DUNG DỊCH (Thay đổi chiều cao ở đây) --- */}
           <div
             style={{
-              height: `${percentage}%`,
+              height: `${percentage}%`, 
               backgroundColor: currentColor,
               transition: "height 0.5s ease-out, background-color 0.5s",
             }}
@@ -49,17 +53,18 @@ export const PressureGauge = ({ value = 0, max = 100 }) => {
         </div>
 
         {/* --- VẠCH CHIA (TICKS) BÊN CẠNH --- */}
-        <div className="absolute top-0 left-[60%] h-full w-full">
+        <div className="absolute h-full w-full">
           {ticks.map((t) => (
             <div
               key={t.val}
-              className="absolute w-full flex items-center"
+              className="absolute w-full flex items-center gap-1"
               style={{ bottom: `${t.pos}%`, transform: "translateY(50%)" }}
             >
-              <div className="w-2 h-px bg-gray-400"></div>
               <span className="text-sm text-gray-500 ml-1 font-mono">
                 {t.val}
               </span>
+              {/* tạo vạch chia */}
+              <div className="w-2 h-px bg-gray-400"></div>
             </div>
           ))}
         </div>
@@ -70,7 +75,7 @@ export const PressureGauge = ({ value = 0, max = 100 }) => {
         className="mt-2 text-xl font-bold font-sans"
         style={{ color: currentColor }}
       >
-        {Math.round(safeValue)} <span className="font-serif">mmHg</span>
+        {safeValue}<span className="font-serif"> mmHg</span>
       </div>
     </div>
   );

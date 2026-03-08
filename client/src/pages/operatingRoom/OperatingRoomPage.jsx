@@ -9,8 +9,10 @@ import { useSuggestedLevel } from "../../hooks/useSuggestedLevel";
 import { useUpdateLevel } from "../../hooks/useUpdateLevel";
 import { usePatientContext } from "../../contexts/PatientContext";
 import { useCustomHeader } from "../../hooks/useCustomHeader";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 export const OperatingRoomPage = () => {
+  const { t } = useLanguage();
   const { dataList, refetch, setDataList, handleUpdateListGlobal } =
     usePatientContext();
   const {
@@ -35,12 +37,12 @@ export const OperatingRoomPage = () => {
     handleInputThresholdChange,
     onSaveClick,
     levelInput,
-    warning,
+    // warning,
     setWarning,
   } = useUpdateLevel();
 
-  const {setIsOpen:setIsOpenList} = useCustomHeader();
-  const closeList = () => setIsOpenList(prev => !prev);
+  const { setIsOpen: setIsOpenList } = useCustomHeader();
+  const closeList = () => setIsOpenList((prev) => !prev);
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -84,29 +86,32 @@ export const OperatingRoomPage = () => {
         <section className="bg-white p-6 rounded-xl border-l-5 border-sky-600 shadow-lg">
           <div className="flex gap-10">
             <div className="text-lg font-serif">
-              At Room:{" "}
+              {t("atRoom")}:{" "}
               <span className="font-bold font-sans">
                 {currentDeviceData ? currentDeviceData.room_id : "---"}
               </span>
             </div>
             <div className="text-lg font-serif">
-              AIRMAC in use:{" "}
+              {t("airmacInUse")}:{" "}
               <span className="font-bold font-sans">
                 {currentDeviceData ? currentDeviceData.device_code : "---"}
               </span>
             </div>
             <div className="text-lg font-serif">
-              Device Status:{" "}
-              <span className="font-bold text-green-500">READY</span>
+              {t("deviceStatus")}:{" "}
+              <span className="font-bold text-green-500">{t("ready")}</span>
             </div>
           </div>
         </section>
         {/* 1. MAIN */}
-        <div className="relative flex flex-col lg:flex-row gap-4 w-full" onClick={closeList}>
+        <div
+          className="relative flex flex-col lg:flex-row gap-4 w-full"
+          onClick={closeList}
+        >
           {/* a. patient queue */}
           <section className="bg-white w-full lg:absolute lg:left-0 lg:top-0 lg:bottom-0 lg:w-[28%] lg:h-auto h-[50dvh] shadow-xl p-4 rounded-lg flex flex-col">
             <div className="flex justify-between items-center">
-              <p className="text-2xl font-bold font-serif mb-4">Patient List</p>
+              <p className="text-3xl font-bold font-serif mb-4">{t("patientList")}</p>
               <div className="rounded-full w-9 h-9 text-lg flex justify-center items-center bg-primary-gradient font-bold">
                 {dataList.length}
               </div>
@@ -115,7 +120,7 @@ export const OperatingRoomPage = () => {
             <div className="flex-1 overflow-y-auto pr-1 scrollbar-thin">
               {dataList.length === 0 ? (
                 <p className="text-gray-500 text-center italic">
-                  No patients in queue
+                  {t("noPatients")}
                 </p>
               ) : (
                 dataList.map((item, index) => {
@@ -135,7 +140,7 @@ export const OperatingRoomPage = () => {
                       onClick={() => handleFillFormData(item)}
                     >
                       <div className="flex justify-between">
-                        <Label className="text-xl">{item.full_name}</Label>
+                        <Label className="text-2xl font-serif">{item.full_name}</Label>
                         <div
                           className="text-lg py-1 px-2 border-l-4 font-bold font-serif rounded-xl"
                           style={{
@@ -194,33 +199,32 @@ export const OperatingRoomPage = () => {
           <div className="flex flex-col lg:flex-row gap-4 w-full lg:ml-[29%]">
             {/* b. patient form */}
             <section className="flex flex-col  gap-2 w-full h-[70dvh] lg:h-fit bg-white shadow-lg p-4 rounded-lg overflow-y-auto">
-
               <div className="border-b-2 border-gray-500 bg-gray-200 p-3 rounded-xl">
                 <div className=" flex flex-col sm:flex-row justify-between">
-                  <Label className="text-2xl mb-2">
-                    {formData.fullName ? formData.fullName : "Patient Name"}
+                  <Label className="text-3xl mb-2 font-serif">
+                    {formData.fullName ? formData.fullName : t("patientName")}
                   </Label>
                   <div className="flex gap-4 justify-self-start items-center">
-                    <Label className="text-xl">Status:</Label>
+                    <Label className="text-2xl font-serif">{t("status")}:</Label>
                     <div
-                      className="py-1 px-2 border-l-4 font-bold font-serif rounded-lg text-sky-700"
+                      className="py-1 px-2 border-l-4 font-bold font-sans rounded-lg text-sky-700"
                       style={{
                         backgroundColor: `${formData.color}50`,
                         borderColor: formData.color,
                         color: formData.color,
                       }}
                     >
-                      {formData.status ? formData.status : "Unknown"}
+                      {formData.status ? formData.status : t("unknown")}
                     </div>
                     <div
-                      className="py-1 px-2 border-l-4 font-bold font-serif rounded-lg text-sky-700"
+                      className="py-1 px-2 border-l-4 font-bold font-sans rounded-lg text-sky-700"
                       style={{
                         backgroundColor: `${formData.color}70`,
                         borderColor: formData.color,
                         color: formData.color,
                       }}
                     >
-                      Level <span className="font-sans">{formData.level}</span>
+                      {t("level")} <span className="font-sans">{formData.level}</span>
                     </div>
                   </div>
                 </div>
@@ -232,19 +236,19 @@ export const OperatingRoomPage = () => {
                 </Label>
               </div>
 
-              <Label>Full Name *</Label>
+              <Label>{t("fullName")} *</Label>
               <Input
                 type="text"
                 value={formData.fullName}
                 onChange={handleInputChange}
-                placeholder="Enter Patient Name"
+                placeholder={t("enterPatientName")}
                 name="fullName"
                 required
               />
 
               <div className="flex flex-col sm:flex-row gap-3">
                 <div className="flex flex-col gap-2 w-full ">
-                  <Label>Date of Birth *</Label>
+                  <Label>{t("dateOfBirth")} *</Label>
                   <Input
                     type="date"
                     className="cursor-pointer"
@@ -255,18 +259,18 @@ export const OperatingRoomPage = () => {
                 </div>
 
                 <div className=" flex flex-col gap-2 ">
-                  <Label>Age</Label>
+                  <Label>{t("age")}</Label>
                   <Input
                     type="text"
                     value={ageDisplay}
-                    placeholder="Auto-calculated"
+                    placeholder={t("autoCalculated")}
                     className="cursor-not-allowed bg-gray-200"
                     readOnly
                   />
                 </div>
 
                 <div className=" flex flex-col gap-2">
-                  <Label>Gender</Label>
+                  <Label>{t("gender")}</Label>
                   <select
                     className="cursor-pointer p-2 border border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-hover focus:border-primary-hover"
                     value={formData.gender}
@@ -274,41 +278,41 @@ export const OperatingRoomPage = () => {
                     name="gender"
                   >
                     <option value="" disabled hidden>
-                      Gender
+                      {t("gender")}
                     </option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
+                    <option value="male">{t("male")}</option>
+                    <option value="female">{t("female")}</option>
                   </select>
                 </div>
               </div>
 
               <p className="text-2xl font-bold font-serif mt-2">
-                Vital Signs (NEWS<span className="font-sans">2</span>)
+                {t("vitalSigns")}
               </p>
               <div className="flex flex-col gap-3">
                 <div className="flex flex-col sm:flex-row gap-3">
                   {/* Row one */}
                   <div className="flex flex-col gap-2 w-full ">
-                    <Label>Heart (bpm)</Label>
+                    <Label>{t("heart")}</Label>
                     <Input
                       type="number"
                       value={formData.hr}
                       name="hr"
                       onChange={handleInputChange}
-                      placeholder="59-90 beats / minutes"
+                      placeholder={t("heartBeatsPerMinute")}
                       min="0"
                       required
                     />
                   </div>
 
                   <div className="flex flex-col gap-2 w-full ">
-                    <Label>Respiration Rate</Label>
+                    <Label>{t("respirationRate")}</Label>
                     <Input
                       type="number"
                       name="rr"
                       value={formData.rr}
                       onChange={handleInputChange}
-                      placeholder="12-20 breaths / minutes"
+                      placeholder={t("respirationPerMinute")}
                       min="0"
                       required
                     />
@@ -317,10 +321,10 @@ export const OperatingRoomPage = () => {
                 {/* Row 2 */}
                 <div className="flex flex-col sm:flex-row gap-3">
                   <div className="flex flex-col gap-2 w-full ">
-                    <Label>SpO2 (%)</Label>
+                    <Label>{t("spo2")}</Label>
                     <Input
                       type="number"
-                      placeholder="≥ 96%"
+                      placeholder={t("spO2Placeholder")}
                       value={formData.spo2}
                       onChange={handleInputChange}
                       name="spo2"
@@ -330,10 +334,10 @@ export const OperatingRoomPage = () => {
                   </div>
 
                   <div className="flex flex-col gap-2 w-full ">
-                    <Label>Temperature (°C)</Label>
+                    <Label>{t("temperature")}</Label>
                     <Input
                       type="number"
-                      placeholder="36 - 38°C"
+                      placeholder={t("temperaturePlaceholder")}
                       value={formData.tem}
                       onChange={handleInputChange}
                       name="tem"
@@ -345,10 +349,10 @@ export const OperatingRoomPage = () => {
                 {/* Rouw three */}
                 <div className="flex gap-3">
                   <div className="flex flex-col gap-2 w-full ">
-                    <Label>Blood Pressure (Systolic)</Label>
+                    <Label>{t("bloodPressure")}</Label>
                     <Input
                       type="number"
-                      placeholder="111 - 219 mmHg"
+                      placeholder={t("bloodPressurePlaceholder")}
                       value={formData.bp_sys}
                       onChange={handleInputChange}
                       name="bp_sys"
@@ -360,8 +364,7 @@ export const OperatingRoomPage = () => {
                 {/* Rouw four */}
                 <div className="flex flex-col gap-2 w-full ">
                   <Label>
-                    Diagnosis (ICD- <span className="font-sans">10</span>) -
-                    Multi-select
+                    {t("diagnosis")}
                   </Label>
                   <DiseaseSelect
                     onChange={handleSelectionChange}
@@ -371,10 +374,10 @@ export const OperatingRoomPage = () => {
                   />
                 </div>
                 <Button
-                  className="mt-4 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98"
+                  className=" mt-4 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98"
                   type="submit"
                 >
-                  Save Patient Changes
+                  {t("savePatientChanges")}
                 </Button>
               </div>
             </section>
@@ -382,14 +385,32 @@ export const OperatingRoomPage = () => {
             <section className="h-fit lg:w-[29%] bg-white shadow-xl p-4 overflow-auto scrollbar-custom rounded-lg">
               <div className="flex flex-col">
                 <p className="text-2xl font-bold font-serif mb-4">
-                  Operation Level
+                  {t("operationLevel")}
                 </p>
                 <div className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4">
-                  <Label>Suggested Level</Label>
+                  <Label>{t("suggestedLevel")}</Label>
                   <Label className="text-4xl font-sans">{formData.level}</Label>
                   {isOpen ? (
                     <>
-                      <Input
+                      <select
+                        name="suggestedLevel"
+                        value={levelInput.suggestedLevel}
+                        onChange={(e) => {
+                          handleInputThresholdChange(e);
+                          onkeydown = { handleKeyDown };
+                        }}
+                        className="cursor-pointer p-2 border border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-hover focus:border-primary-hover"
+                      >
+                        <option value="" disabled hidden>
+                          {t("enterYourLevel")}
+                        </option>
+                        <option value="1">{t("level1")}</option>
+                        <option value="2">{t("level2")}</option>
+                        <option value="3">{t("level3")}</option>
+                        <option value="4">{t("level4")}</option>
+                      </select>
+
+                      {/* <Input
                         type="number"
                         placeholder="Enter your Level"
                         name="suggestedLevel"
@@ -407,14 +428,14 @@ export const OperatingRoomPage = () => {
                         <span className="text-red-500 text-sm mt-1 animate-pulse">
                           {warning}
                         </span>
-                      )}
+                      )} */}
                       <div className="flex gap-4">
                         <Button
                           className="mt-2 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98"
                           type="button"
                           onClick={handleSaveButton}
                         >
-                          Save
+                          {t("save")}
                         </Button>
 
                         <Button
@@ -422,7 +443,7 @@ export const OperatingRoomPage = () => {
                           type="button"
                           className="mt-2 hover:-translate-y-1 transition-all duration-300 bg-transparent active:scale-98 text-gray-500 hover:text-red-500 hover:bg-gray-300"
                         >
-                          Cancel
+                          {t("cancel")}
                         </Button>
                       </div>
                     </>
@@ -432,19 +453,19 @@ export const OperatingRoomPage = () => {
                       type="button"
                       onClick={handleOpenSuggestOpen}
                     >
-                      Changes
+                      {t("changes")}
                     </Button>
                   )}
                 </div>
 
                 <div className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4">
-                  <Label>Alarm Threshold (LPM)</Label>
+                  <Label>{t("alarmThreshold")}</Label>
                   <Label className="text-4xl font-sans">
                     {formData.threshold}
                   </Label>
                 </div>
                 <Button className="mt-2 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98">
-                  CONFIRM AND SETUP
+                  {t("confirmAndSetup")}
                 </Button>
               </div>
             </section>

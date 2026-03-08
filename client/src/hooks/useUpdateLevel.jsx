@@ -43,12 +43,14 @@ export const useUpdateLevel = () => {
     try {
       await updateLevelApi.setLevel(patientId, payload);
       console.log("Update level success ");
+      
       if(handleUpdateList) {
         handleUpdateList({
           patient_id: patientId,
           risk_level: levelInput.suggestedLevel,
           final_status: rowData.status,
           color_code: rowData.color_code,
+          threshold_value: rowData.threshold_value,
         })
       }
     } catch (err) {

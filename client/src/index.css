@@ -1,6 +1,10 @@
 @import "tailwindcss";
 
 @theme {
+
+  --font-sans: "Poppins", sans-serif;
+  --font-serif: "Playfair Display", serif;
+
   --color-primary: #0284c7;
   --color-primary-hover: #45bfef;
   --color-primary-light: #e0f2fe;

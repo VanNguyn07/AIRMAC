@@ -6,6 +6,14 @@ export const useFetchThreshold = () => {
   });
   const [warning, setWarning] = useState("");
 
+  const handleInputThresholdChange = (e) => {
+    const { name, value } = e.target;
+    setLevelInput((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   const handleGetValueThreshold = async () => {
     const valueToSend = levelInput.suggestedLevel;
     if (!valueToSend) {
@@ -23,13 +31,6 @@ export const useFetchThreshold = () => {
     }
   };
 
-  const handleInputThresholdChange = (e) => {
-    const { name, value } = e.target;
-    setLevelInput((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
   const resetInput = () => setLevelInput({ suggestedLevel: "" });
   return {
     handleGetValueThreshold,
@@ -37,6 +38,6 @@ export const useFetchThreshold = () => {
     resetInput,
     levelInput,
     warning,
-    setWarning
+    setWarning,
   };
 };
