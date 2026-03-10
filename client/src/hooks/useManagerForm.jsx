@@ -5,6 +5,7 @@ import { useFetchAirmac } from "./useFetchAirmac";
 import { useSearchDiseases } from "./useSearchDiseases";
 import { usePatientContext } from "../contexts/PatientContext";
 import { useNavigate } from "react-router-dom";
+import { updateProcessStatusApi } from "../services/update_proccess_status_api";
 export const useManagerForm = (onSuccess) => {
   //Gọi hook tính tuổi
   const { dob, ageDisplay, ageMonth, handleDobChange, setDob } =
@@ -45,30 +46,43 @@ export const useManagerForm = (onSuccess) => {
 
   const navigate = useNavigate();
 
-  const handleTabChange = () => {
-    const monitorSession = {
-      formData: formData,
-      selectedDeviceId: selectedDeviceId,
-    };
-    console.log("Form Data of patient: ", formData);
-    handleUpdateListGlobal({
-      patient_id: formData.patientId,
-      risk_level: formData.level,
-      final_status: formData.status,
-      process_status: "IN_PROGRESS", // Đổi chữ PENDING thành IN_PROGRESS
-      color_code: formData.color,
-      threshold_value: formData.threshold
-    })
+  const handleTabChange = async () => {
     if (formData.patientId === "") {
-      alert("Don't have patient selected!");
       return;
-    } else {
-      localStorage.setItem(
-        "activeMonitorSession",
-        JSON.stringify(monitorSession),
+    }
+    try {
+      const result = await updateProcessStatusApi.setProcessStatus(
+        formData.patientId,
+        "IN_PROGRESS",
       );
+      console.log("Kết quả từ Server trả về là:", result);
+      if (result.success) {
+        handleUpdateListGlobal({
+          patient_id: formData.patientId,
+          risk_level: formData.level,
+          final_status: formData.status,
+          color_code: formData.color,
+          threshold_value: formData.threshold,
+          process_status: "IN_PROGRESS",
+        });
 
-      navigate("/chartMonitor");
+        const monitorSession = {
+          formData: formData,
+          selectedDeviceId: selectedDeviceId,
+        };
+        console.log("Form Data of patient: ", formData);
+        localStorage.setItem(
+          "activeMonitorSession",
+          JSON.stringify(monitorSession),
+        );
+
+        navigate("/chartMonitor");
+      } else {
+        alert("Không thể cập nhật trạng thái, vui lòng thử lại!");
+      }
+    } catch (err) {
+      console.error("Lỗi khi Setup:", err);
+      alert("Đã xảy ra lỗi kết nối với máy chủ.");
     }
   };
 
@@ -211,6 +225,7 @@ export const useManagerForm = (onSuccess) => {
         handleAddListGlobal(serverData);
         console.log("data after update form is: ", serverData);
         if (onSuccess) onSuccess();
+        alert("Update information patient successfully!")
       }
     } catch (err) {
       console.log("Error update", err);

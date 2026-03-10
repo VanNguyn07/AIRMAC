@@ -10,7 +10,7 @@ export const PatientProvider = ({ children }) => {
   const [dataList, setDataList] = useState([]);
   const [selectedPatientId, setSelectedPatientId] = useState(null);
 
-  // Hàm fetch dữ liệu (giống hệt code cũ của bạn)
+  // Hàm fetch dữ liệu 
   const fetchAllData = useCallback(async () => {
     try {
       const result = await fetchAllDataApi.getAllData();
@@ -38,7 +38,7 @@ export const PatientProvider = ({ children }) => {
             risk_level: updatedInfo.risk_level,
             final_status: updatedInfo.final_status,
             process_status: updatedInfo.process_status,
-            color_code: updatedInfo.color_code, // Cập nhật màu
+            color_code: updatedInfo.color_code,
             threshold_value: updatedInfo.threshold_value
           };
         }

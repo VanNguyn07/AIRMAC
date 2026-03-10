@@ -11,7 +11,6 @@ import { usePatientContext } from "../../contexts/PatientContext";
 import { useCustomHeader } from "../../hooks/useCustomHeader";
 import { useLanguage } from "../../contexts/LanguageContext";
 
-
 export const OperatingRoomPage = () => {
   const { t } = useLanguage();
   const { dataList, refetch, setDataList, handleUpdateListGlobal } =
@@ -112,7 +111,7 @@ export const OperatingRoomPage = () => {
         >
           {/* a. patient queue */}
           <section className="bg-white w-full lg:absolute lg:left-0 lg:top-0 lg:bottom-0 lg:w-[28%] lg:h-auto h-[50dvh] shadow-xl p-4 rounded-lg flex flex-col">
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center ">
               <p className="text-3xl font-bold font-serif mb-4">
                 {t("patientList")}
               </p>
@@ -121,13 +120,13 @@ export const OperatingRoomPage = () => {
               </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto pr-1 scrollbar-thin">
+            <div className="flex-1 overflow-auto pr-1 scrollbar-thin">
               {dataList.length === 0 ? (
                 <p className="text-gray-500 text-center italic">
                   {t("noPatients")}
                 </p>
               ) : (
-                dataList.map((item, index) => {
+                dataList.map((item) => {
                   const color = item.color_code;
                   let processColor;
                   const statusColor = {
@@ -136,10 +135,14 @@ export const OperatingRoomPage = () => {
                     DONE: "#4CAF50",
                   };
                   processColor = statusColor[item.process_status];
-                  console.log(`Item ${index}:`, item.patient_id);
+                  // console.log(`Item ${index}:`, item.patient_id);
                   return (
                     <div
-                      className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4 cursor-pointer active:scale-98"
+                      className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 
+                              hover:bg-gray-200 mb-4 cursor-pointer 
+                                active:scale-95
+                                transition-all duration-200 ease-in-out
+                                hover:-translate-y-1 hover:shadow-lg"
                       key={item.patient_id}
                       onClick={() => handleFillFormData(item)}
                     >
@@ -452,8 +455,13 @@ export const OperatingRoomPage = () => {
                     {formData.threshold}
                   </Label>
                 </div>
-                <Button className="mt-2 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98"
-                onClick={() => {handleTabChange(formData)}}>
+                <Button
+                  className="mt-2 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98"
+                  type="button"
+                  onClick={() => {
+                    handleTabChange(formData);
+                  }}
+                >
                   {t("confirmAndSetup")}
                 </Button>
               </div>

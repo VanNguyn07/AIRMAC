@@ -11,6 +11,7 @@ const managerFormRoutes = require("./src/routes/managerFormRoutes");
 const fetchDataRoutes = require("./src/routes/fetchDataRoutes");
 const fetchThresholdRoutes = require("./src/routes/fetchThresholdRoutes");
 const updateLevelRoutes = require("./src/routes/updateLevelRoutes");
+const updateProcessStatus = require("./src/routes/updateProcessStatusRoutes");
 
 //Middleware
 app.use(cors());
@@ -24,6 +25,7 @@ app.use("/api/updatePatient", managerFormRoutes);
 app.use("/api/fetchAllData", fetchDataRoutes);
 app.use("/api/level", fetchThresholdRoutes);
 app.use("/api/updateLevel", updateLevelRoutes);
+app.use("/api/updateProcessStatus", updateProcessStatus);
 
 // Route test
 app.get("/", (req, res) => {
