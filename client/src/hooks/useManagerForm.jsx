@@ -4,6 +4,7 @@ import { useCalculateAge } from "./useCalculateAge";
 import { useFetchAirmac } from "./useFetchAirmac";
 import { useSearchDiseases } from "./useSearchDiseases";
 import { usePatientContext } from "../contexts/PatientContext";
+import { useNavigate } from "react-router-dom";
 export const useManagerForm = (onSuccess) => {
   //Gọi hook tính tuổi
   const { dob, ageDisplay, ageMonth, handleDobChange, setDob } =
@@ -24,7 +25,7 @@ export const useManagerForm = (onSuccess) => {
     setSelectedDisease,
   } = useSearchDiseases();
 
-  const { handleAddListGlobal } = usePatientContext();
+  const { handleAddListGlobal, handleUpdateListGlobal } = usePatientContext();
 
   const [formData, setFormData] = useState({
     patientId: "",
@@ -42,8 +43,39 @@ export const useManagerForm = (onSuccess) => {
     threshold: 0,
   });
 
+  const navigate = useNavigate();
+
+  const handleTabChange = () => {
+    const monitorSession = {
+      formData: formData,
+      selectedDeviceId: selectedDeviceId,
+    };
+    console.log("Form Data of patient: ", formData);
+    handleUpdateListGlobal({
+      patient_id: formData.patientId,
+      risk_level: formData.level,
+      final_status: formData.status,
+      process_status: "IN_PROGRESS", // Đổi chữ PENDING thành IN_PROGRESS
+      color_code: formData.color,
+      threshold_value: formData.threshold
+    })
+    if (formData.patientId === "") {
+      alert("Don't have patient selected!");
+      return;
+    } else {
+      localStorage.setItem(
+        "activeMonitorSession",
+        JSON.stringify(monitorSession),
+      );
+
+      navigate("/chartMonitor");
+    }
+  };
+
   const handleFillFormData = (dataItem) => {
     if (!dataItem) return;
+    //Lưu ID người này vào Context chung toàn cục
+
     setFormData({
       patientId: dataItem.patient_id || "",
       fullName: dataItem.full_name || "",
@@ -108,7 +140,6 @@ export const useManagerForm = (onSuccess) => {
       bp_sys: parseInt(formData.bp_sys),
       rr: parseInt(formData.rr),
       tem: parseFloat(formData.tem),
-
       icdMapping: icdCodeArray,
       selectedDevice: selectedDeviceId,
     };
@@ -211,5 +242,6 @@ export const useManagerForm = (onSuccess) => {
     handleSearchDiseases,
     handleFillFormData,
     handleUpdateForm,
+    handleTabChange,
   };
 };

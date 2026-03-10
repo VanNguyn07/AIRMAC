@@ -6,8 +6,10 @@ import { useManagerForm } from "../../hooks/useManagerForm";
 import { formatAgeString } from "../../utils/formatAgeString";
 import { formatGender } from "../../utils/formatGender";
 import { usePatientContext } from "../../contexts/PatientContext";
+import { useLanguage } from "../../contexts/LanguageContext";
 export const ClinicPage = () => {
   const { dataList, refetch } = usePatientContext();
+  const { t } = useLanguage();
   const {
     formData,
     selectedDisease,
@@ -35,15 +37,15 @@ export const ClinicPage = () => {
         <section className="bg-white p-6 rounded-xl border-l-5 border-sky-600 shadow-lg">
           <div className="flex gap-5">
             <div className="text-lg font-serif">
-              Available Rooms:{" "}
+              {t("availableRoom")}:{" "}
               <span className="font-bold font-sans">
                 {readyDevices.length} / {allDevices.length}
               </span>
             </div>
             <div className="text-lg font-serif">
-              Device Status:{" "}
+              {t("deviceStatus")}:{" "}
               <span className="font-bold text-green-500">
-                {readyDevices.length > 0 ? "READY" : "FULL"}
+                {readyDevices.length > 0 ? t("ready") : "FULL"}
               </span>
             </div>
           </div>
@@ -53,9 +55,9 @@ export const ClinicPage = () => {
         <div className="relative flex flex-col lg:flex-row gap-4 w-full">
           <section className="flex flex-col  gap-2 w-full lg:w-[69%] h-[70dvh] lg:h-fit bg-white shadow-lg p-4 rounded-lg overflow-auto">
             <p className="text-2xl font-bold font-serif">
-              Patient Admission Form
+              {t("patientAdmissionForm")}
             </p>
-            <Label>Full Name *</Label>
+            <Label>{t("fullName")} *</Label>
             <Input
               type="text"
               name="fullName"
@@ -67,7 +69,7 @@ export const ClinicPage = () => {
 
             <div className="flex flex-col sm:flex-row gap-3">
               <div className="flex flex-col gap-2 w-full ">
-                <Label>Date of Birth *</Label>
+                <Label>{t("dateOfBirth")}*</Label>
                 <Input
                   type="date"
                   className="cursor-pointer"
@@ -78,10 +80,10 @@ export const ClinicPage = () => {
               </div>
 
               <div className=" flex flex-col gap-2 ">
-                <Label>Age</Label>
+                <Label>{t("age")}</Label>
                 <Input
                   type="text"
-                  placeholder="Auto-calculated"
+                  placeholder={t("autoCalculated")}
                   className="cursor-not-allowed bg-gray-200"
                   value={ageDisplay}
                   readOnly
@@ -89,7 +91,7 @@ export const ClinicPage = () => {
               </div>
 
               <div className=" flex flex-col gap-2">
-                <Label>Gender</Label>
+                <Label>{t("gender")}</Label>
                 <select
                   className="cursor-pointer p-2 border border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-hover focus:border-primary-hover"
                   value={formData.gender}
@@ -97,22 +99,22 @@ export const ClinicPage = () => {
                   name="gender"
                 >
                   <option value="" disabled hidden>
-                    Gender
+                    {t("genderPlaceholder")}
                   </option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
+                  <option value="male">{t("male")}</option>
+                  <option value="female">{t("female")}</option>
                 </select>
               </div>
             </div>
 
             <p className="text-2xl font-bold font-serif mt-2">
-              Vital Signs NEWS2
+              {t("vitalSigns")}
             </p>
             <div className="flex flex-col gap-3">
               <div className="flex flex-col sm:flex-row gap-3">
                 {/* Row one */}
                 <div className="flex flex-col gap-2 w-full ">
-                  <Label>Heart (bpm)</Label>
+                  <Label>{t("heart")}</Label>
                   <Input
                     type="number"
                     value={formData.hr}
@@ -125,7 +127,7 @@ export const ClinicPage = () => {
                 </div>
 
                 <div className="flex flex-col gap-2 w-full ">
-                  <Label>Respiration Rate</Label>
+                  <Label>{t("respirationRate")}</Label>
                   <Input
                     type="number"
                     name="rr"
@@ -140,7 +142,7 @@ export const ClinicPage = () => {
               {/* Row 2 */}
               <div className="flex flex-col sm:flex-row gap-3">
                 <div className="flex flex-col gap-2 w-full ">
-                  <Label>SpO2 (%)</Label>
+                  <Label>{t("spo2")}</Label>
                   <Input
                     type="number"
                     value={formData.spo2}
@@ -153,7 +155,7 @@ export const ClinicPage = () => {
                 </div>
 
                 <div className="flex flex-col gap-2 w-full ">
-                  <Label>Temperature (°C)</Label>
+                  <Label>{t("temperature")}</Label>
                   <Input
                     type="number"
                     value={formData.tem}
@@ -168,7 +170,7 @@ export const ClinicPage = () => {
               {/* Row three */}
               <div className="flex gap-3">
                 <div className="flex flex-col gap-2 w-full ">
-                  <Label>Blood Pressure (Systolic)</Label>
+                  <Label>{t("bloodPressure")}</Label>
                   <Input
                     type="number"
                     value={formData.bp_sys}
@@ -183,10 +185,7 @@ export const ClinicPage = () => {
 
               {/* Row four */}
               <div className="flex flex-col gap-2 w-full ">
-                <Label>
-                  Diagnosis (ICD- <span className="font-sans">10</span>) -
-                  Multi-select
-                </Label>
+                <Label>{t("diagnosis")}</Label>
                 <DiseaseSelect
                   onChange={handleSelectionChange}
                   value={selectedDisease}
@@ -196,14 +195,14 @@ export const ClinicPage = () => {
               </div>
               {/* Row five */}
               <div className="flex flex-col gap-2 w-full ">
-                <Label>Select Room *</Label>
+                <Label>{t("selectRoom")}*</Label>
                 <select
                   value={selectedDeviceId}
                   onChange={handleSelectedChange}
                   className="cursor-pointer p-2 border border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-hover focus:border-primary-hover font-sans"
                 >
                   <option value="" disabled hidden>
-                    Select available room
+                    {t("selectAvailableRooms")}
                   </option>
                   {readyDevices.map((device) => (
                     <option key={device.id} value={device.id}>
@@ -216,7 +215,7 @@ export const ClinicPage = () => {
                 className="mt-4 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98"
                 type="submit"
               >
-                Add to Waiting List
+                {t("addToWaitingList")}
               </Button>
             </div>
           </section>
@@ -225,7 +224,7 @@ export const ClinicPage = () => {
           <section className="bg-white w-full lg:absolute lg:right-0 lg:top-0 lg:bottom-0 lg:w-[30%] lg:h-auto h-[50dvh] shadow-xl p-4 rounded-lg flex flex-col">
             <div className="flex justify-between items-center">
               <p className="text-3xl font-bold font-serif mb-4">
-                Patient Waiting List
+                {t("patientWaitingList")}
               </p>
               <div className="rounded-full w-9 h-9 text-lg flex justify-center items-center bg-primary-gradient font-bold">
                 {dataList.length}
@@ -235,11 +234,12 @@ export const ClinicPage = () => {
             <div className="flex-1 overflow-y-auto pr-1 scrollbar-thin">
               {dataList.length === 0 ? (
                 <p className="text-gray-500 text-center italic">
-                  No patients in queue
+                  {t("noPatients")}
                 </p>
               ) : (
                 dataList.map((item, index) => {
                   const color = item.color_code;
+                  console.log("Check trạng thái:", `"${item.process_status}"`); 
                   let processColor;
                   const statusColor = {
                     PENDING: "#FFC107",
@@ -247,14 +247,16 @@ export const ClinicPage = () => {
                     DONE: "#4CAF50",
                   };
                   processColor = statusColor[item.process_status];
-                  console.log(`Item ${index}: ` , item)
+                  console.log(`Item ${index}: `, item);
                   return (
                     <div
                       className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4"
                       key={item.patient_id}
                     >
                       <div className="flex justify-between">
-                        <Label className="text-2xl font-serif">{item.full_name}</Label>
+                        <Label className="text-2xl font-serif">
+                          {item.full_name}
+                        </Label>
                         <div
                           className="text-lg py-1 px-2 border-l-4 font-bold font-serif rounded-xl"
                           style={{
@@ -263,24 +265,25 @@ export const ClinicPage = () => {
                             color: processColor,
                           }}
                         >
-                          {item.process_status}
+                          
+                          {t(item.process_status)}
                         </div>
                       </div>
                       <Label>
-                        Age:{" "}
+                        {t("age")}:{" "}
                         <span className="font-sans font-medium text-sky-600">
-                          {formatAgeString(item.age)}
+                          {formatAgeString(item.age,t)}
                         </span>{" "}
-                        • {formatGender(item.gender)}
+                        • {formatGender(item.gender, t)}
                       </Label>
                       <Label>
-                        At room:{" "}
+                        {t("atRoomLabel")}{" "}
                         <span className="font-sans font-medium text-sky-600">
                           {item.room_id}
                         </span>
                       </Label>
                       <div className="flex gap-4 justify-self-start items-center">
-                        <Label>Status:</Label>
+                        <Label>{t("status")}:</Label>
                         <div
                           className="py-1 px-2 border-l-4 font-bold font-serif rounded-lg"
                           style={{
@@ -289,7 +292,7 @@ export const ClinicPage = () => {
                             color: color,
                           }}
                         >
-                          {item.final_status}
+                          {t(item.final_status)}
                         </div>
                         <div
                           className="py-1 px-2 font-bold font-serif rounded-lg"
@@ -299,7 +302,7 @@ export const ClinicPage = () => {
                             color: color,
                           }}
                         >
-                          Level{" "}
+                          {t("level")}{" "}
                           <span className="font-sans">{item.risk_level}</span>
                         </div>
                       </div>

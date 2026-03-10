@@ -1,9 +1,10 @@
 import React from "react";
 import AsyncSelect from "react-select/async";
+import { useLanguage } from "../../contexts/LanguageContext";
 export const DiseaseSelect = ({ onChange, value, loadOptions, name }) => {
   const inputBaseStyle =
     "!rounded-lg !border !border-gray-500 !transition !min-h-[40px]";
-
+  const {t} = useLanguage();
   return (
     <AsyncSelect
       isMulti //Cho phép chọn nhiều
@@ -17,7 +18,7 @@ export const DiseaseSelect = ({ onChange, value, loadOptions, name }) => {
       getOptionLabel={(option) => `${option.icd_code} - ${option.disease_name}`}
       getOptionValue={(option) => option.icd_code}
       // Placeholder
-      placeholder="Enter ICD code or disease name (Ex: K56)..."
+      placeholder={t("icdCodeOrDiseaseName")}
       loadingMessage={() => "Searching..."}
       noOptionsMessage={() => "No matching disease found."}
       name={name}

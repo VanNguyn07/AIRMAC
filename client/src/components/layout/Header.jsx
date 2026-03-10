@@ -7,6 +7,7 @@ import { useLanguage } from "../../contexts/LanguageContext";
 export const Header = () => {
   const { handleCustomHeader, isOpen } = useCustomHeader();
   const { language, setLanguage, t } = useLanguage();
+
   const getLinkClass = ({ isActive }) => {
     return isActive
       ? "text-xl text-white font-serif px-5 py-2 rounded-xl font-bold transition-all focus:outline-none focus:ring-1 focus:bg-primary-hover bg-primary-gradient shadow-lg border-2"
@@ -77,6 +78,9 @@ export const Header = () => {
             <NavLink to="/report" className={getLinkClass}>
               {t("report")}
             </NavLink>
+            <NavLink to="/history" className={getLinkClass}>
+              {t("history")}
+            </NavLink>
           </nav>
           <div className="flex">
             <div className="flex justify-center items-center">
@@ -85,6 +89,19 @@ export const Header = () => {
               </Button>
             </div>
           </div>
+          <div className="flex items-center border border-gray-300 px-1 rounded-2xl bg-white shadow-sm hover:shadow-md transition w-20">
+              <Languages size={20} className="text-gray-600" />
+
+              <select
+                name="language"
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+                className="bg-transparent outline-none cursor-pointer font-semibold text-gray-700"
+              >
+                <option value="en">EN</option>
+                <option value="vi">VI</option>
+              </select>
+            </div>
         </div>
       )}
     </header>

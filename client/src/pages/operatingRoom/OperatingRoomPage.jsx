@@ -11,6 +11,7 @@ import { usePatientContext } from "../../contexts/PatientContext";
 import { useCustomHeader } from "../../hooks/useCustomHeader";
 import { useLanguage } from "../../contexts/LanguageContext";
 
+
 export const OperatingRoomPage = () => {
   const { t } = useLanguage();
   const { dataList, refetch, setDataList, handleUpdateListGlobal } =
@@ -29,6 +30,7 @@ export const OperatingRoomPage = () => {
     handleSelectionChange,
     handleFillFormData,
     handleUpdateForm,
+    handleTabChange,
   } = useManagerForm(refetch);
 
   const { handleOpenSuggestOpen, isOpen, setIsOpen } = useSuggestedLevel();
@@ -111,7 +113,9 @@ export const OperatingRoomPage = () => {
           {/* a. patient queue */}
           <section className="bg-white w-full lg:absolute lg:left-0 lg:top-0 lg:bottom-0 lg:w-[28%] lg:h-auto h-[50dvh] shadow-xl p-4 rounded-lg flex flex-col">
             <div className="flex justify-between items-center">
-              <p className="text-3xl font-bold font-serif mb-4">{t("patientList")}</p>
+              <p className="text-3xl font-bold font-serif mb-4">
+                {t("patientList")}
+              </p>
               <div className="rounded-full w-9 h-9 text-lg flex justify-center items-center bg-primary-gradient font-bold">
                 {dataList.length}
               </div>
@@ -140,7 +144,9 @@ export const OperatingRoomPage = () => {
                       onClick={() => handleFillFormData(item)}
                     >
                       <div className="flex justify-between">
-                        <Label className="text-2xl font-serif">{item.full_name}</Label>
+                        <Label className="text-2xl font-serif">
+                          {item.full_name}
+                        </Label>
                         <div
                           className="text-lg py-1 px-2 border-l-4 font-bold font-serif rounded-xl"
                           style={{
@@ -149,24 +155,24 @@ export const OperatingRoomPage = () => {
                             color: processColor,
                           }}
                         >
-                          {item.process_status}
+                          {t(item.process_status)}
                         </div>
                       </div>
                       <Label>
-                        Age:{" "}
+                        {t("age")}:{" "}
                         <span className="font-sans font-medium text-sky-600">
-                          {formatAgeString(item.age)}
+                          {formatAgeString(item.age, t)}
                         </span>{" "}
-                        • {formatGender(item.gender)}
+                        • {formatGender(item.gender, t)}
                       </Label>
                       <Label>
-                        At room:{" "}
+                        {t("atRoomLabel")}{" "}
                         <span className="font-sans font-medium text-sky-600">
                           {item.room_id}
                         </span>
                       </Label>
                       <div className="flex gap-4 justify-self-start items-center">
-                        <Label>Status:</Label>
+                        <Label>{t("status")}:</Label>
                         <div
                           className="py-1 px-2 border-l-4 font-bold font-serif rounded-lg"
                           style={{
@@ -175,7 +181,7 @@ export const OperatingRoomPage = () => {
                             color: color,
                           }}
                         >
-                          {item.final_status}
+                          {t(item.final_status)}
                         </div>
                         <div
                           className="py-1 px-2 font-bold font-serif rounded-lg"
@@ -185,7 +191,7 @@ export const OperatingRoomPage = () => {
                             color: color,
                           }}
                         >
-                          Level{" "}
+                          {t("level")}{" "}
                           <span className="font-sans">{item.risk_level}</span>
                         </div>
                       </div>
@@ -205,7 +211,9 @@ export const OperatingRoomPage = () => {
                     {formData.fullName ? formData.fullName : t("patientName")}
                   </Label>
                   <div className="flex gap-4 justify-self-start items-center">
-                    <Label className="text-2xl font-serif">{t("status")}:</Label>
+                    <Label className="text-2xl font-serif">
+                      {t("status")}:
+                    </Label>
                     <div
                       className="py-1 px-2 border-l-4 font-bold font-sans rounded-lg text-sky-700"
                       style={{
@@ -214,7 +222,7 @@ export const OperatingRoomPage = () => {
                         color: formData.color,
                       }}
                     >
-                      {formData.status ? formData.status : t("unknown")}
+                      {t(formData.status) ? t(formData.status) : t("unknown")}
                     </div>
                     <div
                       className="py-1 px-2 border-l-4 font-bold font-sans rounded-lg text-sky-700"
@@ -224,15 +232,16 @@ export const OperatingRoomPage = () => {
                         color: formData.color,
                       }}
                     >
-                      {t("level")} <span className="font-sans">{formData.level}</span>
+                      {t("level")}{" "}
+                      <span className="font-sans">{formData.level}</span>
                     </div>
                   </div>
                 </div>
                 <Label className="ml-4">
                   <span className="font-sans font-medium text-sky-600">
-                    {formatAgeString(formData.age)}
+                    {formatAgeString(formData.age, t)}
                   </span>{" "}
-                  • {formatGender(formData.gender)}
+                  • {formatGender(formData.gender, t)}
                 </Label>
               </div>
 
@@ -262,7 +271,7 @@ export const OperatingRoomPage = () => {
                   <Label>{t("age")}</Label>
                   <Input
                     type="text"
-                    value={ageDisplay}
+                    value={t(ageDisplay)}
                     placeholder={t("autoCalculated")}
                     className="cursor-not-allowed bg-gray-200"
                     readOnly
@@ -278,7 +287,7 @@ export const OperatingRoomPage = () => {
                     name="gender"
                   >
                     <option value="" disabled hidden>
-                      {t("gender")}
+                      {t("genderPlaceholder")}
                     </option>
                     <option value="male">{t("male")}</option>
                     <option value="female">{t("female")}</option>
@@ -363,9 +372,7 @@ export const OperatingRoomPage = () => {
                 </div>
                 {/* Rouw four */}
                 <div className="flex flex-col gap-2 w-full ">
-                  <Label>
-                    {t("diagnosis")}
-                  </Label>
+                  <Label>{t("diagnosis")}</Label>
                   <DiseaseSelect
                     onChange={handleSelectionChange}
                     value={selectedDisease}
@@ -410,25 +417,6 @@ export const OperatingRoomPage = () => {
                         <option value="4">{t("level4")}</option>
                       </select>
 
-                      {/* <Input
-                        type="number"
-                        placeholder="Enter your Level"
-                        name="suggestedLevel"
-                        value={levelInput.suggestedLevel}
-                        onChange={(e) => {
-                          handleInputThresholdChange(e);
-                          setWarning("");
-                        }}
-                        min="0"
-                        onKeyDown={handleKeyDown}
-                        className={`max-w-40 ${warning ? "border-red-500 ring-1 ring-red-500" : ""}`}
-                        required
-                      />
-                      {warning && (
-                        <span className="text-red-500 text-sm mt-1 animate-pulse">
-                          {warning}
-                        </span>
-                      )} */}
                       <div className="flex gap-4">
                         <Button
                           className="mt-2 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98"
@@ -464,7 +452,8 @@ export const OperatingRoomPage = () => {
                     {formData.threshold}
                   </Label>
                 </div>
-                <Button className="mt-2 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98">
+                <Button className="mt-2 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98"
+                onClick={() => {handleTabChange(formData)}}>
                   {t("confirmAndSetup")}
                 </Button>
               </div>

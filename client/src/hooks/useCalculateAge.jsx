@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useLanguage } from "../contexts/LanguageContext";
 
 export const useCalculateAge = () => {
+  const {t} = useLanguage();
   const [dob, setDob] = useState("");
 
   // 1. Hàm tính toán (Giữ nguyên logic của bạn)
@@ -22,11 +24,11 @@ export const useCalculateAge = () => {
 
     if (totalMonth < 0) totalMonth = 0;
 
-    const years = Math.floor(totalMonth / 12);
+    const years = Math.floor(totalMonth / 12); // làm tròn về số nguyên nhở hơn gần nhất 
     const months = totalMonth % 12;
     let text = "";
-    if (years > 0) text += `${years} years`;
-    if (months > 0 || years === 0) text += ` ${months} months`;
+    if (years > 0) text += `${years} ${t("year")}`;
+    if (months > 0 || years === 0) text += ` ${months} ${t("month")}`;
     
     return { text, totalMonth };
   };

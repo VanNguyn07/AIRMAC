@@ -3,14 +3,10 @@ import { Label } from "./Label";
 // Đưa component này ra ngoài hoặc để vào file riêng (PressureGauge.jsx)
 export const PressureGauge = ({ value = 0, max = 100 }) => {
   const numericValue = Number(value);
-  console.log("Numeric Value:", numericValue);
-
-  console.log("Pressure Gauge Value is: ", numericValue);
 
   const safeValue = Math.round(numericValue * 100);
   //chiều cao (giới hạn 0 - 100%)
   const percentage = Math.min(Math.max(safeValue, 0), 100);
-  console.log("Percentage value is: ", percentage);
 
   const getColor = (percent) => {
     if (percent > 80) return "#ef4444"; // Đỏ

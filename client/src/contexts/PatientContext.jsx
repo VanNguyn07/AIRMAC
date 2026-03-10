@@ -8,6 +8,7 @@ const PatientContext = createContext();
 // 2. Tạo Provider (Cái kho chứa)
 export const PatientProvider = ({ children }) => {
   const [dataList, setDataList] = useState([]);
+  const [selectedPatientId, setSelectedPatientId] = useState(null);
 
   // Hàm fetch dữ liệu (giống hệt code cũ của bạn)
   const fetchAllData = useCallback(async () => {
@@ -36,6 +37,7 @@ export const PatientProvider = ({ children }) => {
             ...item,
             risk_level: updatedInfo.risk_level,
             final_status: updatedInfo.final_status,
+            process_status: updatedInfo.process_status,
             color_code: updatedInfo.color_code, // Cập nhật màu
             threshold_value: updatedInfo.threshold_value
           };
@@ -55,7 +57,9 @@ export const PatientProvider = ({ children }) => {
     setDataList,
     refetch: fetchAllData,
     handleUpdateListGlobal,
-    handleAddListGlobal
+    handleAddListGlobal,
+    selectedPatientId,      
+    setSelectedPatientId
   };
 
   return (

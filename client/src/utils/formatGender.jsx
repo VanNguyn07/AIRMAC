@@ -1,8 +1,8 @@
-export const formatGender = (text) => {
+export const formatGender = (text, t) => {
   if (text === "male") {
-    return "Male";
+    return t("male");
   }
   if (text === "female") {
-    return "Female";
+    return t("female");
   }
 };

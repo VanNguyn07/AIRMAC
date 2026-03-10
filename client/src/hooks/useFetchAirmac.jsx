@@ -12,6 +12,7 @@ export const useFetchAirmac = () => {
     const idSelected = e.target.value;
     setSelectedDeviceId(idSelected);
   };
+  
   useEffect(() => {
     const handleFetchAirmac = async () => {
       const result = await fetchAirmacApi.getDeviceIdRoomId();
