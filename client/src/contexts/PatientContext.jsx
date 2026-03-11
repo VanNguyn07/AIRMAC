@@ -35,11 +35,7 @@ export const PatientProvider = ({ children }) => {
         if (item.patient_id === updatedInfo.patient_id) {
           return {
             ...item,
-            risk_level: updatedInfo.risk_level,
-            final_status: updatedInfo.final_status,
-            process_status: updatedInfo.process_status,
-            color_code: updatedInfo.color_code,
-            threshold_value: updatedInfo.threshold_value
+            ...updatedInfo,
           };
         }
         return item;

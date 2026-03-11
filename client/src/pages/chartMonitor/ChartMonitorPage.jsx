@@ -9,6 +9,7 @@ import { useLanguage } from "../../contexts/LanguageContext";
 import { useManagerForm } from "../../hooks/useManagerForm";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDoneSession } from "../../hooks/useDoneSession";
 
 export const ChartMonitorPage = () => {
   const { t } = useLanguage();
@@ -19,6 +20,8 @@ export const ChartMonitorPage = () => {
   });
 
   const { formData, selectedDeviceId } = sessionData;
+
+  const {handleSetStatusDone} = useDoneSession();
 
   const { allDevices } = useManagerForm();
 
@@ -64,9 +67,13 @@ export const ChartMonitorPage = () => {
             </div>
             <div className="text-lg font-serif">
               <Button
-                className="px-3 py-0.5 active:scale-95 bg-green-600 hover:bg-green-700 active:bg-green-600 "
-                onClick={() => {
+                className="px-3 py-0.5 active:scale-95 bg-green-600 hover:bg-green-700 active:bg-green-600 hover:-translate-y-1 transition-all duration-300"
+                type="button"
+                onClick={ async () => {
+                  await handleSetStatusDone(formData.patientId)
+
                   localStorage.removeItem("activeMonitorSession");
+                  
                   navigate("/operatingRoom")
                 }}
               >

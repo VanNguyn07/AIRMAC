@@ -59,10 +59,6 @@ export const useManagerForm = (onSuccess) => {
       if (result.success) {
         handleUpdateListGlobal({
           patient_id: formData.patientId,
-          risk_level: formData.level,
-          final_status: formData.status,
-          color_code: formData.color,
-          threshold_value: formData.threshold,
           process_status: "IN_PROGRESS",
         });
 
@@ -81,8 +77,8 @@ export const useManagerForm = (onSuccess) => {
         alert("Không thể cập nhật trạng thái, vui lòng thử lại!");
       }
     } catch (err) {
-      console.error("Lỗi khi Setup:", err);
-      alert("Đã xảy ra lỗi kết nối với máy chủ.");
+      console.error("Lỗi khi Setup at API update process status:", err);
+      alert("Đã xảy ra lỗi kết nối với máy chủ tại API của process status");
     }
   };
 

@@ -11,11 +11,19 @@ const updateProcessStatusController = {
         patientId,
         process_status,
       );
-       console.log("Update process status successfully");
-       return response.status(200).json({success: true, message: "Update success", data: result})
+      console.log("Update process status successfully");
+      return response
+        .status(200)
+        .json({
+          success: true,
+          message: "Update process status at controller success",
+          data: result,
+        });
     } catch (err) {
       console.error("Error Controller update process status: ", err);
-      return response.status(500).json({ message: "Error server" });
+      return response
+        .status(500)
+        .json({ message: "Error server at controller update process status" });
     }
   },
 };
