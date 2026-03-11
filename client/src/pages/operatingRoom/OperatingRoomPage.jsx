@@ -1,6 +1,7 @@
 import { Button } from "../../components/common/Button";
 import { Input } from "../../components/common/Input";
 import { Label } from "../../components/common/Label";
+import { motion } from "framer-motion";
 import { useManagerForm } from "../../hooks/useManagerForm";
 import { formatAgeString } from "../../utils/formatAgeString";
 import { formatGender } from "../../utils/formatGender";
@@ -135,46 +136,135 @@ export const OperatingRoomPage = () => {
                     DONE: "#4CAF50",
                   };
                   processColor = statusColor[item.process_status];
+                  const isRunning = item.process_status === "IN_PROGRESS";
                   // console.log(`Item ${index}:`, item.patient_id);
                   return (
-                    <div
-                      className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 
-                              hover:bg-gray-200 mb-4 cursor-pointer 
-                                active:scale-95
-                                transition-all duration-200 ease-in-out
-                                hover:-translate-y-1 hover:shadow-lg"
+                    <motion.div
+                      // Thêm animate khi hover: Nổi lên (y: -4) và làm tối màu lại (brightness)
+                      whileHover={{ y: -4, filter: "brightness(0.97)" }}
+                      transition={{ duration: 0.1 }}
+                      className={`relative overflow-hidden flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4 cursor-pointer active:scale-95 transition-all duration-200 ease-in-out hover:shadow-lg ${
+                        isRunning
+                          ? "border bg-blue-50/20 shadow-[0_0_15px_rgba(33,150,243,0.3)]"
+                          : ""
+                      }`}
                       key={item.patient_id}
                       onClick={() => handleFillFormData(item)}
                     >
-                      <div className="flex justify-between">
-                        <Label className="text-2xl font-serif">
-                          {item.full_name}
-                        </Label>
-                        <div
-                          className="text-lg py-1 px-2 border-l-4 font-bold font-serif rounded-xl"
-                          style={{
-                            backgroundColor: `${processColor}70`,
-                            borderColor: processColor,
-                            color: processColor,
-                          }}
-                        >
-                          {t(item.process_status)}
+                      {/* HIỆU ỨNG 1: Viền chạy liên tục (4 tia sáng chạy vòng quanh) - Không làm vỡ layout */}
+                      {isRunning && (
+                        <>
+                          <motion.div
+                            className="absolute top-0 left-0 h-0.75 bg-blue-500 shadow-[0_0_8px_blue]"
+                            initial={{ width: "0%", opacity: 1 }}
+                            animate={{ width: "100%", opacity: 0 }}
+                            transition={{
+                              duration: 2,
+                              repeat: Infinity,
+                              ease: "linear",
+                            }}
+                          />
+                          <motion.div
+                            className="absolute top-0 right-0 w-0.75 bg-blue-500 shadow-[0_0_8px_blue]"
+                            initial={{ height: "0%", opacity: 1 }}
+                            animate={{ height: "100%", opacity: 0 }}
+                            transition={{
+                              duration: 2,
+                              repeat: Infinity,
+                              ease: "linear",
+                              delay: 0.5,
+                            }}
+                          />
+                          <motion.div
+                            className="absolute bottom-0 right-0 h-0.75 bg-blue-500 shadow-[0_0_8px_blue]"
+                            initial={{ width: "0%", opacity: 1 }}
+                            animate={{ width: "100%", opacity: 0 }}
+                            transition={{
+                              duration: 2,
+                              repeat: Infinity,
+                              ease: "linear",
+                              delay: 1,
+                            }}
+                          />
+                          <motion.div
+                            className="absolute bottom-0 left-0 w-0.75 bg-blue-500 shadow-[0_0_8px_blue]"
+                            initial={{ height: "0%", opacity: 1 }}
+                            animate={{ height: "100%", opacity: 0 }}
+                            transition={{
+                              duration: 2,
+                              repeat: Infinity,
+                              ease: "linear",
+                              delay: 1.5,
+                            }}
+                          />
+                        </>
+                      )}
+
+                      <div className="flex justify-between relative z-10">
+                        <div className="flex items-center gap-2">
+                          {/* HIỆU ỨNG 2: Radar ping nhấp nháy đỏ */}
+                          {isRunning && (
+                            <span className="relative flex h-3.5 w-3.5">
+                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-80"></span>
+                              <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-red-600"></span>
+                            </span>
+                          )}
+                          <Label className="text-2xl font-serif">
+                            {item.full_name}
+                          </Label>
                         </div>
+
+                        {/* HIỆU ỨNG 3: Chữ IN_PROGRESS sáng, đổ bóng và lơ lửng */}
+                        {isRunning ? (
+                          <motion.div
+                            animate={{ y: [-3, 3, -3] }} // Di chuyển lên xuống
+                            transition={{
+                              duration: 1,
+                              repeat: Infinity,
+                              ease: "easeInOut",
+                            }}
+                            className="text-lg py-1 px-2 border-l-4 font-bold font-serif rounded-xl"
+                            style={{
+                              backgroundColor: `${processColor}70`,
+                              borderColor: processColor,
+                              color: processColor,
+                              boxShadow: `0px 4px 12px ${processColor}80`, // Đổ bóng sáng
+                            }}
+                          >
+                            {t(item.process_status)}
+                          </motion.div>
+                        ) : (
+                          // Khối giữ nguyên cho trạng thái PENDING / DONE
+                          <div
+                            className="text-lg py-1 px-2 border-l-4 font-bold font-serif rounded-xl"
+                            style={{
+                              backgroundColor: `${processColor}70`,
+                              borderColor: processColor,
+                              color: processColor,
+                            }}
+                          >
+                            {t(item.process_status)}
+                          </div>
+                        )}
                       </div>
-                      <Label>
+
+                      {/* TỪ ĐÂY TRỞ XUỐNG GIỮ NGUYÊN 100% NHƯ CODE CỦA BẠN */}
+                      <Label className="relative z-10">
                         {t("age")}:{" "}
                         <span className="font-sans font-medium text-sky-600">
                           {formatAgeString(item.age, t)}
                         </span>{" "}
                         • {formatGender(item.gender, t)}
                       </Label>
-                      <Label>
+
+                      <Label className="relative z-10">
                         {t("atRoomLabel")}{" "}
                         <span className="font-sans font-medium text-sky-600">
                           {item.room_id}
                         </span>
                       </Label>
-                      <div className="flex gap-4 justify-self-start items-center">
+
+                      <div className="flex gap-4 justify-self-start items-center relative z-10">
                         <Label>{t("status")}:</Label>
                         <div
                           className="py-1 px-2 border-l-4 font-bold font-serif rounded-lg"
@@ -198,7 +288,7 @@ export const OperatingRoomPage = () => {
                           <span className="font-sans">{item.risk_level}</span>
                         </div>
                       </div>
-                    </div>
+                    </motion.div>
                   );
                 })
               )}
