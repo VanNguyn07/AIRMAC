@@ -14,7 +14,7 @@ export const Header = () => {
       : "text-lg text-slate-300 font-serif hover:text-white hover:bg-white/10 px-5 py-2 rounded-xl font-bold transition-all focus:outline-none focus:ring-2 focus:bg-primary-hover";
   };
   return (
-    <header className="flex justify-between bg-primary-gradient items-center px-8 py-6 border-b-4 border-sky-700">
+    <header className="flex justify-between bg-primary-gradient items-center px-8 py-6 border-b-4 border-sky-700 sticky top-0 z-50">
       <div className="filter brightness-125 flex gap-2">
         <Wind size={48} className="text-sky-400" />
         <h1 className="text-4xl font-serif tracking-widest">AIRMAC</h1>

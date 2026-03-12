@@ -11,6 +11,7 @@ import { useUpdateLevel } from "../../hooks/useUpdateLevel";
 import { usePatientContext } from "../../contexts/PatientContext";
 import { useCustomHeader } from "../../hooks/useCustomHeader";
 import { useLanguage } from "../../contexts/LanguageContext";
+import { StatusIcon } from "../../components/common/StatusIcon";
 
 export const OperatingRoomPage = () => {
   const { t } = useLanguage();
@@ -76,6 +77,13 @@ export const OperatingRoomPage = () => {
   const currentDeviceData = allDevices.find(
     (device) => device.id == selectedDeviceId,
   );
+  const statusColor = {
+    PENDING: "#FFC107",
+    IN_PROGRESS: "#2196F3",
+    DONE: "#4CAF50",
+  };
+  const currentProcessStatus = formData?.process_status || "";
+  const currentProcessColor = statusColor[currentProcessStatus];
 
   return (
     <main className="w-full min-h-screen p-4 bg-main-gradient">
@@ -85,8 +93,8 @@ export const OperatingRoomPage = () => {
         onSubmit={handleUpdateForm}
       >
         {/* 1. STATUS BAR */}
-        <section className="bg-white p-6 rounded-xl border-l-5 border-sky-600 shadow-lg">
-          <div className="flex gap-10">
+        <section className="bg-white p-6 rounded-xl border-l-5 border-sky-600 shadow-lg flex justify-between items-center ">
+          <div className="flex gap-10 ">
             <div className="text-lg font-serif">
               {t("atRoom")}:{" "}
               <span className="font-bold font-sans">
@@ -104,6 +112,28 @@ export const OperatingRoomPage = () => {
               <span className="font-bold text-green-500">{t("ready")}</span>
             </div>
           </div>
+          {/*  */}
+          <div
+            className={`font-serif font-bold text-xl flex  gap-1 justify-center items-center`}
+          >
+            <div
+              className="flex gap-1 items-center"
+              style={{
+                color: currentProcessColor,
+                boxShadow: `0px 4px 12px ${currentProcessColor}`,
+                // textShadow: `8px 4px 4px ${currentProcessColor}`,
+                borderRadius: 10,
+                padding: 5,
+              }}
+            >
+              {t(currentProcessStatus)}
+              <StatusIcon
+              status={currentProcessStatus}
+              color={currentProcessColor}
+            />
+            </div>
+          </div>
+          {/*  */}
         </section>
         {/* 1. MAIN */}
         <div
@@ -130,14 +160,10 @@ export const OperatingRoomPage = () => {
                 dataList.map((item) => {
                   const color = item.color_code;
                   let processColor;
-                  const statusColor = {
-                    PENDING: "#FFC107",
-                    IN_PROGRESS: "#2196F3",
-                    DONE: "#4CAF50",
-                  };
+
                   processColor = statusColor[item.process_status];
                   const isRunning = item.process_status === "IN_PROGRESS";
-                  // console.log(`Item ${index}:`, item.patient_id);
+                  const isDone = item.process_status === "DONE";
                   return (
                     <motion.div
                       // Thêm animate khi hover: Nổi lên (y: -4) và làm tối màu lại (brightness)
@@ -146,7 +172,9 @@ export const OperatingRoomPage = () => {
                       className={`relative overflow-hidden flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4 cursor-pointer active:scale-95 transition-all duration-200 ease-in-out hover:shadow-lg ${
                         isRunning
                           ? "border bg-blue-50/20 shadow-[0_0_15px_rgba(33,150,243,0.3)]"
-                          : ""
+                          : isDone
+                            ? "border-3 border-green-300 bg-green-50 "
+                            : "border-3 border-yellow-300 bg-yellow-50"
                       }`}
                       key={item.patient_id}
                       onClick={() => handleFillFormData(item)}
@@ -223,32 +251,25 @@ export const OperatingRoomPage = () => {
                               repeat: Infinity,
                               ease: "easeInOut",
                             }}
-                            className="text-lg py-1 px-2 border-l-4 font-bold font-serif rounded-xl"
-                            style={{
-                              backgroundColor: `${processColor}70`,
-                              borderColor: processColor,
-                              color: processColor,
-                              boxShadow: `0px 4px 12px ${processColor}80`, // Đổ bóng sáng
-                            }}
                           >
-                            {t(item.process_status)}
+                            <StatusIcon
+                              status={item.process_status}
+                              color={processColor}
+                            />
                           </motion.div>
+                        ) : isDone ? (
+                          <StatusIcon
+                            status={item.process_status}
+                            color={processColor}
+                          />
                         ) : (
-                          // Khối giữ nguyên cho trạng thái PENDING / DONE
-                          <div
-                            className="text-lg py-1 px-2 border-l-4 font-bold font-serif rounded-xl"
-                            style={{
-                              backgroundColor: `${processColor}70`,
-                              borderColor: processColor,
-                              color: processColor,
-                            }}
-                          >
-                            {t(item.process_status)}
-                          </div>
+                          <StatusIcon
+                            status={item.process_status}
+                            color={processColor}
+                          />
                         )}
                       </div>
 
-                      {/* TỪ ĐÂY TRỞ XUỐNG GIỮ NGUYÊN 100% NHƯ CODE CỦA BẠN */}
                       <Label className="relative z-10">
                         {t("age")}:{" "}
                         <span className="font-sans font-medium text-sky-600">

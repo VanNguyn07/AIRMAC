@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // import { useManagerDataChart } from "../../hooks/useManagerDataChart";
 import { useSocketForChart } from "../../hooks/useSocketForChart";
 import { CustomTooltip } from "../common/CustomTooltip";
@@ -13,9 +13,18 @@ import {
   CartesianGrid,
   ReferenceLine,
 } from "recharts";
+
 export const LineChartComponent = () => {
   // const { data } = useManagerDataChart();
   const { dataList } = useSocketForChart();
+
+  const [thresholdValue, _setThresholdValue] = useState(() => {
+    const sessionData = localStorage.getItem("activeMonitorSession");
+    if(!sessionData) return 0;
+    const parsedData = JSON.parse(sessionData);
+    return Number(parsedData?.formData?.threshold ?? 0)
+  });
+  
   return (
     <ResponsiveContainer width="100%" height="100%">
       <LineChart data={dataList}>
@@ -43,7 +52,7 @@ export const LineChartComponent = () => {
         />
         <Legend />
         <ReferenceLine
-          y={0.4}
+          y={thresholdValue}
           stroke="red"
           strokeDasharray="3 3"
           label={{

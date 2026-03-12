@@ -10,18 +10,19 @@ import { useManagerForm } from "../../hooks/useManagerForm";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDoneSession } from "../../hooks/useDoneSession";
+import { StatusIcon } from "../../components/common/StatusIcon";
 
 export const ChartMonitorPage = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [sessionData, _setSessionData] = useState(() => {
     const saved = localStorage.getItem("activeMonitorSession");
-    return saved ? JSON.parse(saved) : {formData: {}, selectedDeviceId: null};
+    return saved ? JSON.parse(saved) : { formData: {}, selectedDeviceId: null };
   });
 
   const { formData, selectedDeviceId } = sessionData;
 
-  const {handleSetStatusDone} = useDoneSession();
+  const { handleSetStatusDone } = useDoneSession();
 
   const { allDevices } = useManagerForm();
 
@@ -67,17 +68,18 @@ export const ChartMonitorPage = () => {
             </div>
             <div className="text-lg font-serif">
               <Button
-                className="px-3 py-0.5 active:scale-95 bg-green-600 hover:bg-green-700 active:bg-green-600 hover:-translate-y-1 transition-all duration-300"
+                className="px-3 py-0.5 active:scale-95 bg-transparent text-green-500 shadow-lg border-2 border-green-600 shadow-green-300 hover:bg-transparent active:bg-transparent hover:-translate-y-1 transition-all duration-300"
                 type="button"
-                onClick={ async () => {
-                  await handleSetStatusDone(formData.patientId)
+                onClick={async () => {
+                  await handleSetStatusDone(formData.patientId);
 
                   localStorage.removeItem("activeMonitorSession");
-                  
-                  navigate("/operatingRoom")
+
+                  navigate("/operatingRoom");
                 }}
               >
-                {t("done")}
+                {t("DONE")}
+                <StatusIcon status={"DONE"} color={"#4CAF50"} />
               </Button>
             </div>
           </div>

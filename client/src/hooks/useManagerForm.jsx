@@ -42,6 +42,7 @@ export const useManagerForm = (onSuccess) => {
     level: 0,
     color: "",
     threshold: 0,
+    process_status: ""
   });
 
   const navigate = useNavigate();
@@ -100,6 +101,7 @@ export const useManagerForm = (onSuccess) => {
       level: dataItem.risk_level || 0,
       color: dataItem.color_code || "",
       threshold: dataItem.threshold_value || 0,
+      process_status: dataItem.process_status || ""
     });
 
     if (dataItem.dob && setDob) {
