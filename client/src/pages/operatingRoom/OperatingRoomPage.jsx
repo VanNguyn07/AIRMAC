@@ -1,3 +1,4 @@
+import {useState} from "react";
 import { Button } from "../../components/common/Button";
 import { Input } from "../../components/common/Input";
 import { Label } from "../../components/common/Label";
@@ -12,6 +13,7 @@ import { usePatientContext } from "../../contexts/PatientContext";
 import { useCustomHeader } from "../../hooks/useCustomHeader";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { StatusIcon } from "../../components/common/StatusIcon";
+import { StatusFilter } from "../../components/common/StatusFilter";
 
 export const OperatingRoomPage = () => {
   const { t } = useLanguage();
@@ -84,6 +86,14 @@ export const OperatingRoomPage = () => {
   };
   const currentProcessStatus = formData?.process_status || "";
   const currentProcessColor = statusColor[currentProcessStatus];
+  const [filterStatus, setFilterStatus] = useState("ALL");
+
+  const filteredDataList = dataList.filter((item) => {
+    // Nếu chọn ALL, giữ nguyên tất cả
+    if (filterStatus === "ALL") return true;
+    // Nếu chọn cái khác, chỉ giữ lại những ông có process_status giống với cái đang chọn
+    return item.process_status === filterStatus;
+  });
 
   return (
     <main className="w-full min-h-screen p-4 bg-main-gradient">
@@ -128,9 +138,9 @@ export const OperatingRoomPage = () => {
             >
               {t(currentProcessStatus)}
               <StatusIcon
-              status={currentProcessStatus}
-              color={currentProcessColor}
-            />
+                status={currentProcessStatus}
+                color={currentProcessColor}
+              />
             </div>
           </div>
           {/*  */}
@@ -141,23 +151,26 @@ export const OperatingRoomPage = () => {
           onClick={closeList}
         >
           {/* a. patient queue */}
-          <section className="bg-white w-full lg:absolute lg:left-0 lg:top-0 lg:bottom-0 lg:w-[28%] lg:h-auto h-[50dvh] shadow-xl p-4 rounded-lg flex flex-col">
+          <section className="bg-white w-full lg:absolute lg:left-0 lg:top-0 lg:bottom-0 lg:w-[28%] lg:h-auto h-[50dvh] shadow-xl p-4 rounded-lg flex flex-col ">
             <div className="flex justify-between items-center ">
               <p className="text-3xl font-bold font-serif mb-4">
                 {t("patientList")}
               </p>
-              <div className="rounded-full w-9 h-9 text-lg flex justify-center items-center bg-primary-gradient font-bold">
-                {dataList.length}
+              <div className="flex gap-1.5 items-center ml-auto">
+                <StatusFilter value={filterStatus} onChange={(newStatus) => setFilterStatus(newStatus)}/>
+                <div className="rounded-full w-9 h-9 text-lg flex justify-center items-center bg-primary-gradient font-bold">
+                  {dataList.length}
+                </div>
               </div>
             </div>
 
             <div className="flex-1 overflow-auto pr-1 scrollbar-thin">
-              {dataList.length === 0 ? (
+              {filteredDataList.length === 0 ? (
                 <p className="text-gray-500 text-center italic">
                   {t("noPatients")}
                 </p>
               ) : (
-                dataList.map((item) => {
+                filteredDataList.map((item) => {
                   const color = item.color_code;
                   let processColor;
 

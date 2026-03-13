@@ -19,7 +19,7 @@ export const Header = () => {
         <Wind size={48} className="text-sky-400" />
         <h1 className="text-4xl font-serif tracking-widest">AIRMAC</h1>
       </div>
-      <nav className="hidden lg:flex gap-10">
+      <nav className="hidden xl:flex gap-10">
         <NavLink to="/clinic" className={getLinkClass}>
           {t("clinic")}
         </NavLink>
@@ -36,13 +36,13 @@ export const Header = () => {
           {t("history")}
         </NavLink>
       </nav>
-      <div className="hidden lg:flex gap-2">
+      <div className="hidden xl:flex gap-2">
         <div className="flex justify-center items-center">
           <Button className="bg-primary-gradient text-xl gap-2 rounded-2xl font-serif">
             <User size={24} fontWeight={Bold} /> {t("drAdmin")}
           </Button>
         </div>
-        <div className="hidden lg:flex items-center border border-gray-300 px-1 rounded-2xl bg-white shadow-sm hover:shadow-md transition">
+        <div className="hidden xl:flex items-center border border-gray-300 px-1 rounded-2xl bg-white shadow-sm hover:shadow-md transition">
           <Languages size={20} className="text-gray-600" />
 
           <select
@@ -58,12 +58,12 @@ export const Header = () => {
       </div>
       <Button
         onClick={handleCustomHeader}
-        className="lg:hidden flex justify-end items-center w-11 p-2"
+        className="xl:hidden flex justify-end items-center w-11 p-2"
       >
         {isOpen ? <X size={28} /> : <Menu size={28} />}
       </Button>
       {isOpen && (
-        <div className="flex flex-col gap-3 p-2 lg:hidden absolute top-20 right-0 bg-sky-700 rounded-xl shadow-2xl text-slate-800 animate-in fade-in zoom-in duration-200 z-101">
+        <div className="flex flex-col gap-3 p-2 xl:hidden absolute top-20 right-0 bg-sky-700 rounded-xl shadow-2xl text-slate-800 animate-in fade-in zoom-in duration-200 z-101">
           <div className="absolute -top-2.5 right-11 border-l-10 border-r-10 border-b-10 border-transparent border-b-sky-700"></div>
           <nav className="flex flex-col gap-3">
             <NavLink to="/clinic" className={getLinkClass}>
