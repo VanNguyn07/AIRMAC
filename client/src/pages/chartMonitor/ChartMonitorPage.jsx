@@ -11,7 +11,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDoneSession } from "../../hooks/useDoneSession";
 import { StatusIcon } from "../../components/common/StatusIcon";
-import { ThresholdPopup } from "../../components/popup/thresholdPopup";
+import { ThresholdPopup } from "../../components/popup/ThresholdPopup";
 
 export const ChartMonitorPage = () => {
   const { t } = useLanguage();
