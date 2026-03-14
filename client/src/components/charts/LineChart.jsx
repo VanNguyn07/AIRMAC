@@ -13,11 +13,14 @@ import {
   CartesianGrid,
   ReferenceLine,
 } from "recharts";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 export const LineChartComponent = () => {
   // const { data } = useManagerDataChart();
   const { dataList } = useSocketForChart();
+  const {t} = useLanguage();
 
+  const formatLPM = (value) => `${value}-LPM`;
   const [thresholdValue, _setThresholdValue] = useState(() => {
     const sessionData = localStorage.getItem("activeMonitorSession");
     if(!sessionData) return 0;
@@ -41,10 +44,11 @@ export const LineChartComponent = () => {
           interval="preserveStartEnd"
         />
         <YAxis
+          width={63}
           domain={[0.0, 0.6]}
-          unit="-LPM"
-          tick={{ fontSize: 14 }}
+          tick={{ fontSize: 13 }}
           tickCount={6}
+          tickFormatter={formatLPM}
         />
 
         <Tooltip // show information when hover
@@ -57,9 +61,9 @@ export const LineChartComponent = () => {
           strokeDasharray="3 3"
           label={{
             position: "top",
-            value: "Threshold",
+            value: `${t("thresholdValue")}: ${thresholdValue}-LPM`,
             fill: "red",
-            fontSize: 13,
+            fontSize: 16,
           }}
         />
         <Line

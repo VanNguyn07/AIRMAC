@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDoneSession } from "../../hooks/useDoneSession";
 import { StatusIcon } from "../../components/common/StatusIcon";
+import { ThresholdPopup } from "../../components/popup/thresholdPopup";
 
 export const ChartMonitorPage = () => {
   const { t } = useLanguage();
@@ -35,7 +36,7 @@ export const ChartMonitorPage = () => {
   const currentValue = lastestValue?.value || 0;
 
   return (
-    <main className="w-full min-h-dvh p-4 bg-main-gradient">
+    <main className="w-full min-h-screen p-4 bg-main-gradient mt-25">
       <form action="" className="box-border flex flex-col gap-4">
         {/* STATUS BAR */}
         <section className="flex justify-between items-center bg-white p-6 rounded-xl border-l-5 border-sky-600 shadow-lg">
@@ -68,7 +69,7 @@ export const ChartMonitorPage = () => {
             </div>
             <div className="text-lg font-serif">
               <Button
-                className="px-3 py-0.5 active:scale-95 bg-transparent text-green-500 shadow-lg border-2 border-green-600 shadow-green-300 hover:bg-transparent active:bg-transparent hover:-translate-y-1 transition-all duration-300"
+                className="px-3 py-0.5 active:scale-95 bg-transparent focus:bg-transparent focus:ring-0 text-green-500 shadow-lg border-2 border-green-600 shadow-green-300 hover:bg-transparent active:bg-transparent hover:-translate-y-1 transition-all duration-300"
                 type="button"
                 onClick={async () => {
                   await handleSetStatusDone(formData.patientId);
@@ -118,7 +119,8 @@ export const ChartMonitorPage = () => {
             </section>
           </div>
           <div className="flex flex-col">
-            <div className="sticky top-4">
+            <ThresholdPopup />
+            <div className="sticky top-29">
               <PressureGauge value={currentValue} />
             </div>
           </div>

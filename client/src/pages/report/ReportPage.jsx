@@ -3,7 +3,7 @@ import { useLanguage } from "../../contexts/LanguageContext";
 export const ReportPage = () => {
   const { t } = useLanguage();
   return (
-    <main className="w-full min-h-screen p-4 bg-main-gradient">
+    <main className="w-full min-h-screen p-4 bg-main-gradient mt-25">
       <section className="bg-white p-6 rounded-xl border-l-5 border-sky-600 shadow-lg">
         <div className="flex gap-5">
           <div className="text-lg font-serif">
