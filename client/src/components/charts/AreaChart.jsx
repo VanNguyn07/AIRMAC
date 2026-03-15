@@ -1,5 +1,4 @@
 import React from "react";
-import { useSocketForChart } from "../../hooks/useSocketForChart";
 import {
   AreaChart,
   Area,
@@ -13,8 +12,7 @@ import {
 } from "recharts";
 import { CustomTooltip } from "../common/CustomTooltip";
 
-export const AreaChartComponent = () => {
-  const {dataList} = useSocketForChart();
+export const AreaChartComponent = ({ dataList }) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart data={dataList}>

@@ -2,9 +2,9 @@ import { AlertTriangle, X } from "lucide-react";
 import Lottie from "lottie-react";
 import alarmAnimation from "../../assets/alarm.json";
 
-export const ThresholdPopup = () => {
+export const ThresholdPopup = ({sixDataPoints, timeHappened, onDismiss, onAcknowledge}) => {
   return (
-    <div className="relative w-90 bg-red-50 border-2 border-red-600 rounded-2xl shadow-2xl p-5 flex flex-col items-center gap-4">
+    <div className="relative w-110 bg-red-50 border-2 border-red-600 rounded-2xl shadow-2xl p-5 flex flex-col items-center gap-4">
       {/* Glow background */}
       <div className="absolute inset-0 rounded-2xl bg-red-400 opacity-10 animate-pulse"></div>
 
@@ -34,7 +34,8 @@ export const ThresholdPopup = () => {
 
         <p className="text-sm text-gray-700 leading-relaxed">
           <span className="font-bold text-red-600">LPM Threshold exceeded</span>{" "}
-          for <span className="font-semibold">6 consecutive readings</span>.
+          for <span className="font-semibold">6 consecutive readings. <br /> <p>Details: Values: {sixDataPoints} <br /> <span className="ml-14">At Time: {timeHappened}</span> </p>
+          </span>
         </p>
       </div>
 
@@ -42,14 +43,14 @@ export const ThresholdPopup = () => {
       <div className="flex gap-3 w-full">
         <button
           className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg font-semibold hover:cursor-pointer active:scale-95 hover:-translate-y-1 transition-all duration-300 z-10"
-          type="button"
+          type="button" onClick={onAcknowledge}
         >
           Acknowledge
         </button>
 
         <button
           className="flex-1 border border-gray-400 hover:bg-gray-400 py-2 rounded-lg font-semibold flex items-center justify-center gap-1 hover:cursor-pointer active:scale-95 hover:-translate-y-1 transition-all duration-300 z-10"
-          type="button"
+          type="button" onClick={onDismiss}
         >
           <X size={18} />
           Dismiss

@@ -31,7 +31,13 @@ export const ChartMonitorPage = () => {
     (device) => device.id == selectedDeviceId,
   );
 
-  const { dataList } = useSocketForChart();
+  const {
+    dataList,
+    alertInfo,
+    handleDismiss,
+    currentThreshold,
+    handleAcknowledge,
+  } = useSocketForChart();
   const lastestValue = dataList[dataList.length - 1];
   const currentValue = lastestValue?.value || 0;
 
@@ -95,7 +101,10 @@ export const ChartMonitorPage = () => {
                   <span className="font-serif">LPM</span>
                 </Label>
               </div>
-              <LineChartComponent />
+              <LineChartComponent
+                dataList={dataList}
+                thresholdValue={currentThreshold}
+              />
             </section>
 
             <section className="flex-1 bg-white rounded-xl shadow-md pt-4 pb-10 px-3 min-h-140 h-full">
@@ -105,7 +114,7 @@ export const ChartMonitorPage = () => {
                   <span className="font-serif">LPM</span>
                 </Label>
               </div>
-              <AreaChartComponent />
+              <AreaChartComponent dataList={dataList} />
             </section>
 
             <section className="flex-1 bg-white rounded-xl shadow-md pt-4 pb-10 px-3 min-h-140 h-full">
@@ -115,16 +124,35 @@ export const ChartMonitorPage = () => {
                   <span className="font-serif">LPM</span>
                 </Label>
               </div>
-              <LineChartComponent />
+              <LineChartComponent
+                dataList={dataList}
+                thresholdValue={currentThreshold}
+              />
             </section>
           </div>
           <div className="flex flex-col">
-            <ThresholdPopup />
             <div className="sticky top-29">
               <PressureGauge value={currentValue} />
             </div>
           </div>
         </div>
+        {alertInfo && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            {/* Overlay background - màn hình phủ */}
+            <div className="absolute inset-0 bg-black opacity-60 cursor-pointer"></div>
+            {/* Popup container */}
+            <div className="relative z-10">
+              <ThresholdPopup
+                sixDataPoints={alertInfo.sixDataPoints
+                  .map((dataPoint) => dataPoint.value)
+                  .join(" - ")}
+                timeHappened={alertInfo.timeHappened}
+                onDismiss={handleDismiss}
+                onAcknowledge={handleAcknowledge}
+              />
+            </div>
+          </div>
+        )}
       </form>
     </main>
   );
