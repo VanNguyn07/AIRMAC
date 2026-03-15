@@ -128,7 +128,7 @@ export const useManagerForm = (onSuccess) => {
     }
   };
 
-  const handleSubmitForm = async (e) => {
+  const handleSubmitForm = async (e, isDurationOver24h) => {
     e.preventDefault();
 
     const icdCodeArray = selectedDisease.map((item) => ({
@@ -148,6 +148,7 @@ export const useManagerForm = (onSuccess) => {
       tem: parseFloat(formData.tem),
       icdMapping: icdCodeArray,
       selectedDevice: selectedDeviceId,
+      isDurationOver24h: isDurationOver24h
     };
 
     console.log("Dữ liệu form data gửi đi:", payload);

@@ -104,13 +104,14 @@ const updatePatientInfo = async (client, patientInfo, patientId) => {
 
 const updateVitalsInfo = async (client, vitalsInfo, patientId) => {
   const query =
-    "UPDATE vitals SET hr = $1, spo2 = $2, bp_sys = $3, rr = $4, tem = $5 WHERE patient_id = $6";
+    "UPDATE vitals SET hr = $1, spo2 = $2, bp_sys = $3, rr = $4, tem = $5,  is_duration_over_24h = $6 WHERE patient_id = $7";
   await client.query(query, [
     vitalsInfo.hr,
     vitalsInfo.spo2,
     vitalsInfo.bp_sys,
     vitalsInfo.rr,
     vitalsInfo.tem,
+    vitalsInfo.isDurationOver24h,
     patientId,
   ]);
 };
@@ -172,8 +173,7 @@ const managerFormModel = {
     try {
       await client.query("BEGIN");
 
-      const { ageScore, pathologyScore, totalScore, vitalScore } =
-        await calculateRiskScore(client, data);
+      const { ageScore, pathologyScore, totalScore, vitalScore } = await calculateRiskScore(client, data);
 
       //get value to set up level
       const getValues = await getValuesToSetUpLv(client, totalScore);
@@ -262,6 +262,7 @@ const managerFormModel = {
       client.release();
     }
   },
+
   updateForm: async (data, patientId) => {
     const client = await database.connect();
     try {
@@ -290,6 +291,7 @@ const managerFormModel = {
           bp_sys: data.bp_sys,
           rr: data.rr,
           tem: data.tem,
+          isDurationOver24h: data.isDurationOver24h
         },
         patientId,
       );

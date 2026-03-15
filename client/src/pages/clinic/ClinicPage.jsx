@@ -1,7 +1,7 @@
 import { Button } from "../../components/common/Button";
 import { Input } from "../../components/common/Input";
 import { Label } from "../../components/common/Label";
-import {motion} from "framer-motion"
+import { motion } from "framer-motion";
 import { DiseaseSelect } from "../../components/select/DiseaseSelect";
 import { useManagerForm } from "../../hooks/useManagerForm";
 import { formatAgeString } from "../../utils/formatAgeString";
@@ -9,6 +9,7 @@ import { formatGender } from "../../utils/formatGender";
 import { usePatientContext } from "../../contexts/PatientContext";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { StatusIcon } from "../../components/common/StatusIcon";
+import { useState } from "react";
 export const ClinicPage = () => {
   const { dataList, refetch } = usePatientContext();
   const { t } = useLanguage();
@@ -28,12 +29,14 @@ export const ClinicPage = () => {
     handleSelectionChange,
   } = useManagerForm(refetch);
 
+  const [isDurationOver24h, setIsDurationOver24h] = useState(false);
+
   return (
     <main className="w-full min-h-screen p-4 bg-main-gradient mt-25">
       <form
         action=""
         className="box-border flex flex-col gap-4 w-full h-full"
-        onSubmit={handleSubmitForm}
+        onSubmit={(e) => handleSubmitForm(e, isDurationOver24h)}
       >
         {/* 1. STATUS BAR */}
         <section className="bg-white p-6 rounded-xl border-l-5 border-sky-600 shadow-lg">
@@ -198,20 +201,45 @@ export const ClinicPage = () => {
               {/* Row five */}
               <div className="flex flex-col gap-2 w-full ">
                 <Label>{t("selectRoom")}*</Label>
-                <select
-                  value={selectedDeviceId}
-                  onChange={handleSelectedChange}
-                  className="cursor-pointer p-2 border border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-hover focus:border-primary-hover font-sans"
-                >
-                  <option value="" disabled hidden>
-                    {t("selectAvailableRooms")}
-                  </option>
-                  {readyDevices.map((device) => (
-                    <option key={device.id} value={device.id}>
-                      {`Room ${device.room_id} - ${device.device_code}`}
+                <div className="flex gap-3 items-center justify-between">
+                  <select
+                    value={selectedDeviceId}
+                    onChange={handleSelectedChange}
+                    className="cursor-pointer p-2 border border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-hover focus:border-primary-hover font-sans"
+                  >
+                    <option value="" disabled hidden>
+                      {t("selectAvailableRooms")}
                     </option>
-                  ))}
-                </select>
+                    {readyDevices.map((device) => (
+                      <option key={device.id} value={device.id}>
+                        {`${device.device_code}`}
+                      </option>
+                    ))}
+                  </select>
+
+                  <div className="flex gap-4">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="duration"
+                        className="form-radio text-blue-600"
+                        checked={isDurationOver24h === false}
+                        onChange={() => setIsDurationOver24h(false)}
+                      />
+                      <span>Dưới 24 giờ</span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="duration"
+                        className="form-radio text-red-600"
+                        checked={isDurationOver24h === true}
+                        onChange={() => setIsDurationOver24h(true)}
+                      />
+                      <span>Trên 24 giờ</span>
+                    </label>
+                  </div>
+                </div>
               </div>
               <Button
                 className="mt-4 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98"
@@ -365,9 +393,9 @@ export const ClinicPage = () => {
                       </Label>
 
                       <Label className="relative z-10">
-                        {t("atRoomLabel")}{" "}
+                        {/* {t("atRoomLabel")}{" "} */}
                         <span className="font-sans font-medium text-sky-600">
-                          {item.room_id}
+                          Total Score: {item.total_score}
                         </span>
                       </Label>
 

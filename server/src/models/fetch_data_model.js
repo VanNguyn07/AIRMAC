@@ -5,7 +5,7 @@ const fetchDataModel = {
     try {
       const query = `SELECT p.id as patient_id, p.full_name, p.dob, p.age, p.gender, p.created_at as time_admitted, 
                         v.hr, v.spo2, v.bp_sys, v.rr, v.tem, v.is_duration_over_24h, 
-                        r.final_status, r.selected_icd_codes, r.risk_level, r.threshold_value, r.process_status, r.color_code,
+                        r.total_score, r.final_status, r.selected_icd_codes, r.risk_level, r.threshold_value, r.process_status, r.color_code,
                         a.device_code, a.device_status
                         
                 FROM patients p 
