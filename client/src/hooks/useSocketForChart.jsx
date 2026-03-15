@@ -6,7 +6,7 @@ let socketInstance = 0; // Số lần hook được gọi
 
 const getSocket = () => {
   if (!socket) {
-    socket = io.connect("http://localhost:3001");
+    socket = io.connect("https://airmac.onrender.com");
   }
   return socket;
 };

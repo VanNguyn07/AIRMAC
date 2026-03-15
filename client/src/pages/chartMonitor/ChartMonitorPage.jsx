@@ -139,7 +139,7 @@ export const ChartMonitorPage = () => {
         {alertInfo && (
           <div className="fixed inset-0 z-50 flex items-center justify-center">
             {/* Overlay background - màn hình phủ */}
-            <div className="absolute inset-0 bg-black opacity-60 cursor-pointer"></div>
+            <div className="absolute inset-0 bg-black opacity-60 "></div>
             {/* Popup container */}
             <div className="relative z-10">
               <ThresholdPopup
