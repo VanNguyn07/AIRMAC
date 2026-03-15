@@ -2,12 +2,11 @@ import { Button } from "../../components/common/Button";
 import { Label } from "../../components/common/Label";
 import { LineChartComponent } from "../../components/charts/LineChart";
 import { AreaChartComponent } from "../../components/charts/AreaChart";
-// import { useEffect, useState } from "react";
 import { PressureGauge } from "../../components/common/PressureGauge";
 import { useSocketForChart } from "../../hooks/useSocketForChart";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { useManagerForm } from "../../hooks/useManagerForm";
-import { useState } from "react";
+import { useMonitoringSession } from "../../hooks/useMonitoringSession";
 import { useNavigate } from "react-router-dom";
 import { useDoneSession } from "../../hooks/useDoneSession";
 import { StatusIcon } from "../../components/common/StatusIcon";
@@ -16,30 +15,39 @@ import { ThresholdPopup } from "../../components/popup/ThresholdPopup";
 export const ChartMonitorPage = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const [sessionData, _setSessionData] = useState(() => {
-    const saved = localStorage.getItem("activeMonitorSession");
-    return saved ? JSON.parse(saved) : { formData: {}, selectedDeviceId: null };
-  });
-
-  const { formData, selectedDeviceId } = sessionData;
-
+  
+  // ✅ Lấy session từ Context
+  const { monitoringSession, endMonitoringSession } = useMonitoringSession();
+  
   const { handleSetStatusDone } = useDoneSession();
 
   const { allDevices } = useManagerForm();
 
+  const { dataList, alertInfo, handleDismiss, currentThreshold, handleAcknowledge } = useSocketForChart();
+  
+  // Lấy session từ Context (monitoringSession tự động load từ localStorage nếu cần)
+  const { formData = {}, deviceId } = monitoringSession || {};
+
+  console.log("mã thiết bị được chọn: ", deviceId);
+
   const currentDeviceData = allDevices.find(
-    (device) => device.id == selectedDeviceId,
+    (device) => device.id == deviceId,
   );
 
-  const {
-    dataList,
-    alertInfo,
-    handleDismiss,
-    currentThreshold,
-    handleAcknowledge,
-  } = useSocketForChart();
   const lastestValue = dataList[dataList.length - 1];
   const currentValue = lastestValue?.value || 0;
+
+  const handleDone = async () => {
+    // ✅ Gọi hàm từ Context để kết thúc session
+    const success = await endMonitoringSession(formData.patientId);
+    
+    if (success) {
+      await handleSetStatusDone(formData.patientId);
+      navigate("/operatingRoom");
+    } else {
+      alert("Lỗi khi kết thúc session. Vui lòng thử lại!");
+    }
+  };
 
   return (
     <main className="w-full min-h-screen p-4 bg-main-gradient mt-25">
@@ -77,13 +85,7 @@ export const ChartMonitorPage = () => {
               <Button
                 className="px-3 py-0.5 active:scale-95 bg-transparent focus:bg-transparent focus:ring-0 text-green-500 shadow-lg border-2 border-green-600 shadow-green-300 hover:bg-transparent active:bg-transparent hover:-translate-y-1 transition-all duration-300"
                 type="button"
-                onClick={async () => {
-                  await handleSetStatusDone(formData.patientId);
-
-                  localStorage.removeItem("activeMonitorSession");
-
-                  navigate("/operatingRoom");
-                }}
+                onClick={handleDone}
               >
                 {t("DONE")}
                 <StatusIcon status={"DONE"} color={"#4CAF50"} />

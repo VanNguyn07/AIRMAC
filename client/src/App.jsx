@@ -6,28 +6,31 @@ import { ChartMonitorPage } from "./pages/chartMonitor/ChartMonitorPage";
 import { ReportPage } from "./pages/report/ReportPage";
 import { PatientProvider } from "./contexts/PatientContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
+import { MonitoringSessionProvider } from "./contexts/MonitoringSessionContext";
 
 export const App = () => {  
   return (
     <LanguageProvider>
-      <div className="flex flex-col bg-main-gradient h-dvh ">
-        {/* Header nằm ngoài Routes để luôn hiển thị ở mọi trang */}
-        <Header />
-        <div className="flex-1">
-          <PatientProvider>
-            <Routes>
-              {/* Mặc định vào trang chủ sẽ chuyển hướng ngay sang Clinic */}
-              <Route path="/" element={<Navigate to="/clinic" replace />} />
+      <MonitoringSessionProvider>
+        <div className="flex flex-col bg-main-gradient h-dvh ">
+          {/* Header nằm ngoài Routes để luôn hiển thị ở mọi trang */}
+          <Header />
+          <div className="flex-1">
+            <PatientProvider>
+              <Routes>
+                {/* Mặc định vào trang chủ sẽ chuyển hướng ngay sang Clinic */}
+                <Route path="/" element={<Navigate to="/clinic" replace />} />
 
-              {/* Định nghĩa các trang */}
-              <Route path="/clinic" element={<ClinicPage />} />
-              <Route path="/operatingRoom" element={<OperatingRoomPage />} />
-              <Route path="/chartMonitor" element={<ChartMonitorPage />} />
-              <Route path="/report" element={<ReportPage />} />
-            </Routes>
-          </PatientProvider>
+                {/* Định nghĩa các trang */}
+                <Route path="/clinic" element={<ClinicPage />} />
+                <Route path="/operatingRoom" element={<OperatingRoomPage />} />
+                <Route path="/chartMonitor" element={<ChartMonitorPage />} />
+                <Route path="/report" element={<ReportPage />} />
+              </Routes>
+            </PatientProvider>
+          </div>
         </div>
-      </div>
+      </MonitoringSessionProvider>
     </LanguageProvider>
   );
 };

@@ -3,14 +3,24 @@ const updateProcessStatusController = {
   setProcessStatus: async (request, response) => {
     try {
       const { patientId } = request.params;
-      const { process_status } = request.body;
+      const { process_status, device_id } = request.body;
+      
+      console.log("Controller - patientId:", patientId, "process_status:", process_status, "device_id:", device_id);
+      
       if (!patientId || patientId === null) {
-        return response.json([]);
+        return response.status(400).json({
+          success: false,
+          message: "Patient ID is required",
+        });
       }
+      
       const result = await updateProcessStatusModel.setProcessStatus(
         patientId,
         process_status,
+        device_id 
       );
+      
+      console.log("Controller - Update result:", result);
       console.log("Update process status successfully");
       return response
         .status(200)

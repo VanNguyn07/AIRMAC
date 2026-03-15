@@ -21,14 +21,17 @@ export const useSocketForChart = () => {
     const currentSocket = getSocket();
     socketInstanceRef.current = ++socketInstance;
 
+    // ✅ Lấy threshold từ localStorage trước (fallback)
     const sessionData = localStorage.getItem("activeMonitorSession");
-    let initThreshold = 999;
+    let initThreshold = 0;
 
     if (sessionData) {
       const parsedData = JSON.parse(sessionData);
       initThreshold = Number(parsedData?.formData?.threshold ?? 0);
     }
+    
     setCurrentThreshold(initThreshold);
+    console.log("useSocketForChart - Threshold sent to server:", initThreshold);
     //  báo cho Server biết ngưỡng này khi vừa mở app
     currentSocket.emit("client:setThreshold", initThreshold);
 

@@ -4,8 +4,8 @@ import { useCalculateAge } from "./useCalculateAge";
 import { useFetchAirmac } from "./useFetchAirmac";
 import { useSearchDiseases } from "./useSearchDiseases";
 import { usePatientContext } from "../contexts/PatientContext";
+import { useMonitoringSession } from "./useMonitoringSession";
 import { useNavigate } from "react-router-dom";
-import { updateProcessStatusApi } from "../services/update_proccess_status_api";
 export const useManagerForm = (onSuccess) => {
   //Gọi hook tính tuổi
   const { dob, ageDisplay, ageMonth, handleDobChange, setDob } =
@@ -27,6 +27,9 @@ export const useManagerForm = (onSuccess) => {
   } = useSearchDiseases();
 
   const { handleAddListGlobal, handleUpdateListGlobal } = usePatientContext();
+  
+  // ✅ Thêm MonitoringSessionContext
+  const { startMonitoringSession } = useMonitoringSession();
 
   const [formData, setFormData] = useState({
     patientId: "",
@@ -52,34 +55,25 @@ export const useManagerForm = (onSuccess) => {
       return;
     }
     try {
-      const result = await updateProcessStatusApi.setProcessStatus(
+      // ✅ Gọi startMonitoringSession từ Context (đã handle API + localStorage)
+      const success = await startMonitoringSession(
         formData.patientId,
-        "IN_PROGRESS",
+        formData,
+        selectedDeviceId
       );
-      console.log("Kết quả từ Server trả về là:", result);
-      if (result.success) {
+
+      if (success) {
         handleUpdateListGlobal({
           patient_id: formData.patientId,
           process_status: "IN_PROGRESS",
         });
-
-        const monitorSession = {
-          formData: formData,
-          selectedDeviceId: selectedDeviceId,
-        };
-        console.log("Form Data of patient: ", formData);
-        localStorage.setItem(
-          "activeMonitorSession",
-          JSON.stringify(monitorSession),
-        );
-
         navigate("/chartMonitor");
       } else {
         alert("Không thể cập nhật trạng thái, vui lòng thử lại!");
       }
     } catch (err) {
-      console.error("Lỗi khi Setup at API update process status:", err);
-      alert("Đã xảy ra lỗi kết nối với máy chủ tại API của process status");
+      console.error("Lỗi khi Setup:", err);
+      alert("Đã xảy ra lỗi kết nối với máy chủ!");
     }
   };
 

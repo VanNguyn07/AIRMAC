@@ -5,14 +5,24 @@ const HEADERS = {
 };
 
 export const updateProcessStatusApi = {
-  setProcessStatus: async (patientId, process_status) => {
+  setProcessStatus: async (patientId, process_status, deviceId = null) => {
     try {
+      const body = { process_status };
+      
+      // Thêm device_id vào body nếu có
+      if (deviceId) {
+        body.device_id = deviceId;
+      }
+
+      console.log("API Request - patientId:", patientId, "process_status:", process_status, "deviceId:", deviceId);
+      console.log("API Request body:", body);
+
       const response = await fetch(
         `${API_URL}/updateProcessStatus/${encodeURIComponent(patientId)}`,
         {
           method: "PUT",
           headers: HEADERS,
-          body: JSON.stringify({process_status}),
+          body: JSON.stringify(body),
         },
       );
       if (!response.ok) {
@@ -21,6 +31,7 @@ export const updateProcessStatusApi = {
         throw new Error("Lỗi khi gọi API set process status");
       }
       const result = await response.json();
+      console.log("API Response:", result);
       return result;
     } catch (err) {
       console.error("API update process status error", err);
