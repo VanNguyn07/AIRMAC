@@ -53,14 +53,15 @@ export const MonitoringSessionProvider = ({ children }) => {
   );
 
   // Kết thúc session khi ấn DONE
-  const endMonitoringSession = useCallback(async (patientId) => {
+  const endMonitoringSession = useCallback(async (patientId, deviceId) => {
     try {
       setIsLoading(true);
       console.log("Ending monitoring session for patient:", patientId);
       
       await updateProcessStatusApi.setProcessStatus(
         patientId,
-        "DONE"
+        "DONE",
+        deviceId,
       );
       
       setMonitoringSession(null);

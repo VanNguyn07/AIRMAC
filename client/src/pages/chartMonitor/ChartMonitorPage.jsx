@@ -39,7 +39,7 @@ export const ChartMonitorPage = () => {
 
   const handleDone = async () => {
     // ✅ Gọi hàm từ Context để kết thúc session
-    const success = await endMonitoringSession(formData.patientId);
+    const success = await endMonitoringSession(formData.patientId, deviceId);
     
     if (success) {
       await handleSetStatusDone(formData.patientId);

@@ -41,7 +41,7 @@ const insertPatientInfo = async (client, patientInfo) => {
 // use data
 const insertVitalsInfo = async (client, vitalsInfo, patientId) => {
   const query =
-    "INSERT INTO vitals (patient_id, hr, spo2, bp_sys, rr, tem) VALUES ($1, $2, $3, $4, $5, $6)";
+    "INSERT INTO vitals (patient_id, hr, spo2, bp_sys, rr, tem, is_duration_over_24h) VALUES ($1, $2, $3, $4, $5, $6, $7)";
   //RETURNING id trả giá trị của cột id trong bảng
   await client.query(query, [
     patientId,
@@ -50,6 +50,7 @@ const insertVitalsInfo = async (client, vitalsInfo, patientId) => {
     vitalsInfo.bp_sys,
     vitalsInfo.rr,
     vitalsInfo.tem,
+    vitalsInfo.isDurationOver24h // true = 2 ,false = 1
   ]);
 };
 
@@ -62,7 +63,7 @@ const getValuesToSetUpLv = async (client, totalScore) => {
 };
 
 const assignAndGetDevice = async (client, patientId, selectedDevice) => {
-  const query = `UPDATE airmacs SET patient_id = $1 WHERE id = $2 RETURNING device_code, room_id`;
+  const query = `UPDATE airmacs SET patient_id = $1 WHERE id = $2 RETURNING device_code`;
   const result = await client.query(query, [patientId, selectedDevice]);
   return result.rows[0];
 };
@@ -122,7 +123,7 @@ const updateDeviceInfo = async (client, newDeviceId, patientId) => {
   );
 
   const query =
-    "UPDATE airmacs SET patient_id = $1 WHERE id = $2 RETURNING device_code, room_id";
+    "UPDATE airmacs SET patient_id = $1 WHERE id = $2 RETURNING device_code";
   const result = await client.query(query, [patientId, newDeviceId]);
   return result.rows[0];
 };
@@ -146,27 +147,22 @@ const updateResultInfo = async (client, value) => {
 const calculateRiskScore = async (client, data) => {
   // tách lấy mã bệnh vì icdMapping đang là một mảng đối tượng
   const icdCodesOnly = data.icdMapping.map((item) => item.icd_code);
-  const result = await Promise.all([
-    getPointsForVitals(client, "hr", data.hr),
-    getPointsForVitals(client, "spo2", data.spo2),
-    getPointsForVitals(client, "bp_sys", data.bp_sys),
-    getPointsForVitals(client, "rr", data.rr),
-    getPointsForVitals(client, "tem", data.tem),
 
-    getPointsForDisease(client, icdCodesOnly),
+  const pathologyScore = await getPointsForDisease(client, icdCodesOnly);
 
-    getPointsForAge(client, data.age),
-  ]);
-  // Gỡ kết quả ra (Chú ý thứ tự phải khớp với Promise.all ở trên)
-  const [p_hr, p_spo2, p_bp, p_rr, p_tem, p_disease, p_age] = result;
-  const vitalScore = p_hr + p_spo2 + p_bp + p_rr + p_tem;
-  const totalScore = vitalScore + p_disease + p_age;
+  const ageScore = await getPointsForAge(client, data.age);
+
+  const durationScore = data.isDurationOver24h === true ? 2 : 1;
+
+  const totalScore = pathologyScore + ageScore + durationScore;
+
   console.log(`Tổng điểm tính được: ${totalScore}`);
   return {
-    vitalScore,
+    vitalScore: 0, //trả về 0 để database không báo lỗi thiếu cột
     totalScore,
-    pathologyScore: p_disease,
-    ageScore: p_age,
+    pathologyScore,
+    ageScore,
+    durationScore
   };
 };
 
@@ -206,6 +202,7 @@ const managerFormModel = {
           bp_sys: data.bp_sys,
           rr: data.rr,
           tem: data.tem,
+          isDurationOver24h: data.isDurationOver24h
         },
         newPatientId,
       );
@@ -239,7 +236,6 @@ const managerFormModel = {
 
         airmac_info: {
           device_code: getInfoAirmac?.device_code || null,
-          room_id: getInfoAirmac?.room_id || null,
         },
 
         vitals_info: {
