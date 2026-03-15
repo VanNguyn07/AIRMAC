@@ -27,7 +27,7 @@ export const useManagerForm = (onSuccess) => {
   } = useSearchDiseases();
 
   const { handleAddListGlobal, handleUpdateListGlobal } = usePatientContext();
-  
+
   // ✅ Thêm MonitoringSessionContext
   const { startMonitoringSession } = useMonitoringSession();
 
@@ -45,7 +45,9 @@ export const useManagerForm = (onSuccess) => {
     level: 0,
     color: "",
     threshold: 0,
-    process_status: ""
+    process_status: "",
+    device_code: "",
+    pressure_max: 0
   });
 
   const navigate = useNavigate();
@@ -59,7 +61,7 @@ export const useManagerForm = (onSuccess) => {
       const success = await startMonitoringSession(
         formData.patientId,
         formData,
-        selectedDeviceId
+        selectedDeviceId,
       );
 
       if (success) {
@@ -80,7 +82,7 @@ export const useManagerForm = (onSuccess) => {
   const handleFillFormData = (dataItem) => {
     if (!dataItem) return;
     //Lưu ID người này vào Context chung toàn cục
-
+    console.log("🔥 Đã click vào bệnh nhân:", dataItem.full_name, dataItem);
     setFormData({
       patientId: dataItem.patient_id || "",
       fullName: dataItem.full_name || "",
@@ -95,7 +97,9 @@ export const useManagerForm = (onSuccess) => {
       level: dataItem.risk_level || 0,
       color: dataItem.color_code || "",
       threshold: dataItem.threshold_value || 0,
-      process_status: dataItem.process_status || ""
+      process_status: dataItem.process_status || "",
+      device_code: dataItem.device_code || "",
+      pressure_max: dataItem.pressure_max || 0,
     });
 
     if (dataItem.dob && setDob) {
@@ -148,7 +152,7 @@ export const useManagerForm = (onSuccess) => {
       tem: parseFloat(formData.tem),
       icdMapping: icdCodeArray,
       selectedDevice: selectedDeviceId,
-      isDurationOver24h: isDurationOver24h
+      isDurationOver24h: isDurationOver24h,
     };
 
     console.log("Dữ liệu form data gửi đi:", payload);
@@ -218,7 +222,7 @@ export const useManagerForm = (onSuccess) => {
         handleAddListGlobal(serverData);
         console.log("data after update form is: ", serverData);
         if (onSuccess) onSuccess();
-        alert("Update information patient successfully!")
+        alert("Update information patient successfully!");
       }
     } catch (err) {
       console.log("Error update", err);

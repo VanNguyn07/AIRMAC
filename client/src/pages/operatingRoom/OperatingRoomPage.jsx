@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useState } from "react";
 import { Button } from "../../components/common/Button";
 import { Input } from "../../components/common/Input";
 import { Label } from "../../components/common/Label";
@@ -7,8 +7,6 @@ import { useManagerForm } from "../../hooks/useManagerForm";
 import { formatAgeString } from "../../utils/formatAgeString";
 import { formatGender } from "../../utils/formatGender";
 import { DiseaseSelect } from "../../components/select/DiseaseSelect";
-import { useSuggestedLevel } from "../../hooks/useSuggestedLevel";
-import { useUpdateLevel } from "../../hooks/useUpdateLevel";
 import { usePatientContext } from "../../contexts/PatientContext";
 import { useCustomHeader } from "../../hooks/useCustomHeader";
 import { useLanguage } from "../../contexts/LanguageContext";
@@ -17,18 +15,15 @@ import { StatusFilter } from "../../components/common/StatusFilter";
 
 export const OperatingRoomPage = () => {
   const { t } = useLanguage();
-  const { dataList, refetch, setDataList, handleUpdateListGlobal } =
+  const { dataList, refetch, } =
     usePatientContext();
   const {
     formData,
-    setFormData,
     selectedDisease,
     handleInputChange,
     handleDobChange,
     ageDisplay,
     dob,
-    allDevices,
-    selectedDeviceId,
     handleSearchDiseases,
     handleSelectionChange,
     handleFillFormData,
@@ -36,49 +31,9 @@ export const OperatingRoomPage = () => {
     handleTabChange,
   } = useManagerForm(refetch);
 
-  const { handleOpenSuggestOpen, isOpen, setIsOpen } = useSuggestedLevel();
-
-  const {
-    handleInputThresholdChange,
-    onSaveClick,
-    levelInput,
-    // warning,
-    setWarning,
-  } = useUpdateLevel();
-
   const { setIsOpen: setIsOpenList } = useCustomHeader();
   const closeList = () => setIsOpenList((prev) => !prev);
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      onSaveClick({
-        patientId: formData.patientId,
-        setFormData: setFormData,
-        setIsOpen: setIsOpen,
-        setDataList: setDataList,
-        handleUpdateList: handleUpdateListGlobal,
-      });
-    }
-  };
-
-  const handleSaveButton = () => {
-    onSaveClick({
-      patientId: formData.patientId,
-      setFormData: setFormData,
-      setIsOpen: setIsOpen,
-      handleUpdateList: handleUpdateListGlobal,
-    });
-  };
-
-  const handleCancel = () => {
-    setWarning("");
-    setIsOpen(false);
-  };
-
-  const currentDeviceData = allDevices.find(
-    (device) => device.id == selectedDeviceId,
-  );
   const statusColor = {
     PENDING: "#FFC107",
     IN_PROGRESS: "#2196F3",
@@ -106,15 +61,9 @@ export const OperatingRoomPage = () => {
         <section className="bg-white p-6 rounded-xl border-l-5 border-sky-600 shadow-lg flex justify-between items-center ">
           <div className="flex gap-10 ">
             <div className="text-lg font-serif">
-              {t("atRoom")}:{" "}
-              <span className="font-bold font-sans">
-                {currentDeviceData ? currentDeviceData.room_id : "---"}
-              </span>
-            </div>
-            <div className="text-lg font-serif">
               {t("airmacInUse")}:{" "}
               <span className="font-bold font-sans">
-                {currentDeviceData ? currentDeviceData.device_code : "---"}
+                {formData.device_code}
               </span>
             </div>
             <div className="text-lg font-serif">
@@ -157,7 +106,10 @@ export const OperatingRoomPage = () => {
                 {t("patientList")}
               </p>
               <div className="flex gap-1.5 items-center ml-auto">
-                <StatusFilter value={filterStatus} onChange={(newStatus) => setFilterStatus(newStatus)}/>
+                <StatusFilter
+                  value={filterStatus}
+                  onChange={(newStatus) => setFilterStatus(newStatus)}
+                />
                 <div className="rounded-full w-9 h-9 text-lg flex justify-center items-center bg-primary-gradient font-bold">
                   {dataList.length}
                 </div>
@@ -292,9 +244,10 @@ export const OperatingRoomPage = () => {
                       </Label>
 
                       <Label className="relative z-10">
-                        {t("atRoomLabel")}{" "}
+                        {t("totalScore")}
+                        {": "}
                         <span className="font-sans font-medium text-sky-600">
-                          {item.room_id}
+                          {item.total_score}
                         </span>
                       </Label>
 
@@ -524,59 +477,19 @@ export const OperatingRoomPage = () => {
                 <div className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4">
                   <Label>{t("suggestedLevel")}</Label>
                   <Label className="text-4xl font-sans">{formData.level}</Label>
-                  {isOpen ? (
-                    <>
-                      <select
-                        name="suggestedLevel"
-                        value={levelInput.suggestedLevel}
-                        onChange={(e) => {
-                          handleInputThresholdChange(e);
-                          onkeydown = { handleKeyDown };
-                        }}
-                        className="cursor-pointer p-2 border border-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-hover focus:border-primary-hover"
-                      >
-                        <option value="" disabled hidden>
-                          {t("enterYourLevel")}
-                        </option>
-                        <option value="1">{t("level1")}</option>
-                        <option value="2">{t("level2")}</option>
-                        <option value="3">{t("level3")}</option>
-                        <option value="4">{t("level4")}</option>
-                      </select>
-
-                      <div className="flex gap-4">
-                        <Button
-                          className="mt-2 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98"
-                          type="button"
-                          onClick={handleSaveButton}
-                        >
-                          {t("save")}
-                        </Button>
-
-                        <Button
-                          onClick={handleCancel}
-                          type="button"
-                          className="mt-2 hover:-translate-y-1 transition-all duration-300 bg-transparent active:scale-98 text-gray-500 hover:text-red-500 hover:bg-gray-300"
-                        >
-                          {t("cancel")}
-                        </Button>
-                      </div>
-                    </>
-                  ) : (
-                    <Button
-                      className="mt-2 hover:-translate-y-1 transition-all duration-300 bg-primary-gradient active:scale-98"
-                      type="button"
-                      onClick={handleOpenSuggestOpen}
-                    >
-                      {t("changes")}
-                    </Button>
-                  )}
                 </div>
 
                 <div className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4">
-                  <Label>{t("alarmThreshold")}</Label>
+                  <Label>{t("flowRate")}</Label>
                   <Label className="text-4xl font-sans">
                     {formData.threshold}
+                  </Label>
+                </div>
+
+                <div className="flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4">
+                  <Label>{t("pressureMax")}</Label>
+                  <Label className="text-4xl font-sans">
+                    {formData.pressure_max}
                   </Label>
                 </div>
                 <Button

@@ -10,7 +10,7 @@ export const translations = {
     language: "Language",
 
     // OP and Clinic
-    atRoom: "At Room",
+    totalScore: "Total Score",
     availableRoom: "Available Rooms",
     patientAdmissionForm: "Patient Admission Form",
     airmacInUse: "AIRMAC in use",
@@ -52,7 +52,8 @@ export const translations = {
     save: "Save",
     cancel: "Cancel",
     thresholdValue: "Threshold Value",
-    alarmThreshold: "Alarm Threshold (LPM)",
+    flowRate: "Flow Rate",
+    pressureMax: "Pressure Max",
     confirmAndSetup: "CONFIRM AND SETUP",
     enterYourLevel: "Enter your level",
     level1: "Level 1 - 0.2 LPM",
@@ -105,7 +106,7 @@ export const translations = {
     language: "Ngôn Ngữ",
 
     // OP and clinic
-    atRoom: "Tại Phòng",
+    totalScore: "Tổng điểm",
     availableRoom: "Các phòng có sẵn",
     patientAdmissionForm: "Phiếu tiếp nhận bệnh nhân",
     airmacInUse: "AIRMAC đang sử dụng",
@@ -147,7 +148,8 @@ export const translations = {
     save: "Lưu",
     cancel: "Hủy",
     thresholdValue: "Giá trị ngưỡng",
-    alarmThreshold: "Ngưỡng Cảnh Báo (LPM)",
+    flowRate: "Lưu lượng dòng chảy",
+    pressureMax: "Áp lực tối đa",
     confirmAndSetup: "XÁC NHẬN VÀ THIẾT LẬP",
     enterYourLevel: "Chọn mức độ",
     level1: "Mức 1 - 0.2 LPM",

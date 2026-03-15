@@ -21,18 +21,12 @@ export const ChartMonitorPage = () => {
   
   const { handleSetStatusDone } = useDoneSession();
 
-  const { allDevices } = useManagerForm();
-
   const { dataList, alertInfo, handleDismiss, currentThreshold, handleAcknowledge } = useSocketForChart();
   
   // Lấy session từ Context (monitoringSession tự động load từ localStorage nếu cần)
   const { formData = {}, deviceId } = monitoringSession || {};
 
   console.log("mã thiết bị được chọn: ", deviceId);
-
-  const currentDeviceData = allDevices.find(
-    (device) => device.id == deviceId,
-  );
 
   const lastestValue = dataList[dataList.length - 1];
   const currentValue = lastestValue?.value || 0;
@@ -56,15 +50,9 @@ export const ChartMonitorPage = () => {
         <section className="flex justify-between items-center bg-white p-6 rounded-xl border-l-5 border-sky-600 shadow-lg">
           <div className="flex flex-col sm:flex-row gap-10">
             <div className="text-lg font-serif">
-              {t("atRoomLabel")}{" "}
-              <span className="font-bold font-sans">
-                {currentDeviceData ? currentDeviceData.room_id : "---"}
-              </span>
-            </div>
-            <div className="text-lg font-serif">
               {t("airmacInUse")}:{" "}
               <span className="font-bold font-sans">
-                {currentDeviceData ? currentDeviceData.device_code : "---"}
+                {formData.device_code}
               </span>
             </div>
             <div className="text-lg font-serif">

@@ -10,7 +10,7 @@ const diseases = [
 
 const age = [
   { min_age: 0, max_age: 3, points: 2 }, // -- Dưới 3 tháng: Nguy cơ cao (Ruột mỏng)
-  // { min_age: 3, max_age: 12, points: 1 }, //-- 3 tháng đến 3 tuổi: An toàn nhất (Target)
+  { min_age: 3, max_age: 1200, points: 1 }, //-- 3 tháng đến 3 tuổi: An toàn nhất (Target)
   // { min_age: 12, max_age: 780, points: 0 }, //-- -- 3 tuổi - 5 tuổi: Cảnh báo nhẹ
   // { min_age: 780, max_age: 1200, points: 2 }, //; -- Trên 5 tuổi: Nguy cơ nguyên nhân thực thể (U/Polyp)
 ];
@@ -90,6 +90,7 @@ const setupLevelRules = [
     status: "Stable",
     color_code: "#28a745",
     threshold_value: 0.5,
+    pressure_max: 80
   },
   {
     min_value: 3,
@@ -98,6 +99,7 @@ const setupLevelRules = [
     status: "Moderate",
     color_code: "#ffc107",
     threshold_value: 0.4,
+    pressure_max: 60
   },
   {
     min_value: 5,
@@ -106,6 +108,7 @@ const setupLevelRules = [
     status: "Serious",
     color_code: "#fd7e14",
     threshold_value: 0.3,
+    pressure_max: 45
   },
   {
     min_value: 7,
@@ -114,6 +117,7 @@ const setupLevelRules = [
     status: "Critical",
     color_code: "#dc3545",
     threshold_value: 0.2,
+    pressure_max: 30
   },
 ];
 
@@ -197,7 +201,7 @@ const seedDatabase = async () => {
     // =======================
     for (let item of setupLevelRules) {
       await database.query(
-        "INSERT INTO setup_level_rules (min_value, max_value, risk_level, status, color_code, threshold_value) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (min_value, max_value) DO NOTHING",
+        "INSERT INTO setup_level_rules (min_value, max_value, risk_level, status, color_code, threshold_value, pressure_max) VALUES ($1, $2, $3, $4, $5, $6, $7) ON CONFLICT (min_value, max_value) DO NOTHING",
         [
           item.min_value,
           item.max_value,
@@ -205,6 +209,7 @@ const seedDatabase = async () => {
           item.status,
           item.color_code,
           item.threshold_value,
+          item.pressure_max,
         ],
       );
     }

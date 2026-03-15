@@ -6,11 +6,13 @@ const fetchDataModel = {
       const query = `SELECT p.id as patient_id, p.full_name, p.dob, p.age, p.gender, p.created_at as time_admitted, 
                         v.hr, v.spo2, v.bp_sys, v.rr, v.tem, v.is_duration_over_24h, 
                         r.total_score, r.final_status, r.selected_icd_codes, r.risk_level, r.threshold_value, r.process_status, r.color_code,
-                        a.device_code, a.device_status
+                        a.device_code, a.device_status,
+                        s.pressure_max
                         
                 FROM patients p 
                 LEFT JOIN vitals v ON p.id = v.patient_id
                 LEFT JOIN results r ON p.id = r.patient_id
+                LEFT JOIN setup_level_rules s ON r.risk_level = s.risk_level
                 LEFT JOIN airmacs a ON p.id = a.patient_id
               
                 ORDER BY p.created_at DESC`; //Sắp xếp mới nhất lên đầu

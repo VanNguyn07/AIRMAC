@@ -281,10 +281,7 @@ export const ClinicPage = () => {
                   const isDone = item.process_status === "DONE";
                   return (
                     <motion.div
-                      // Thêm animate khi hover: Nổi lên (y: -4) và làm tối màu lại (brightness)
-                      whileHover={{ y: -4, filter: "brightness(0.97)" }}
-                      transition={{ duration: 0.1 }}
-                      className={`relative overflow-hidden flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4 cursor-pointer active:scale-95 transition-all duration-200 ease-in-out hover:shadow-lg ${
+                      className={`relative overflow-hidden flex flex-col gap-3 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 mb-4 hover:shadow-lg ${
                         isRunning
                           ? "border bg-blue-50/20 shadow-[0_0_15px_rgba(33,150,243,0.3)]"
                           : isDone
@@ -393,9 +390,9 @@ export const ClinicPage = () => {
                       </Label>
 
                       <Label className="relative z-10">
-                        {/* {t("atRoomLabel")}{" "} */}
+                        {t("totalScore")}{": "}
                         <span className="font-sans font-medium text-sky-600">
-                          Total Score: {item.total_score}
+                          {item.total_score}
                         </span>
                       </Label>
 
