@@ -53,6 +53,8 @@ io.on("connection", (socket) => {
   //Lắng nghe Frontend gửi ngưỡng lên và cập nhật biến toàn cục
   socket.on("client:setThreshold", (frontendThreshold) => {
     thresholdValue = Number(frontendThreshold);
+    testTick = 0;
+    isVenting = false;
   });
 
   socket.on("client:resumeSystem", () => {
