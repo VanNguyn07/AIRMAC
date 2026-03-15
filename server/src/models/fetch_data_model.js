@@ -9,8 +9,8 @@ const fetchDataModel = {
                         a.device_code, a.device_status
                         
                 FROM patients p 
-                JOIN vitals v ON p.id = v.patient_id
-                JOIN results r ON p.id = r.patient_id
+                LEFT JOIN vitals v ON p.id = v.patient_id
+                LEFT JOIN results r ON p.id = r.patient_id
                 LEFT JOIN airmacs a ON p.id = a.patient_id
               
                 ORDER BY p.created_at DESC`; //Sắp xếp mới nhất lên đầu
